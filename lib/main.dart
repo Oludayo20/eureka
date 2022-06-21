@@ -2,6 +2,7 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:school_management/Screens/Leave_Apply/Leave_apply.dart';
 import 'package:school_management/Screens/LoginPage.dart';
@@ -20,8 +21,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'DD School',
+    return GetMaterialApp(
+      title: 'Eureka',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

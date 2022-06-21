@@ -59,7 +59,7 @@ class _RequestLoginState extends State<RequestLogin>
                       children: <Widget>[
                         Container(
                           child: Text(
-                            'Request',
+                            'Register',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 40.0,
@@ -71,7 +71,7 @@ class _RequestLoginState extends State<RequestLogin>
                             padding:
                                 const EdgeInsets.fromLTRB(70.0, 35.0, 0, 0),
                             child: Text(
-                              'ID',
+                              'Yourself',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 40.0,
@@ -80,12 +80,12 @@ class _RequestLoginState extends State<RequestLogin>
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(105.0, 0.0, 0, 30),
+                          padding: const EdgeInsets.fromLTRB(220.0, 0.0, 0, 30),
                           child: Container(
                             child: Text(
                               '.',
                               style: TextStyle(
-                                  color: Colors.green[400],
+                                  color: Colors.teal[200],
                                   fontSize: 80.0,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -114,11 +114,11 @@ class _RequestLoginState extends State<RequestLogin>
                                     RegExp nameRegExp = RegExp('[a-zA-Z]');
                                     RegExp numberRegExp = RegExp(r'\d');
                                     if (value.isEmpty) {
-                                      return 'You Must enter your Name!';
+                                      return 'You Must enter your Username!';
                                     } else if (nameRegExp.hasMatch(value)) {
                                       return null;
                                     } else {
-                                      return 'Enter Vaild name';
+                                      return 'Enter Vaild username';
                                     }
                                   },
                                   onSaved: (val) {
@@ -126,7 +126,7 @@ class _RequestLoginState extends State<RequestLogin>
                                   },
                                   keyboardType: TextInputType.name,
                                   decoration: InputDecoration(
-                                    labelText: 'Name',
+                                    labelText: 'Username',
                                     contentPadding: EdgeInsets.all(5),
                                     labelStyle: TextStyle(
                                         fontFamily: 'Montserrat',
@@ -135,35 +135,35 @@ class _RequestLoginState extends State<RequestLogin>
                                         color: Colors.grey),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.green,
+                                        color: Colors.teal[200],
                                       ),
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 20.0),
-                                TextFormField(
-                                  onSaved: (val) {
-                                    rollno = val;
-                                  },
-                                  validator: (val) {
-                                    if (val.isEmpty) {
-                                      return 'Enter your Roll Number';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                  decoration: InputDecoration(
-                                      labelText: 'Roll Number',
-                                      contentPadding: EdgeInsets.all(5),
-                                      labelStyle: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.grey),
-                                      focusedBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.green))),
-                                ),
+                                // SizedBox(height: 20.0),
+                                // TextFormField(
+                                //   onSaved: (val) {
+                                //     rollno = val;
+                                //   },
+                                //   validator: (val) {
+                                //     if (val.isEmpty) {
+                                //       return 'Roll Number';
+                                //     } else {
+                                //       return null;
+                                //     }
+                                //   },
+                                //   decoration: InputDecoration(
+                                //       labelText: 'Roll Number',
+                                //       contentPadding: EdgeInsets.all(5),
+                                //       labelStyle: TextStyle(
+                                //           fontFamily: 'Montserrat',
+                                //           fontWeight: FontWeight.bold,
+                                //           fontSize: 14,
+                                //           color: Colors.grey),
+                                //       focusedBorder: UnderlineInputBorder(
+                                //           borderSide:
+                                //               BorderSide(color: Colors.green))),
+                                // ),
                                 SizedBox(height: 20.0),
                                 TextFormField(
                                   onSaved: (val) {

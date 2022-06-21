@@ -1,9 +1,11 @@
 import 'dart:async';
-
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:school_management/Screens/Home_Page.dart';
 import 'package:school_management/Screens/LoginPage.dart';
+
+import 'RequestLogin.dart';
 
 class SpleashScreen extends StatefulWidget {
   @override
@@ -16,7 +18,7 @@ class _SpleashScreenState extends State<SpleashScreen> {
   void initState() {
     // Firebase.initializeApp();
 
-    Timer(Duration(seconds: 8), start);
+    Timer(Duration(seconds: 2), start);
   }
 
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class _SpleashScreenState extends State<SpleashScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => MyHomePage(),
+          builder: (BuildContext context) => HomePage(),
         ),
       );
     });

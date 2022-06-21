@@ -35,7 +35,8 @@ dependencies:
   #date_field: ^0.3.3
   fzregex: ^1.0.3
   firebase_core:
-  flutter_svg:
+  flutter_svg: ^0.19.3
+  get: ^4.6.1
   flare_flutter: ^2.0.6
   randomizer: ^0.0.2
   flrx_validator: ^0.4.0+2

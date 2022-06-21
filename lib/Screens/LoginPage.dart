@@ -115,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage>
                             child: Text(
                               '.',
                               style: TextStyle(
-                                  color: Colors.green[400],
+                                  color: Colors.teal[200],
                                   fontSize: 80.0,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -164,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage>
                                         color: Colors.grey),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.green,
+                                        color: Colors.teal[200],
                                       ),
                                     ),
                                   ),
@@ -209,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage>
                                           color: Colors.grey),
                                       focusedBorder: UnderlineInputBorder(
                                           borderSide:
-                                              BorderSide(color: Colors.green))),
+                                              BorderSide(color: Colors.teal[200]))),
                                   obscureText: passshow == false ? true : false,
                                 ),
                               ],
@@ -222,7 +222,39 @@ class _MyHomePageState extends State<MyHomePage>
               SizedBox(
                 height: 10.0,
               ),
-              Padding(
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30.0, 10, 13, 10),
+                    child: Transform(
+                      transform: Matrix4.translationValues(
+                          delayedAnimation.value * width, 0, 0),
+                      child: Container(
+                        alignment: Alignment(1.0, 0),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10.0, right: 400.0),
+                          child: Bouncing(
+                            onPress: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        RequestLogin(),
+                                  ));
+                            },
+                            child: Text(
+                              "Don't Have an account?",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.teal[200],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
                 padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
                 child: Transform(
                   transform: Matrix4.translationValues(
@@ -244,7 +276,7 @@ class _MyHomePageState extends State<MyHomePage>
                           "Forgot password?",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.green,
+                            color: Colors.teal[200],
                           ),
                         ),
                       ),
@@ -252,6 +284,9 @@ class _MyHomePageState extends State<MyHomePage>
                   ),
                 ),
               ),
+                ],
+              ),
+              
               SizedBox(
                 height: 10.0,
               ),
@@ -303,7 +338,7 @@ class _MyHomePageState extends State<MyHomePage>
                             onPressed: () {},
                             elevation: 0.0,
                             minWidth: MediaQuery.of(context).size.width,
-                            color: Colors.green,
+                            color: Colors.teal[200],
                             child: Text(
                               "Login",
                               style: TextStyle(color: Colors.white),
@@ -349,7 +384,7 @@ class _MyHomePageState extends State<MyHomePage>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Coded By Deepak",
+                        "Coded By eruka team",
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
