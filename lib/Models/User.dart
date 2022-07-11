@@ -1,0 +1,35 @@
+class UserApp{
+  String? userName;
+  String? profilePic;
+  String? standard;
+  String? section;
+  UserApp({this.userName, this.profilePic, this.section, this.standard});
+}
+
+class CurrentUser {
+  String? displayName;
+  String? email;
+  bool? emailVerified;
+  bool? isAnonymous;
+  CurrentUser({this.displayName, this.email, this.emailVerified,this.isAnonymous});
+
+  CurrentUser.fromJson(Map<String, dynamic> json) {
+    isAnonymous = json['isAnonymous'];
+    displayName = json['displayName'] as String;
+    email = json['email'] as String;
+    emailVerified = json['emailVerified'];
+  }
+  CurrentUser.fromMap(Map<dynamic, dynamic> json) {
+    isAnonymous = json['isAnonymous'];
+    displayName = json['displayName'] as String;
+    email = json['email'] as String;
+    emailVerified = json['emailVerified'];
+  }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'isAnonymous': isAnonymous,
+    'displayName': displayName,
+    'email': email,
+    'emailVerified': emailVerified,
+  };
+}

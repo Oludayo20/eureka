@@ -8,13 +8,15 @@ import 'package:school_management/Screens/home.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 import 'package:school_management/services/UserModel.dart';
 
+import '../services/authentication_helper.dart';
+import 'Admin/HomePage/HomePage.dart';
 import 'ForgetPasseord.dart';
 import 'RequestLogin.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -22,8 +24,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  Animation animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
-  AnimationController animationController;
+  Animation? animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
+  AnimationController? animationController;
 
   @override
   void initState() {
@@ -34,25 +36,25 @@ class _MyHomePageState extends State<MyHomePage>
     animationController =
         AnimationController(duration: Duration(seconds: 3), vsync: this);
     animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController, curve: Curves.fastOutSlowIn));
+        parent: animationController!, curve: Curves.fastOutSlowIn));
 
     delayedAnimation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController,
+        parent: animationController!,
         curve: Interval(0.5, 1.0, curve: Curves.fastOutSlowIn)));
 
     muchDelayedAnimation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController,
+        parent: animationController!,
         curve: Interval(0.8, 1.0, curve: Curves.fastOutSlowIn)));
 
     LeftCurve = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController,
+        parent: animationController!,
         curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    animationController.dispose();
+    animationController!.dispose();
     super.dispose();
   }
 
@@ -64,18 +66,18 @@ class _MyHomePageState extends State<MyHomePage>
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   bool _autoValidate = false;
   bool passshow = false;
-  String _pass;
-  String _email;
-  String user1;
+  String? _pass;
+  String? _email;
+  String? user1;
   // FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
 
-    animationController.forward();
+    animationController!.forward();
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext context, Widget? child) {
         return Scaffold(
           body: ListView(
             children: <Widget>[
@@ -83,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage>
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Transform(
                   transform: Matrix4.translationValues(
-                      animation.value * width, 0.0, 0.0),
+                      animation!.value * width, 0.0, 0.0),
                   child: Center(
                     child: Stack(
                       children: <Widget>[
@@ -131,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage>
                 padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
                 child: Transform(
                   transform:
-                      Matrix4.translationValues(LeftCurve.value * width, 0, 0),
+                      Matrix4.translationValues(LeftCurve!.value * width, 0, 0),
                   child: Container(
                     child: Column(
                       children: <Widget>[
@@ -143,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage>
                                 TextFormField(
                                   validator: (value) {
                                     if ((Fzregex.hasMatch(
-                                            value, FzPattern.email) ==
+                                            value!, FzPattern.email) ==
                                         false)) {
                                       return "Enter Vaild Email address";
                                     } else {
@@ -164,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage>
                                         color: Colors.grey),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.teal[200],
+                                        color: Colors.teal[200]!,
                                       ),
                                     ),
                                   ),
@@ -173,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage>
                                 TextFormField(
                                   obscuringCharacter: '*',
                                   validator: (val) {
-                                    if (val.isEmpty) {
+                                    if (val!.isEmpty) {
                                       return "Enter Vaild password";
                                     } else {
                                       return null;
@@ -208,8 +210,8 @@ class _MyHomePageState extends State<MyHomePage>
                                           fontSize: 14,
                                           color: Colors.grey),
                                       focusedBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.teal[200]))),
+                                          borderSide: BorderSide(
+                                              color: Colors.teal[200]!))),
                                   obscureText: passshow == false ? true : false,
                                 ),
                               ],
@@ -228,11 +230,12 @@ class _MyHomePageState extends State<MyHomePage>
                     padding: const EdgeInsets.fromLTRB(30.0, 10, 13, 10),
                     child: Transform(
                       transform: Matrix4.translationValues(
-                          delayedAnimation.value * width, 0, 0),
+                          delayedAnimation!.value * width, 0, 0),
                       child: Container(
                         alignment: Alignment(1.0, 0),
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 10.0, right: 400.0),
+                          padding:
+                              const EdgeInsets.only(top: 10.0, right: 400.0),
                           child: Bouncing(
                             onPress: () {
                               Navigator.push(
@@ -255,38 +258,38 @@ class _MyHomePageState extends State<MyHomePage>
                     ),
                   ),
                   Padding(
-                padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
-                child: Transform(
-                  transform: Matrix4.translationValues(
-                      delayedAnimation.value * width, 0, 0),
-                  child: Container(
-                    alignment: Alignment(1.0, 0),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0, right: 20.0),
-                      child: Bouncing(
-                        onPress: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    ForgetPassword(),
-                              ));
-                        },
-                        child: Text(
-                          "Forgot password?",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.teal[200],
+                    padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
+                    child: Transform(
+                      transform: Matrix4.translationValues(
+                          delayedAnimation!.value * width, 0, 0),
+                      child: Container(
+                        alignment: Alignment(1.0, 0),
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(top: 10.0, right: 20.0),
+                          child: Bouncing(
+                            onPress: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ForgetPassword(),
+                                  ));
+                            },
+                            child: Text(
+                              "Forgot password?",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.teal[200],
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
                 ],
               ),
-              
               SizedBox(
                 height: 10.0,
               ),
@@ -294,19 +297,19 @@ class _MyHomePageState extends State<MyHomePage>
                 padding: const EdgeInsets.fromLTRB(20.0, 5, 20.0, 5),
                 child: Transform(
                   transform: Matrix4.translationValues(
-                      muchDelayedAnimation.value * width, 0, 0),
+                      muchDelayedAnimation!.value * width, 0, 0),
                   child: Container(
                     child: Column(
                       children: <Widget>[
                         Bouncing(
                           onPress: () {
-                            if (_formkey.currentState.validate()) {
-                              _formkey.currentState.save();
+                            if (_formkey.currentState!.validate()) {
+                              _formkey.currentState!.save();
                               /*try {
                                 final FirebaseUser user =
                                     (await _auth.signInWithEmailAndPassword(
-                                  email: _email,
-                                  password: _pass,
+                                  email: _email!,
+                                  password: _pass!,
                                 ))
                                         .user;
                                 dynamic userinfo = _auth.currentUser;
@@ -325,14 +328,25 @@ class _MyHomePageState extends State<MyHomePage>
                                 _autoValidate = true;
                               });
                             }*/
+                              AuthenticationHelper()
+                                  .signIn(email: _email!, password: _pass!)
+                                  .then((value) {
+                                    if(value == _email){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                            _email! == "admin@gmail.com"
+                                                ? AdminHome()
+                                                : AdminHome(),
+                                                //: Home(),
+                                          ));
+                                    }else{
+                                      print(value);
+                                    }
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) => Home(),
-                                  ));
+                              });
                             }
-                            ;
                           },
                           child: MaterialButton(
                             onPressed: () {},

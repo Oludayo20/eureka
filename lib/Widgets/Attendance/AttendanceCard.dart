@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AttendanceCard extends StatefulWidget {
-  final String starttime;
-  final String endtime;
-  final String subject;
-  final String staff;
-  final bool attendance;
+  final String? starttime;
+  final String? endtime;
+  final String? subject;
+  final String? staff;
+  final bool? attendance;
 
   const AttendanceCard(
-      {Key key,
+      {Key? key,
       this.starttime,
       this.endtime,
       this.subject,
@@ -23,8 +23,8 @@ class AttendanceCard extends StatefulWidget {
 
 class _AttendanceCardState extends State<AttendanceCard>
     with SingleTickerProviderStateMixin {
-  Animation animation, delayedAnimation;
-  AnimationController animationController;
+  Animation? animation, delayedAnimation;
+  AnimationController? animationController;
 
   @override
   void initState() {
@@ -34,32 +34,32 @@ class _AttendanceCardState extends State<AttendanceCard>
     animationController =
         AnimationController(duration: Duration(seconds: 3), vsync: this);
     animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController, curve: Curves.fastOutSlowIn));
+        parent: animationController!, curve: Curves.fastOutSlowIn));
 
     delayedAnimation = Tween(begin: 1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController,
+        parent: animationController!,
         curve: Interval(0.3, 0.7, curve: Curves.fastOutSlowIn)));
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    animationController.dispose();
+    animationController!.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    animationController.forward();
+    animationController!.forward();
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext context, Widget? child) {
         return Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Transform(
             transform:
-                Matrix4.translationValues(delayedAnimation.value * width, 0, 0),
+                Matrix4.translationValues(delayedAnimation!.value * width, 0, 0),
             child: Container(
               padding: EdgeInsets.symmetric(
                 vertical: 13,

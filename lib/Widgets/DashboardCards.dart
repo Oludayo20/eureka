@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class DashboardCard extends StatelessWidget {
-  final String name;
+  final String? name;
 
-  final String imgpath;
+  final String? imgpath;
 
-  const DashboardCard({Key key, this.name, this.imgpath})
+  const DashboardCard({Key? key, this.name, this.imgpath})
       : super(key: key);
   @override
   Widget build(BuildContext context) {

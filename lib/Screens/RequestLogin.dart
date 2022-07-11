@@ -3,7 +3,9 @@ import 'package:fzregex/fzregex.dart';
 import 'package:fzregex/utils/pattern.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 
+import '../services/authentication_helper.dart';
 import 'RequestProcessing.dart';
+import 'home.dart';
 
 class RequestLogin extends StatefulWidget {
   @override
@@ -12,8 +14,8 @@ class RequestLogin extends StatefulWidget {
 
 class _RequestLoginState extends State<RequestLogin>
     with SingleTickerProviderStateMixin {
-  Animation animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
-  AnimationController animationController;
+  Animation? animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
+  AnimationController? animationController;
 
   @override
   void initState() {
@@ -22,30 +24,32 @@ class _RequestLoginState extends State<RequestLogin>
     animationController =
         AnimationController(duration: Duration(seconds: 3), vsync: this);
     animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController, curve: Curves.fastOutSlowIn));
+        parent: animationController!, curve: Curves.fastOutSlowIn));
 
     delayedAnimation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController,
+        parent: animationController!,
         curve: Interval(0.5, 1.0, curve: Curves.fastOutSlowIn)));
 
     muchDelayedAnimation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController,
+        parent: animationController!,
         curve: Interval(0.8, 1.0, curve: Curves.fastOutSlowIn)));
 
     LeftCurve = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController,
+        parent: animationController!,
         curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
   }
 
-  String email, phno, _class, name, rollno;
+  bool passshow = false;
+  String? _pass;
+  late String email, phno, _class, name, rollno = "";
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    animationController.forward();
+    animationController!.forward();
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext context, Widget? child) {
         return Scaffold(
           body: ListView(
             children: <Widget>[
@@ -53,7 +57,7 @@ class _RequestLoginState extends State<RequestLogin>
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Transform(
                   transform: Matrix4.translationValues(
-                      animation.value * width, 0.0, 0.0),
+                      animation!.value * width, 0.0, 0.0),
                   child: Center(
                     child: Stack(
                       children: <Widget>[
@@ -101,7 +105,7 @@ class _RequestLoginState extends State<RequestLogin>
                 padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
                 child: Transform(
                   transform:
-                      Matrix4.translationValues(LeftCurve.value * width, 0, 0),
+                      Matrix4.translationValues(LeftCurve!.value * width, 0, 0),
                   child: Container(
                     child: Column(
                       children: <Widget>[
@@ -109,11 +113,11 @@ class _RequestLoginState extends State<RequestLogin>
                             key: _formkey,
                             child: Column(
                               children: [
-                                TextFormField(
+                                /*  TextFormField(
                                   validator: (value) {
                                     RegExp nameRegExp = RegExp('[a-zA-Z]');
                                     RegExp numberRegExp = RegExp(r'\d');
-                                    if (value.isEmpty) {
+                                    if (value!.isEmpty) {
                                       return 'You Must enter your Username!';
                                     } else if (nameRegExp.hasMatch(value)) {
                                       return null;
@@ -122,7 +126,7 @@ class _RequestLoginState extends State<RequestLogin>
                                     }
                                   },
                                   onSaved: (val) {
-                                    name = val;
+                                    name = val!;
                                   },
                                   keyboardType: TextInputType.name,
                                   decoration: InputDecoration(
@@ -135,68 +139,17 @@ class _RequestLoginState extends State<RequestLogin>
                                         color: Colors.grey),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.teal[200],
+                                        color: Colors.teal[200]!,
                                       ),
                                     ),
                                   ),
                                 ),
-                                // SizedBox(height: 20.0),
-                                // TextFormField(
-                                //   onSaved: (val) {
-                                //     rollno = val;
-                                //   },
-                                //   validator: (val) {
-                                //     if (val.isEmpty) {
-                                //       return 'Roll Number';
-                                //     } else {
-                                //       return null;
-                                //     }
-                                //   },
-                                //   decoration: InputDecoration(
-                                //       labelText: 'Roll Number',
-                                //       contentPadding: EdgeInsets.all(5),
-                                //       labelStyle: TextStyle(
-                                //           fontFamily: 'Montserrat',
-                                //           fontWeight: FontWeight.bold,
-                                //           fontSize: 14,
-                                //           color: Colors.grey),
-                                //       focusedBorder: UnderlineInputBorder(
-                                //           borderSide:
-                                //               BorderSide(color: Colors.green))),
-                                // ),
-                                SizedBox(height: 20.0),
-                                TextFormField(
-                                  onSaved: (val) {
-                                    _class = val;
-                                  },
-                                  validator: (value) {
-                                    RegExp nameRegExp = RegExp('[0-9]');
-                                    RegExp numberRegExp = RegExp(r'\d');
-                                    if (value.isEmpty) {
-                                      return 'You Must enter your class!';
-                                    } else if (nameRegExp.hasMatch(value)) {
-                                      return null;
-                                    } else {
-                                      return 'Enter Vaild class';
-                                    }
-                                  },
-                                  decoration: InputDecoration(
-                                      labelText: 'Class',
-                                      contentPadding: EdgeInsets.all(5),
-                                      labelStyle: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.grey),
-                                      focusedBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.green))),
-                                ),
-                                SizedBox(height: 20.0),
+
+                                SizedBox(height: 20.0),*/
                                 TextFormField(
                                   validator: (value) {
                                     if ((Fzregex.hasMatch(
-                                            value, FzPattern.email) ==
+                                            value!, FzPattern.email) ==
                                         false)) {
                                       return "Enter Vaild Email address";
                                     } else {
@@ -204,7 +157,7 @@ class _RequestLoginState extends State<RequestLogin>
                                     }
                                   },
                                   onSaved: (value) {
-                                    email = value;
+                                    email = value!;
                                   },
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
@@ -219,13 +172,13 @@ class _RequestLoginState extends State<RequestLogin>
                                           borderSide:
                                               BorderSide(color: Colors.green))),
                                 ),
-                                SizedBox(height: 20.0),
+                                /*SizedBox(height: 20.0),
                                 TextFormField(
                                   validator: (value) {
                                     String pattern =
                                         r'(^(?:[+0]9)?[0-9]{10,12}$)';
                                     RegExp regExp = new RegExp(pattern);
-                                    if (value.length == 0) {
+                                    if (value!.length == 0) {
                                       return 'Please enter mobile number';
                                     } else if (!regExp.hasMatch(value)) {
                                       return 'Please enter valid mobile number';
@@ -233,7 +186,7 @@ class _RequestLoginState extends State<RequestLogin>
                                     return null;
                                   },
                                   onSaved: (val) {
-                                    phno = val;
+                                    phno = val!;
                                   },
                                   decoration: InputDecoration(
                                       labelText: 'Phone Number',
@@ -246,6 +199,49 @@ class _RequestLoginState extends State<RequestLogin>
                                       focusedBorder: UnderlineInputBorder(
                                           borderSide:
                                               BorderSide(color: Colors.green))),
+                                ),*/
+                                SizedBox(height: 20.0),
+                                TextFormField(
+                                  obscuringCharacter: '*',
+                                  validator: (val) {
+                                    if (val!.isEmpty) {
+                                      return "Enter Vaild password";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                  onSaved: (val) {
+                                    _pass = val;
+                                  },
+                                  decoration: InputDecoration(
+                                      suffix: passshow == false
+                                          ? IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  passshow = true;
+                                                });
+                                              },
+                                              icon: Icon(Icons.lock_open),
+                                            )
+                                          : IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  passshow = false;
+                                                });
+                                              },
+                                              icon: Icon(Icons.lock),
+                                            ),
+                                      labelText: 'PASSWORD',
+                                      contentPadding: EdgeInsets.all(5),
+                                      labelStyle: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          color: Colors.grey),
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.teal[200]!))),
+                                  obscureText: passshow == false ? true : false,
                                 ),
                               ],
                             )),
@@ -261,23 +257,30 @@ class _RequestLoginState extends State<RequestLogin>
                 padding: const EdgeInsets.fromLTRB(20.0, 5, 20.0, 5),
                 child: Transform(
                   transform: Matrix4.translationValues(
-                      muchDelayedAnimation.value * width, 0, 0),
+                      muchDelayedAnimation!.value * width, 0, 0),
                   child: Container(
                     child: Column(
                       children: <Widget>[
                         Bouncing(
                           onPress: () {
-                            if (_formkey.currentState.validate()) {
-                              _formkey.currentState.save();
-
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        ProcessingRequest(),
-                                  ));
+                            if (_formkey.currentState!.validate()) {
+                              _formkey.currentState!.save();
+                              AuthenticationHelper()
+                                  .signUp(email: email, password: _pass!)
+                                  .then((value) {
+                                print(value);
+                                if (value == email) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Home(),
+                                      ));
+                                } else {
+                                  print(value);
+                                }
+                              });
                             }
-                            ;
                           },
                           child: MaterialButton(
                             onPressed: () {},
@@ -285,7 +288,7 @@ class _RequestLoginState extends State<RequestLogin>
                             minWidth: MediaQuery.of(context).size.width,
                             color: Colors.green,
                             child: Text(
-                              "Request",
+                              "Register",
                               style: TextStyle(color: Colors.white),
                             ),
                           ),

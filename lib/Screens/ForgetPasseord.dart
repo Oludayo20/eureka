@@ -10,8 +10,8 @@ class ForgetPassword extends StatefulWidget {
 
 class _ForgetPasswordState extends State<ForgetPassword>
     with SingleTickerProviderStateMixin {
-  Animation animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
-  AnimationController animationController;
+  Animation? animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
+  AnimationController? animationController;
 
   @override
   void initState() {
@@ -20,32 +20,32 @@ class _ForgetPasswordState extends State<ForgetPassword>
     animationController =
         AnimationController(duration: Duration(seconds: 3), vsync: this);
     animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController, curve: Curves.fastOutSlowIn));
+        parent: animationController!, curve: Curves.fastOutSlowIn));
 
     delayedAnimation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController,
+        parent: animationController!,
         curve: Interval(0.5, 1.0, curve: Curves.fastOutSlowIn)));
 
     muchDelayedAnimation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController,
+        parent: animationController!,
         curve: Interval(0.8, 1.0, curve: Curves.fastOutSlowIn)));
 
     LeftCurve = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
-        parent: animationController,
+        parent: animationController!,
         curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
   }
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   bool _autovalidate = false;
-  String _email;
-  String _rollno;
+  String? _email;
+  String? _rollno;
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    animationController.forward();
+    animationController!.forward();
     return AnimatedBuilder(
-      animation: animationController,
-      builder: (BuildContext context, Widget child) {
+      animation: animationController!,
+      builder: (BuildContext context, Widget? child) {
         return Scaffold(
           body: ListView(
             children: <Widget>[
@@ -53,7 +53,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Transform(
                   transform: Matrix4.translationValues(
-                      animation.value * width, 0.0, 0.0),
+                      animation!.value * width, 0.0, 0.0),
                   child: Center(
                     child: Stack(
                       children: <Widget>[
@@ -101,7 +101,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
                 padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
                 child: Transform(
                   transform:
-                      Matrix4.translationValues(LeftCurve.value * width, 0, 0),
+                      Matrix4.translationValues(LeftCurve!.value * width, 0, 0),
                   child: Container(
                     child: Column(
                       children: <Widget>[
@@ -112,7 +112,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
                               children: [
                                 TextFormField(
                                   validator: (val) {
-                                    if (val.isEmpty) {
+                                    if (val!.isEmpty) {
                                       return "You Must Enter Roll Number";
                                     } else {
                                       return null;
@@ -137,7 +137,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
                                 TextFormField(
                                   validator: (value) {
                                     if ((Fzregex.hasMatch(
-                                            value, FzPattern.email) ==
+                                            value!, FzPattern.email) ==
                                         false)) {
                                       return "Enter Vaild Email address";
                                     } else {
@@ -178,14 +178,14 @@ class _ForgetPasswordState extends State<ForgetPassword>
                 padding: const EdgeInsets.fromLTRB(20.0, 5, 20.0, 5),
                 child: Transform(
                   transform: Matrix4.translationValues(
-                      muchDelayedAnimation.value * width, 0, 0),
+                      muchDelayedAnimation!.value * width, 0, 0),
                   child: Container(
                     child: Column(
                       children: <Widget>[
                         Bouncing(
                           onPress: () {
-                            if (_formkey.currentState.validate()) {
-                              _formkey.currentState.save();
+                            if (_formkey.currentState!.validate()) {
+                              _formkey.currentState!.save();
                               try {} catch (e) {}
                             } else {
                               _autovalidate = true;

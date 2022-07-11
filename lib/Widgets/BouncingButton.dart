@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Bouncing extends StatefulWidget {
-  final Widget child;
-  final VoidCallback onPress;
+  final Widget? child;
+  final VoidCallback? onPress;
 
-  Bouncing({@required this.child, Key key, this.onPress})
+  Bouncing({@required this.child, Key? key, this.onPress})
       : assert(child != null),
         super(key: key);
 
@@ -14,8 +14,8 @@ class Bouncing extends StatefulWidget {
 
 class _BouncingState extends State<Bouncing>
     with SingleTickerProviderStateMixin {
-  double _scale;
-  AnimationController _controller;
+  double? _scale;
+  AnimationController? _controller;
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _BouncingState extends State<Bouncing>
       lowerBound: 0.0,
       upperBound: 0.1,
     );
-    _controller.addListener(() {
+    _controller!.addListener(() {
       setState(() {});
     });
   }
@@ -34,26 +34,26 @@ class _BouncingState extends State<Bouncing>
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _scale = 1 - _controller.value;
+    _scale = 1 - _controller!.value;
     return Listener(
       onPointerDown: (PointerDownEvent event) {
         if (widget.onPress != null) {
-          _controller.forward();
+          _controller!.forward();
         }
       },
       onPointerUp: (PointerUpEvent event) {
         if (widget.onPress != null) {
-          _controller.reverse();
-          widget.onPress();
+          _controller!.reverse();
+          widget.onPress!();
         }
       },
       child: Transform.scale(
-        scale: _scale,
+        scale: _scale!,
         child: widget.child,
       ),
     );

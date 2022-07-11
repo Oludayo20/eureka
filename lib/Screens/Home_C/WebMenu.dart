@@ -4,10 +4,18 @@ import 'package:school_management/Screens/Home_C/MenuController.dart';
 
 class WebMenu extends StatelessWidget {
   final MenuController _controller = Get.put(MenuController());
-
+  final bool? isAndroid;
+  WebMenu({this.isAndroid});
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Row(
+    return Obx(() => isAndroid!? Column(
+        children: List.generate(
+            _controller.menuItems.length,
+                (index) => WebMenuItem(
+              text: _controller.menuItems[index],
+              isActive: index == _controller.selectedIndex,
+              press: () => _controller.setMenuIndex(index),
+            ))): Row(
         children: List.generate(
             _controller.menuItems.length,
             (index) => WebMenuItem(
@@ -20,15 +28,15 @@ class WebMenu extends StatelessWidget {
 
 class WebMenuItem extends StatefulWidget {
   const WebMenuItem({
-    Key key,
+    Key? key,
     @required this.isActive,
     @required this.text,
     @required this.press,
   }) : super(key: key);
 
-  final bool isActive;
-  final String text;
-  final VoidCallback press;
+  final bool? isActive;
+  final String? text;
+  final VoidCallback? press;
 
   @override
   State<WebMenuItem> createState() => _WebMenuItemState();
@@ -39,9 +47,9 @@ class _WebMenuItemState extends State<WebMenuItem> {
   bool _isHover = false;
 
   Color _borderColor() {
-    if (widget.isActive) {
+    if (widget.isActive!) {
       return Colors.white;
-    } else if (!widget.isActive & _isHover) {
+    } else if (!widget.isActive! & _isHover) {
       return Color.fromARGB(255, 117, 116, 116).withOpacity(0.4);
     }
     return Colors.transparent;
@@ -67,10 +75,10 @@ class _WebMenuItemState extends State<WebMenuItem> {
               width: 3),
         )),
         child: Text(
-          widget.text,
+          widget.text!,
           style: TextStyle(
             color: Colors.white,
-            fontWeight: widget.isActive ? FontWeight.w600 : FontWeight.normal,
+            fontWeight: widget.isActive! ? FontWeight.w600 : FontWeight.normal,
           ),
         ),
       ),

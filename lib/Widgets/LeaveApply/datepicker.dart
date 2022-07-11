@@ -2,14 +2,14 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 
 class CustomDatePicker extends StatelessWidget {
-  final TextEditingController controller;
-  final Function onchanged;
-  final Function saved;
-  final Function validator;
-  final String title;
+  final TextEditingController? controller;
+  final Function(String hh)? onchanged;
+  final Function(String? hh)? saved;
+  final Function(String? hh)? validator;
+  final String? title;
 
   const CustomDatePicker(
-      {Key key,
+      {Key? key,
       this.controller,
       this.onchanged,
       this.saved,
@@ -30,7 +30,7 @@ class CustomDatePicker extends StatelessWidget {
       enableSuggestions: true,
       //locale: Locale('en', 'US'),
       onChanged: onchanged,
-      validator: validator,
+      //validator: validator,
       onSaved: saved,
     );
   }

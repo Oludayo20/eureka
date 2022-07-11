@@ -1,22 +1,26 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:school_management/Models/User.dart';
+import 'package:school_management/Screens/Attendance/Attendance.dart';
 import 'package:school_management/Screens/Exam/Exam_Rseult.dart';
+import 'package:school_management/Screens/Leave_Apply/Leave_apply.dart';
 import 'package:school_management/Widgets/AppBar.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 import 'package:school_management/Widgets/DashboardCards.dart';
 import 'package:school_management/Widgets/MainDrawer.dart';
 import 'package:school_management/Widgets/UserDetailCard.dart';
 
-import 'Attendance/Attendance.dart';
-import 'Leave_Apply/Leave_apply.dart';
+import '../AdminMainDrawer.dart';
+import '../Courses/Course.dart';
+import '../Faculty.dart';
 
-class Home extends StatefulWidget {
+class AdminHome extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+class _HomeState extends State<AdminHome> with SingleTickerProviderStateMixin {
   Animation? animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
   AnimationController? animationController;
 
@@ -66,7 +70,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           key: _scaffoldKey,
           drawer: Drawer(
             elevation: 0,
-            child: MainDrawer(),
+            child: AdminMainDrawer(),
           ),
           appBar: CommonAppBar(
             menuenabled: true,
@@ -78,7 +82,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ),
           body: ListView(
             children: [
-              UserDetailCard(),
+              UserDetailCard(
+                user: UserApp(
+                    userName: "Admin",
+                    profilePic: "assets/home.png",
+                    section: "1A",
+                    standard: "11"),
+              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
                 child: Container(
@@ -97,11 +107,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        Attendance(),
+                                        Faculty(),
                                   ));
                             },
                             child: DashboardCard(
-                              name: "Attendance",
+                              name: "Faculty",
                               imgpath: "attendance.png",
                             ),
                           ),
@@ -110,9 +120,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           transform: Matrix4.translationValues(
                               delayedAnimation!.value * width, 0, 0),
                           child: Bouncing(
-                            onPress: () {},
+                            onPress: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        CourseView(),
+                                  ));
+                            },
                             child: DashboardCard(
-                              name: "Profile",
+                              name: "Courses",
                               imgpath: "profile.png",
                             ),
                           ),

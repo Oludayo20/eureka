@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:randomizer/randomizer.dart';
 
 class SubjectCard extends StatelessWidget {
-  Randomizer randomcolor = Randomizer();
-  final String subjectname;
-  final String chapter;
-  final String date;
-  final String time;
-  final String grade;
-  final String mark;
+  final String? subjectname;
+  final String? chapter;
+  final String? date;
+  final String? time;
+  final String? grade;
+  final String? mark;
 
-  SubjectCard({Key key, this.subjectname, this.chapter, this.date, this.time, this.grade, this.mark}) : super(key: key);
+  SubjectCard({Key? key, this.subjectname, this.chapter, this.date, this.time, this.grade, this.mark}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -41,7 +39,7 @@ class SubjectCard extends StatelessWidget {
                   width: 5,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: randomcolor.getrandomcolor(),
+                    color: Colors.amberAccent,
                   ),
                   height: height * 0.1,
                 ),
