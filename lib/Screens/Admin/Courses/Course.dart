@@ -4,6 +4,7 @@ import 'package:school_management/Models/Course.dart';
 
 import '../../../Widgets/AppBar.dart';
 import '../AdminMainDrawer.dart';
+import 'LactureNote.dart';
 
 class CourseView extends StatefulWidget {
   const CourseView({Key? key})
@@ -26,13 +27,14 @@ class _CourseViewState extends State<CourseView> {
     });
   }
 
+
   Future<void> _showMyDialogDelete(BuildContext context, int id) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Delete Programs'),
+          title: const Text('Delete Course'),
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
@@ -90,7 +92,7 @@ class _CourseViewState extends State<CourseView> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Edit Programs'),
+          title: const Text('Edit Course'),
           content: SingleChildScrollView(
               child: Column(
             children: [
@@ -242,7 +244,7 @@ class _CourseViewState extends State<CourseView> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add Programs'),
+          title: const Text('Add Course'),
           content: SingleChildScrollView(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -388,98 +390,6 @@ class _CourseViewState extends State<CourseView> {
     );
   }
 
-  List<Widget> rows1(List<Course> list, BuildContext context) {
-    List<Widget> items = [];
-    items.add(Container(
-      height: 40,
-      child: Card(
-        color: Colors.white10,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 20),
-              child: Text(
-                "Course Title",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            Text(
-              "Course Code",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(right: 20),
-              child: Text(
-                "Action",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    ));
-    for (var i = 0; i < list.length; i += 1) {
-      items.add(Card(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 20),
-            child: Text(
-              list[i].courseTitle!,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 20),
-            child: Text(
-              list[i].courseCode!,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
-          ),
-          Row(
-            children: [
-              IconButton(
-                  color: Colors.blue,
-                  onPressed: () {
-                    _showMyDialogEdit(context, list[i]);
-                  },
-                  icon: Icon(
-                    Icons.edit,
-                  )),
-              IconButton(
-                  color: Colors.red,
-                  onPressed: () {
-                    _showMyDialogDelete(context, list[i].courseId!);
-                  },
-                  icon: Icon(
-                    Icons.delete,
-                  )),
-            ],
-          )
-        ],
-      )));
-    }
-
-    return items;
-  }
-
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey =
@@ -528,6 +438,67 @@ class MyStatelessWidget extends StatelessWidget {
   final Function showCreate;
   final Function showDelete;
   final Course model = Course();
+
+  Future<void> _showMyDialogActionButton(BuildContext context, Course course) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Course'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                    color: Colors.blue,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      showEdit(context, course);
+                    },
+                    icon: Icon(
+                      Icons.edit,
+                    )),
+                IconButton(
+                    color: Colors.red,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      showDelete(context, course.courseId!);
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                    )),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => LectureNoteView(
+                            courseId: course.courseId!,
+                            title: "${course.courseCode!}",
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text("Lecture Notes"))
+              ],
+            ),
+          ),
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+
+          ],
+        );
+      },
+    );
+  }
   List<TableRow> tableRows(double width, double height, BuildContext context) {
     List<TableRow> item = [];
     item.add(TableRow(
@@ -683,30 +654,14 @@ class MyStatelessWidget extends StatelessWidget {
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.top,
               child: Container(
+
                   height: 40,
                   width: width * 0.20,
                   child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(
-                            color: Colors.blue,
-                            onPressed: () {
-                              showEdit(context, element);
-                            },
-                            icon: Icon(
-                              Icons.edit,
-                            )),
-                        IconButton(
-                            color: Colors.red,
-                            onPressed: () {
-                              showDelete(context, element.courseId!);
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                            )),
-                      ],
-                    ),
+                    child: IconButton(
+                      onPressed:()=> _showMyDialogActionButton(context, element),
+                      icon: Icon(Icons.mouse),
+                    )
                   )),
             ),
           ],

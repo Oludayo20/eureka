@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:school_management/Screens/RequestLogin.dart';
 import 'package:school_management/Widgets/Home_C_AppBar.dart';
-import 'package:school_management/Widgets/MainDrawer.dart';
-import 'Home_C/Header.dart';
+import '../Util/ImagePath.dart';
 import 'Home_C/WebMenu.dart';
-import 'LoginPage.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -30,7 +29,8 @@ class HomePage extends StatelessWidget {
           body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("assets/bg.webp"), fit: BoxFit.fill)),
+                    image: NetworkImage(ImagePath().homePageImage),
+                    fit: BoxFit.fill)),
             child: Container(
               width: width,
               height: height,
@@ -88,7 +88,8 @@ class HomePage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (BuildContext context) => MyHomePage(),
+                                builder: (BuildContext context) =>
+                                    RequestLogin(),
                               ));
                         },
                         style: TextButton.styleFrom(

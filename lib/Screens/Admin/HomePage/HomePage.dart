@@ -86,8 +86,8 @@ class _HomeState extends State<AdminHome> with SingleTickerProviderStateMixin {
                 user: UserApp(
                     userName: "Admin",
                     profilePic: "assets/home.png",
-                    section: "1A",
-                    standard: "11"),
+                    section: "Main",
+                    standard: "Main"),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
@@ -139,128 +139,7 @@ class _HomeState extends State<AdminHome> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
-                child: Container(
-                  alignment: Alignment(1.0, 0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10.0, right: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Transform(
-                          transform: Matrix4.translationValues(
-                              muchDelayedAnimation!.value * width, 0, 0),
-                          child: Bouncing(
-                            onPress: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        ExamResult(),
-                                  ));
-                            },
-                            child: DashboardCard(
-                              name: "Exam",
-                              imgpath: "exam.png",
-                            ),
-                          ),
-                        ),
-                        Transform(
-                          transform: Matrix4.translationValues(
-                              delayedAnimation!.value * width, 0, 0),
-                          child: Bouncing(
-                            onPress: () {},
-                            child: DashboardCard(
-                              name: "TimeTable",
-                              imgpath: "calendar.png",
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
-                child: Container(
-                  alignment: Alignment(1.0, 0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10.0, right: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Transform(
-                          transform: Matrix4.translationValues(
-                              muchDelayedAnimation!.value * width, 0, 0),
-                          child: Bouncing(
-                            onPress: () {},
-                            child: DashboardCard(
-                              name: "Library",
-                              imgpath: "library.png",
-                            ),
-                          ),
-                        ),
-                        Transform(
-                          transform: Matrix4.translationValues(
-                              delayedAnimation!.value * width, 0, 0),
-                          child: Bouncing(
-                            onPress: () {},
-                            child: DashboardCard(
-                              name: "Track Bus",
-                              imgpath: "bus.png",
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
-                child: Container(
-                  alignment: Alignment(1.0, 0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10.0, right: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Transform(
-                          transform: Matrix4.translationValues(
-                              muchDelayedAnimation!.value * width, 0, 0),
-                          child: Bouncing(
-                            onPress: () {},
-                            child: DashboardCard(
-                              name: "Activity",
-                              imgpath: "activity.png",
-                            ),
-                          ),
-                        ),
-                        Transform(
-                          transform: Matrix4.translationValues(
-                              delayedAnimation!.value * width, 0, 0),
-                          child: Bouncing(
-                            onPress: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        LeaveApply(),
-                                  ));
-                            },
-                            child: DashboardCard(
-                              name: "Apply Leave",
-                              imgpath: "leave_apply.png",
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+
             ],
           ),
         );

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../Screens/Home_Page.dart';
+import '../services/authentication_helper.dart';
+
 class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   final bool? menuenabled;
@@ -12,6 +15,49 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
     this.notificationenabled,
     this.ontap,
   }) : super(key: key);
+  Future<void> _showMyDialogProfileAction(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Profile'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Card(
+                  color: Colors.white30,
+                  child: ListTile(
+                    trailing: Icon(Icons.logout, color: Colors.red,),
+                    leading: Text("Logout"),
+
+                    onTap: () {
+                      AuthenticationHelper().signOut().whenComplete(() {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => HomePage(),
+                            ));
+                      });
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +90,13 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
             : SizedBox(
                 width: 1,
               ),
+        InkWell(
+          onTap: () => _showMyDialogProfileAction(context),
+          child: Image.asset(
+            "assets/profile.png",
+            width: 35,
+          ),
+        ),
       ],
       centerTitle: true,
       backgroundColor: Colors.transparent,
