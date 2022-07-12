@@ -8,6 +8,7 @@ import 'package:school_management/Screens/home.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 import 'package:school_management/services/UserModel.dart';
 
+import '../Util/Notify.dart';
 import '../services/authentication_helper.dart';
 import 'Admin/HomePage/HomePage.dart';
 import 'ForgetPasseord.dart';
@@ -342,7 +343,7 @@ class _MyHomePageState extends State<MyHomePage>
                                                 //: Home(),
                                           ));
                                     }else{
-                                      print(value);
+                                      Notify.error(context,value);
                                     }
 
                               });

@@ -189,7 +189,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                     Container(
                       // height: height * 0.06,
                       height: height * 0.07,
-                      width: width * 0.75,
+                      width: width * 0.5,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
                         borderRadius: BorderRadius.circular(5),
@@ -233,18 +233,29 @@ class _LectureNoteViewState extends State<LectureNoteView> {
               child: const Text('Approve'),
               onPressed: () async {
                 model.title = controller.text;
-                await uploadToCloudinary(
-                    ByteData.sublistView(pickerResult!.files.single.bytes!),
-                    pickerResult!.files.single.name).then((value) async {
-                  model.note = value as String;
-                 await model.update(model).whenComplete(() {
+                if(model.note==noteController.text){
+                  await model.update(model).whenComplete(() {
                     list = [];
                     model.read(list, widget.courseId).whenComplete(() {
                       Navigator.of(context).pop();
                       setState(() {});
                     });
                   });
-                });
+                }else{
+                  await uploadToCloudinary(
+                      ByteData.sublistView(pickerResult!.files.single.bytes!),
+                      pickerResult!.files.single.name).then((value) async {
+                    model.note = value as String;
+                    await model.update(model).whenComplete(() {
+                      list = [];
+                      model.read(list, widget.courseId).whenComplete(() {
+                        Navigator.of(context).pop();
+                        setState(() {});
+                      });
+                    });
+                  });
+                }
+
 
               },
             ),
@@ -279,8 +290,9 @@ class _LectureNoteViewState extends State<LectureNoteView> {
               ),
               Container(
                 // height: height * 0.06,
-                height: height * 0.07,
+
                 width: width * 0.75,
+                height: height * 0.07,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(5),
@@ -308,8 +320,9 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                 children: [
                   Container(
                     // height: height * 0.06,
+
+                    width: width * 0.5,
                     height: height * 0.07,
-                    width: width * 0.75,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
                       borderRadius: BorderRadius.circular(5),

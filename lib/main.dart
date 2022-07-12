@@ -11,6 +11,7 @@ import 'package:school_management/Screens/LoginPage.dart';
 import 'package:school_management/Screens/SpleashScreen.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'Screens/Admin/Courses/Course.dart';
+import 'Screens/Admin/Courses/QuizView/Quiz.dart';
 import 'Screens/Home_Page.dart';
 import 'firebase_options.dart';
 
@@ -20,7 +21,9 @@ void main() {
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
-  init().whenComplete(()  =>  runApp(MyApp()));
+  init().whenComplete(() {
+    runApp(MyApp());
+  });
 
 }
 
@@ -41,7 +44,7 @@ class MyApp extends StatelessWidget {
       /*home: Scaffold(
           body: SfPdfViewer.network(
               'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')),*/
-      home: HomePage(),
+      home: QuizView(lectureNoteId: 1, title: "Memory",),
     );
   }
 }
