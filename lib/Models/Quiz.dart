@@ -1,10 +1,12 @@
+import 'package:firebase_database/firebase_database.dart';
+
 import 'QuizOption.dart';
 
 class Quiz {
   int? quizId;
-  String? lectureNoteId;
+  int? lectureNoteId;
   String? question;
-  String? answer;
+  int? answer;
   QuizOptions? options;
   Quiz({this.quizId, this.lectureNoteId,this.answer, this.question, this.options});
 
@@ -13,7 +15,15 @@ class Quiz {
     lectureNoteId = json['lectureNoteId'];
     question = json['question'];
     answer = json['answer'];
-    options = QuizOptions.fromJson(json['question']);
+    try{
+      var values = json['options'] as Map<String, dynamic>;
+      options = QuizOptions.fromJson(values);
+    }catch(ex)
+    {
+     print(ex);
+
+    }
+
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -23,4 +33,62 @@ class Quiz {
     'answer': answer,
     'options': options!.toJson(),
   };
+  Future read(List<Quiz> list, int id) async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref("Quiz");
+    var x = await ref.child(id.toString()).once();
+    if (x.snapshot.value == null) return;
+    try {
+      List<dynamic> values = x.snapshot.value as List<dynamic>;
+      values.forEach((values) {
+        if (values != null) list.add(Quiz.fromJson(values));
+      });
+    } catch (e) {
+      try {
+        var values = x.snapshot.value as Map<String, dynamic>;
+        values.forEach((key, value) {
+          list.add(Quiz.fromJson(value));
+        });
+      } catch (d) {}
+    }
+  }
+
+  Future create(Quiz data) async {
+    try {
+      DatabaseReference ref = FirebaseDatabase.instance.ref("Quiz");
+      await ref
+          .child(data.lectureNoteId.toString())
+          .limitToLast(1)
+          .once()
+          .then((value) async {
+        int count = 1;
+        if (value.snapshot.value == null) {
+          data.quizId = 1;
+          await ref
+              .child(data.lectureNoteId.toString())
+              .child(data.quizId.toString())
+              .set(data.toJson());
+        } else {
+          try {
+            var val = value.snapshot.value as Map<dynamic, dynamic>;
+
+            val.forEach((key, value) {
+              if (key != null) {
+                try {
+                  var x = key as String;
+                  count = int.parse(key);
+                } catch (e) {}
+              }
+            });
+          } catch (u) {}
+          data.quizId = 1 + count;
+          await ref
+              .child(data.lectureNoteId.toString())
+              .child(data.quizId.toString())
+              .set(data.toJson());
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 }

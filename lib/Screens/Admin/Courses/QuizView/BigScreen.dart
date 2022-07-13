@@ -56,11 +56,11 @@ class BigScreen extends StatelessWidget {
             Container(
               width: width * 0.7,
               height: height * 0.8,
-              child: ViewQuestions(
+              child: questionMap.isNotEmpty?ViewQuestions(
                 controller2: controller2,
                 questionMap: questionMap,
                 streamController: streamController,
-              ),
+              ):Container()
             ),
           ],
         ),

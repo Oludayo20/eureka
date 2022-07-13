@@ -28,6 +28,7 @@ class _QuestionViewState extends State<QuestionView> {
 
     return Container(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
             height: width < 600? height * 0.03:width * 0.03,
@@ -47,15 +48,15 @@ class _QuestionViewState extends State<QuestionView> {
               ],
             ),
           ),
-          question(widget.quiz.question!),
+          question(widget.quiz.question!, width),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                 child: Container(
                   child: Text(
-                    "Select 1:",
-                    style: TextStyle(fontSize: 17),
+                    "Select one:",
+                    style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
                   ),
                 ),
                 padding: EdgeInsets.only(
@@ -99,8 +100,9 @@ class _QuestionViewState extends State<QuestionView> {
       ],
     );
   }
-  Widget question(String question) {
+  Widget question(String question, double width) {
     return Container(
+      width:width < 600? width * 0.9: width * 0.7,
       child: Card(
           child: Container(
         padding: EdgeInsets.all(10),

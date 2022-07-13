@@ -33,7 +33,21 @@ class AuthenticationHelper {
       return e.message;
     }
   }
-
+  bool isAdmin() {
+    try {
+      var curr = getUser();
+      if(curr== null)
+        return false;
+      if(curr.isAnonymous!)
+        return false;
+      if(curr.email=="admin@gmail.com")
+        return true;
+      return false;
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      return false;
+    }
+  }
   //SIGN IN METHOD
   Future signIn({required String email, required String password}) async {
     try {

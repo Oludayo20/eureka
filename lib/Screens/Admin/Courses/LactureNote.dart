@@ -10,6 +10,7 @@ import 'package:school_management/Widgets/AppBar.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../AdminMainDrawer.dart';
+import 'QuizView/Quiz.dart';
 
 class LectureNoteView extends StatefulWidget {
   const LectureNoteView({Key? key, required this.courseId, required this.title})
@@ -451,7 +452,18 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                   icon: Icon(
                     Icons.preview,
                   )),
-              TextButton(onPressed: () {}, child: Text("Quiz"))
+              TextButton(onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => QuizView(
+                      lectureNoteId: list[i].lectureNoteId!,
+                      title: " ",
+                    ),
+                  ),
+                );
+              }, child: Text("Quiz"))
             ],
           )
         ],

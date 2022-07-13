@@ -26,6 +26,18 @@ class SmallScreen extends StatelessWidget {
     double textButtonHeight = height * 0.05;
     ScrollController controller = ScrollController();
     ScrollController controller2 = ScrollController();
+    Widget buttonCol(){
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: buttonColumn(
+            perColumn: 2,
+            perRow: 7,
+            textButtonFontSize: textButtonFontSize,
+            textButtonHeight: textButtonHeight,
+            textButtonWidth: textButtonWidth),
+      );
+    }
+    var butC = buttonCol();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -34,43 +46,20 @@ class SmallScreen extends StatelessWidget {
           width: width * 0.9,
           height: height * 0.7,
 
-          child: ViewQuestions(
+          child: questionMap.isNotEmpty?ViewQuestions(
             controller2: controller2,
             questionMap: questionMap,
             streamController: streamController,
-          ),
+          ):Container()
         ),
         Container(
           width: width * 0.7,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Bouncing(
-                child: Container(
-                    width: height * 0.04,
-                    height: height * 0.04,
-                    child: Center(
-                      child: Icon(
-                        Icons.skip_previous,
-                        color: Colors.black,
-                        size: height * 0.04,
-                      ),
-                    )),
-                onPress: () => quizMethods.previousQuestion(),
-              ),
-              Bouncing(
-                child: Container(
-                    width: height * 0.04,
-                    height: height * 0.04,
-                    child: Center(
-                      child: Icon(
-                        Icons.skip_next,
-                        color: Colors.black,
-                        size: height * 0.04,
-                      ),
-                    )),
-                onPress: () => quizMethods.nextQuestion(),
-              ),
+              TextButton(onPressed: ()=>quizMethods.previousQuestion(), child: Text("Previous")),
+              TextButton(onPressed: ()=>quizMethods.nextQuestion(), child: Text("Next")),
+
             ],
           ),
         ),
@@ -85,15 +74,7 @@ class SmallScreen extends StatelessWidget {
             child: ListView(
               controller: controller,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: buttonColumn(
-                      perColumn: 2,
-                      perRow: 7,
-                      textButtonFontSize: textButtonFontSize,
-                      textButtonHeight: textButtonHeight,
-                      textButtonWidth: textButtonWidth),
-                )
+                butC
               ],
             ),
           ),

@@ -44,7 +44,8 @@ class MyApp extends StatelessWidget {
       /*home: Scaffold(
           body: SfPdfViewer.network(
               'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')),*/
-      home: QuizView(lectureNoteId: 1, title: "Memory",),
+      //home: QuizView(lectureNoteId: 1, title: "Memory",),
+      home: HomePage(),
     );
   }
 }
