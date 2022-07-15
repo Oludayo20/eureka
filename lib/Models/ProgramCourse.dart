@@ -1,7 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-
-import 'Course.dart';
-
 class ProgramCourse {
   int? courseProgramId;
   int? programId;
@@ -66,7 +63,6 @@ class ProgramCourse {
             val.forEach((key, value) {
               if (key != null) {
                 try {
-                  var x = key as String;
                   count = int.parse(key);
                 } catch (e) {}
               }

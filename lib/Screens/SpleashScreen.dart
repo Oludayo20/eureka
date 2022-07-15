@@ -9,8 +9,8 @@ import 'package:school_management/Screens/Admin/Faculty.dart';
 import 'package:school_management/Screens/Home_Page.dart';
 import 'package:school_management/Screens/LoginPage.dart';
 
-import 'Admin/Courses/Course.dart';
 import 'Admin/HomePage/HomePage.dart';
+import 'Courses/Course.dart';
 import 'RequestLogin.dart';
 
 class SpleashScreen extends StatefulWidget {

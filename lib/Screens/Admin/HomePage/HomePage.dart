@@ -1,18 +1,14 @@
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:school_management/Models/User.dart';
-import 'package:school_management/Screens/Attendance/Attendance.dart';
-import 'package:school_management/Screens/Exam/Exam_Rseult.dart';
-import 'package:school_management/Screens/Leave_Apply/Leave_apply.dart';
 import 'package:school_management/Widgets/AppBar.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 import 'package:school_management/Widgets/DashboardCards.dart';
-import 'package:school_management/Widgets/MainDrawer.dart';
 import 'package:school_management/Widgets/UserDetailCard.dart';
 
+import '../../../Util/ImagePath.dart';
+import '../../Courses/Course.dart';
 import '../AdminMainDrawer.dart';
-import '../Courses/Course.dart';
 import '../Faculty.dart';
 
 class AdminHome extends StatefulWidget {
@@ -80,7 +76,14 @@ class _HomeState extends State<AdminHome> with SingleTickerProviderStateMixin {
             },
             title: "Dashboard",
           ),
-          body: ListView(
+          body: Container(
+            decoration: BoxDecoration(
+                color: Colors.black,
+                image: DecorationImage(
+                    image: NetworkImage(ImagePath.home),
+                    //image: AssetImage(ImagePath().homePageImageAssert),
+                    fit: width < 650 ? BoxFit.cover : BoxFit.fill)),
+          child: ListView(
             children: [
               UserDetailCard(
                 user: UserApp(
@@ -142,6 +145,8 @@ class _HomeState extends State<AdminHome> with SingleTickerProviderStateMixin {
 
             ],
           ),
+          ),
+
         );
       },
     );

@@ -1,10 +1,10 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/Course.dart';
+import 'package:school_management/Screens/Admin/AdminMainDrawer.dart';
 
 import '../../../Models/ProgramCourse.dart';
 import '../../../Widgets/AppBar.dart';
-import '../AdminMainDrawer.dart';
 
 class ProgramCourseView extends StatefulWidget {
   const ProgramCourseView(
@@ -20,7 +20,7 @@ class _ProgramCourseViewState extends State<ProgramCourseView> {
   List<Course> list = [];
   List<Course> courseList = [];
   List<String> courseCodeList = [];
-  late final Map<int, int> programIds={};
+  late final Map<int, int> programIds = {};
 
   Map<String, int> courseCodeMap = {};
   Course? model;
@@ -33,32 +33,39 @@ class _ProgramCourseViewState extends State<ProgramCourseView> {
     courseList = [];
     model = Course();
     programCourseModel = ProgramCourse();
-    model!.read(courseList).whenComplete(() {
-      courseList.forEach((element) {
-        courseCodeList.add(element.courseCode!);
-        courseCodeMap[element.courseCode!] = element.courseId!;
-      });
-       readView();
-    });
+    getProgramCourseList();
   }
 
-  Future readView() async{
+  Future getProgramCourseList() async {
     List<ProgramCourse> proList = [];
     programIds.clear();
+    List<Course> allCourse = [];
+    courseList.clear();
     int index = 0;
-    await programCourseModel!.read(proList, widget.programId).whenComplete(() {
-      proList.forEach((element) async {
-
-        await Course().readById(list, element.courseId!).whenComplete((){
-          programIds.addAll({index:element.courseProgramId!});
-          index++;
-          if(index==list.length)
-            setState(() {});
+    var set = Set<int>();
+    await programCourseModel!
+        .read(proList, widget.programId)
+        .whenComplete(() async {
+      proList.forEach((val) {
+        programIds.addAll({index: val.courseProgramId!});
+        index++;
+        set.add(val.courseId!);
+      });
+      await Course().read(allCourse).whenComplete(() {
+        allCourse.forEach((course) {
+          if(courseCodeList.isEmpty){
+            courseCodeList.add(course.courseCode!);
+            courseCodeMap[course.courseCode!] = course.courseId!;
+          }
+          if (set.contains(course.courseId)) {
+            list.add(course);
+          }
         });
-
+        setState(() {});
       });
     });
   }
+
   Future<void> _showMyDialogDelete(BuildContext context, int id) async {
     return showDialog<void>(
       context: context,
@@ -88,7 +95,7 @@ class _ProgramCourseViewState extends State<ProgramCourseView> {
                     .delete(id, widget.programId)
                     .whenComplete(() {
                   list = [];
-                  readView().whenComplete(() {
+                  getProgramCourseList().whenComplete(() {
                     Navigator.of(context).pop();
                     setState(() {});
                   });
@@ -102,8 +109,6 @@ class _ProgramCourseViewState extends State<ProgramCourseView> {
   }
 
   Future<void> _showMyDialogCreate(BuildContext context) async {
-    final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
     String courseCodyKey = "";
     return showDialog<void>(
       context: context,
@@ -124,8 +129,6 @@ class _ProgramCourseViewState extends State<ProgramCourseView> {
               ),
               DropdownSearch<String>(
                 validator: (v) => v == null ? "required field" : null,
-                //hint: "Please Select Leave type",
-
                 items: courseCodeList,
                 onChanged: (value) {
                   courseCodyKey = value!;
@@ -150,7 +153,7 @@ class _ProgramCourseViewState extends State<ProgramCourseView> {
                         programId: widget.programId))
                     .whenComplete(() {
                   list = [];
-                  readView().whenComplete(() {
+                  getProgramCourseList().whenComplete(() {
                     Navigator.of(context).pop();
                     setState(() {});
                   });
@@ -205,7 +208,8 @@ class MyStatelessWidget extends StatelessWidget {
       {Key? key,
       required this.list,
       required this.showCreate,
-      required this.showDelete, required this.programIds})
+      required this.showDelete,
+      required this.programIds})
       : super(key: key);
   final Function showCreate;
   final Function showDelete;
@@ -295,15 +299,8 @@ class MyStatelessWidget extends StatelessWidget {
       ],
     ));
     try {
-      /*list.add(Course(courseTitle: "Introduction to Computer",
-      courseCode: "CSC 120",
-      level: 2, semester: 1, courseId: 1));*/
-      int index = 0;
       String level = "";
-      print(programIds.length);
-      print(list.length);
-
-      for(var i = 0; i<list.length; i++){
+      for (var i = 0; i < list.length; i++) {
         Course element = list[i];
         level = "";
         if (element.level == 1) {
@@ -391,8 +388,6 @@ class MyStatelessWidget extends StatelessWidget {
             ),
           ],
         ));
-        print("index: $index");
-        index++;
       }
     } catch (ex) {}
 

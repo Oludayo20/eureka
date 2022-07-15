@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:school_management/Models/Course.dart';
 
 import '../../../Widgets/AppBar.dart';
-import '../AdminMainDrawer.dart';
+import '../Admin/AdminMainDrawer.dart';
 import 'LactureNote.dart';
 
 class CourseView extends StatefulWidget {

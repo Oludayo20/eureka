@@ -72,7 +72,6 @@ class Programs {
             val.forEach((key, value) {
               if (key != null) {
                 try {
-                  var x = key as String;
                   count = int.parse(key);
                 } catch (e) {}
               }

@@ -9,7 +9,7 @@ import '../../../../Models/Quiz.dart';
 import '../../../../Widgets/AppBar.dart';
 import '../../../../Widgets/BouncingButton.dart';
 import '../../../../services/authentication_helper.dart';
-import '../../AdminMainDrawer.dart';
+import '../../Admin/AdminMainDrawer.dart';
 import 'BigScreen.dart';
 import 'Buttons.dart';
 import 'QuestionView.dart';

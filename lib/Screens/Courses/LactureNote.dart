@@ -9,7 +9,7 @@ import 'package:school_management/Models/LectureNote.dart';
 import 'package:school_management/Widgets/AppBar.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-import '../AdminMainDrawer.dart';
+import '../Admin/AdminMainDrawer.dart';
 import 'QuizView/Quiz.dart';
 
 class LectureNoteView extends StatefulWidget {

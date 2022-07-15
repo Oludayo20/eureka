@@ -5,14 +5,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:school_management/Screens/Leave_Apply/Leave_apply.dart';
-import 'package:school_management/Screens/LoginPage.dart';
-import 'package:school_management/Screens/SpleashScreen.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'Screens/Admin/Courses/Course.dart';
-import 'Screens/Admin/Courses/QuizView/Quiz.dart';
+import 'package:school_management/Screens/Admin/Faculty.dart';
+import 'package:school_management/Screens/Admin/HomePage/HomePage.dart';
+
 import 'Screens/Home_Page.dart';
+import 'Util/Notify.dart';
 import 'firebase_options.dart';
 
 void main() {
@@ -41,11 +38,23 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      /*home: Scaffold(
-          body: SfPdfViewer.network(
-              'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')),*/
-      //home: QuizView(lectureNoteId: 1, title: "Memory",),
-      home: HomePage(),
+     home: AdminHome()
     );
   }
 }
+class Test extends StatelessWidget {
+  const Test({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(child: TextButton(
+        onPressed: (){
+          Notify.success(context, "Success");
+        },
+        child: Text("Text"),
+      ),),
+    );
+  }
+}
+

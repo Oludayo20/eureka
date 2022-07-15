@@ -4,9 +4,8 @@ import 'package:school_management/Models/Department.dart';
 import 'package:school_management/Models/Programs.dart';
 import 'package:school_management/Widgets/AppBar.dart';
 
+import '../../Courses/ProgramCourse.dart';
 import '../AdminMainDrawer.dart';
-import '../Courses/Course.dart';
-import '../Courses/ProgramCourse.dart';
 
 class ProgramView extends StatefulWidget {
   const ProgramView({Key? key, required this.deptId, required this.title}) : super(key: key);

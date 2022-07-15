@@ -1,10 +1,11 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:school_management/Models/Department.dart';
 import 'package:school_management/Widgets/AppBar.dart';
 import '../../Models/Faculty.dart';
-import '../../Widgets/DashboardCards.dart';
+import '../../Util/ImagePath.dart';
+import '../../Util/Notify.dart';
 import 'AdminMainDrawer.dart';
+import 'Faculty/Methods.dart';
+import 'Faculty/Widgets.dart';
 import 'HomePage/DepartmentView.dart';
 
 class Faculty extends StatefulWidget {
@@ -15,255 +16,121 @@ class Faculty extends StatefulWidget {
 }
 
 class _FacultyState extends State<Faculty> {
-  bool showAddScreen = false;
-  List<FacultyModel> facultyList = [];
-  FacultyModel? facultyModel;
+  FacultyMethods? _facultyMethods;
+  void notify(int num) {
+    switch (num) {
+      case 1:
+        Notify.error(context, "Faculty already Exist");
+        break;
+      case 2:
+        Notify.success(context, "Success");
+        break;
+      case 3:
+        Notify.loading(context, "");
+        break;
+    }
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    showAddScreen = false;
-    facultyList = [];
-    facultyModel = FacultyModel();
-    facultyModel!.read(facultyList).whenComplete(() {
-      setState(() {});
+    _facultyMethods = FacultyMethods();
+    _facultyMethods!.facultyStreamController.stream.listen((event) {
+      if (event != 0)
+        notify(event);
+      else
+        setState(() {});
     });
+    _facultyMethods!.initState().whenComplete(() => setState(() {}));
   }
 
-  Future<void> _showMyDialogDelete(BuildContext context, int id) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Delete Faculty'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const <Widget>[
-                Text('Are you sure you want to delete '),
-              ],
-            ),
-          ),
-          actionsAlignment: MainAxisAlignment.spaceBetween,
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Approve'),
-              onPressed: () {
-                facultyModel!.delete(id).whenComplete(() {
-                  facultyList = [];
-                  facultyModel!.read(facultyList).whenComplete(() {
-                    Navigator.of(context).pop();
-                    setState(() {});
-                  });
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showMyDialogEdit(
-      BuildContext context, FacultyModel facultyModel) async {
-    final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
-    TextEditingController controller = TextEditingController();
-    controller.text = facultyModel.facultyName!;
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Edit Faculty'),
-          content: SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(left: 20),
-              // height: height * 0.06,
-              height: height * 0.07,
-              width: width * 0.75,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: TextFormField(
-                controller: controller,
-                //autofocus: true,
-                minLines: 1,
-                maxLines: 10,
-                keyboardType: TextInputType.multiline,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(7),
-                ),
-              ),
-            ),
-          ),
-          actionsAlignment: MainAxisAlignment.spaceBetween,
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Approve'),
-              onPressed: () {
-                facultyModel.facultyName = controller.text;
-                facultyModel.update(facultyModel).whenComplete(() {
-                  facultyList = [];
-                  facultyModel.read(facultyList).whenComplete(() {
-                    Navigator.of(context).pop();
-                    setState(() {});
-                  });
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showMyDialogCreate(BuildContext context) async {
-    final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
-    TextEditingController controller = TextEditingController();
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Create Faculty'),
-          content: SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(left: 20),
-              // height: height * 0.06,
-              height: height * 0.07,
-              width: width * 0.75,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: TextFormField(
-                controller: controller,
-                //autofocus: true,
-                minLines: 1,
-                maxLines: 10,
-                keyboardType: TextInputType.multiline,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(7),
-                ),
-              ),
-            ),
-          ),
-          actionsAlignment: MainAxisAlignment.spaceBetween,
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Approve'),
-              onPressed: () {
-                facultyModel!
-                    .create(FacultyModel(facultyName: controller.text))
-                    .whenComplete(() {
-                  facultyList = [];
-                  facultyModel!.read(facultyList).whenComplete(() {
-                    Navigator.of(context).pop();
-                    setState(() {});
-                  });
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  List<Widget> rows1(List<FacultyModel> facultyList, BuildContext context) {
+  List<Widget> facultyByRow(
+      List<FacultyModel> facultyList, BuildContext context) {
     List<Widget> items = [];
+
     items.add(Card(
-      color: Colors.white10,
+      color: Colors.white12,
       child: ListTile(
         trailing: Text(
           "Action",
           style: TextStyle(
+            color: Colors.black,
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 20,
           ),
         ),
         title: Text(
           "Faculty Name",
           style: TextStyle(
+            color: Colors.black,
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 20,
           ),
         ),
       ),
     ));
     for (var i = 0; i < facultyList.length; i += 1) {
       items.add(Card(
+          color: Colors.transparent,
           child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 20),
-            child: Text(
-              facultyList[i].facultyName!,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
-          ),
-          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  color: Colors.blue,
-                  onPressed: () {
-                    _showMyDialogEdit(context, facultyList[i]);
-                  },
-                  icon: Icon(
-                    Icons.edit,
-                  )),
-              IconButton(
-                  color: Colors.red,
-                  onPressed: () {
-                    _showMyDialogDelete(context, facultyList[i].facultyId!);
-                  },
-                  icon: Icon(
-                    Icons.delete,
-                  )),
-
-              TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => DepartmentView(
-                          facultyId: facultyList[i].facultyId!,
-                          title: facultyList[i].facultyName!,
+              Container(
+                margin: EdgeInsets.only(left: 20),
+                child: Text(
+                  facultyList[i].facultyName!,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                      color: Colors.blue,
+                      onPressed: () {
+                        showMyDialogEdit(
+                            context, facultyList[i], _facultyMethods!);
+                      },
+                      icon: Icon(
+                        Icons.edit,
+                      )),
+                  IconButton(
+                      color: Colors.red,
+                      onPressed: () {
+                        showMyDialogDelete(context, facultyList[i].facultyId!,
+                            _facultyMethods!);
+                      },
+                      icon: Icon(
+                        Icons.delete,
+                      )),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => DepartmentView(
+                            facultyId: facultyList[i].facultyId!,
+                            title: facultyList[i].facultyName!,
+                          ),
                         ),
+                      );
+                    },
+                    child: Text(
+                      "Departments",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                        fontSize: 15,
                       ),
-                    );
-                  },
-                  child: Text("Departments"))
+                    ),
+                  )
+                ],
+              )
             ],
-          )
-        ],
-      )));
+          )));
     }
 
     return items;
@@ -271,33 +138,43 @@ class _FacultyState extends State<Faculty> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    bool isAndroid = false;
+    if (width < 600) isAndroid = true;
     final GlobalKey<ScaffoldState> _scaffoldKey =
         new GlobalKey<ScaffoldState>();
-    final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
-
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: Drawer(
-        elevation: 0,
-        child: AdminMainDrawer(),
-      ),
-      appBar: CommonAppBar(
-        menuenabled: true,
-        notificationenabled: false,
-        ontap: () {
-          _scaffoldKey.currentState!.openDrawer();
-        },
-        title: "Faculty",
-      ),
-      body: ListView(
-        children: rows1(facultyList, context),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showMyDialogCreate(context);
-        },
-        child: Icon(Icons.add),
+    return Container(
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: Drawer(
+          elevation: 0,
+          child: AdminMainDrawer(),
+        ),
+        appBar: CommonAppBar(
+          menuenabled: true,
+          notificationenabled: false,
+          ontap: () {
+            _scaffoldKey.currentState!.openDrawer();
+          },
+          title: "Faculty",
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+              color: Colors.black,
+              image: DecorationImage(
+                  image: NetworkImage(ImagePath.home),
+                  //image: AssetImage(ImagePath().homePageImageAssert),
+                  fit: isAndroid ? BoxFit.cover : BoxFit.fill)),
+          child: ListView(
+            children: facultyByRow(_facultyMethods!.facultyList, context),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showMyDialogCreate(context, _facultyMethods!);
+          },
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }

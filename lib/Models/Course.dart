@@ -94,7 +94,6 @@ Future readById(List<Course> list, int id) async {
             val.forEach((key, value) {
               if (key != null) {
                 try {
-                  var x = key as String;
                   count = int.parse(key);
                 } catch (e) {}
               }

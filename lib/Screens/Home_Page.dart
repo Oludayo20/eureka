@@ -1,113 +1,74 @@
-import 'package:flutter/material.dart';
-import 'package:school_management/Screens/RequestLogin.dart';
-import 'package:school_management/Widgets/Home_C_AppBar.dart';
-import '../Util/ImagePath.dart';
-import 'Home_C/WebMenu.dart';
+import 'dart:async';
 
-class HomePage extends StatelessWidget {
+import 'package:flutter/material.dart';
+
+import '../Util/ImagePath.dart';
+import 'Template/HomeTop.dart';
+import 'Template/OtherMenu.dart';
+
+StreamController<int> streamControllerHome = StreamController();
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int selected = 0;
+  int other = 0;
+  String otherTitle = "";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    streamControllerHome = StreamController();
+    streamControllerHome.stream.listen((event) {
+      if (event == 0) {
+        selected = 0;
+      } else if (event < 3) {
+        if (event == 1) {
+          other = 0;
+          otherTitle = "Team";
+        } else if (event == 2) {
+          otherTitle = "About Us";
+          other = 1;
+        }
+        selected = 1;
+      }
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    bool isAndroid = false;
-    if (width < 650) isAndroid = true;
-    return Container(
-      width: width,
-      height: height,
-      child: Scaffold(
-          drawer: isAndroid
-              ? Drawer(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  child: WebMenu(
-                    isAndroid: true,
-                  ),
-                )
-              : null,
-          appBar: homePageAppBar(context, isAndroid),
-          extendBodyBehindAppBar: true,
-          body: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(ImagePath().homePageImage),
-                    fit: BoxFit.fill)),
-            child: Container(
-              width: width,
-              height: height,
-              child: Column(
-                children: [
-                  Spacer(),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Row(
-                    children: [
-                      Padding(padding: EdgeInsets.all(20)),
-                      Text(
-                        "Welcome to EUREKA",
-                        style: TextStyle(
-                          fontSize: 32,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(padding: EdgeInsets.all(20)),
-                      Text(
-                        isAndroid
-                            ? "Far far away, behind the word mountains\nFar from the countries"
-                            : "Far far away, behind the word mountains far from the countries",
-                        style: TextStyle(color: Colors.white, height: 1.0),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(padding: EdgeInsets.all(20)),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 20 * 1.2,
-                            // vertical: 20,
-                          ),
-                          backgroundColor: Colors.teal[200],
-                        ),
-                        child: Text("View Courses"),
-                      ),
-                      // Icon(
-                      //   Icons.arrow_forward,
-                      //   color: Colors.white,
-                      // ),
-                      Padding(padding: EdgeInsets.all(20)),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    RequestLogin(),
-                              ));
-                        },
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 20 * 1.2,
-                            // vertical: 20,
-                          ),
-                          backgroundColor: Colors.teal[200],
-                        ),
-                        child: Text("Register"),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                ],
-              ),
-            ),
-          )),
-    );
+    List<Widget> currWidget = [
+      HomeTop(),
+      OtherMenu(
+        title: otherTitle,
+        showing: other,
+      )
+    ];
+    return Scaffold(
+        bottomSheet: Container(
+          width: width,
+          height: height * 0.12,
+          color: Colors.black,
+          child: Image(
+              image: NetworkImage(ImagePath.awRap),
+              fit: BoxFit.cover),
+        ),
+          body:Container(
+            width: width,
+            height:width > 600? height * 1.3:height * 1.5,
+            child:
+            currWidget[selected],
+
+        ));
+
+
   }
 }
