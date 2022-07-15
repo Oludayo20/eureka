@@ -46,13 +46,17 @@ Future<void> showMyDialogCreate(
           ),
           TextButton(
             child: const Text('Approve'),
-            onPressed: () => facultyMethods
-                .facultyCreateOnApprove(controller.text, context)
-                .whenComplete(() {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-              facultyMethods.setState();
-            }),
+            onPressed: () {
+              if (controller.text.isNotEmpty) {
+                facultyMethods
+                    .facultyCreateOnApprove(controller.text, context)
+                    .whenComplete(() {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  facultyMethods.setState();
+                });
+              }
+            },
           ),
         ],
       );
@@ -143,12 +147,16 @@ Future<void> showMyDialogEdit(BuildContext context, FacultyModel facultyModel,
           TextButton(
             child: const Text('Approve'),
             onPressed: () {
-              facultyMethods
-                  .facultyEditOnApprove(controller.text, context)
-                  .whenComplete(() {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              });
+              if (controller.text.isNotEmpty){
+                facultyModel.facultyName = controller.text;
+                facultyMethods
+                    .facultyEditOnApprove(facultyModel, context)
+                    .whenComplete(() {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                });
+              }
+
             },
           ),
         ],

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:get/get.dart';
 import 'package:school_management/Screens/Home_Page.dart';
 
 import '../../../Models/Faculty.dart';
@@ -43,6 +44,7 @@ class FacultyMethods {
 
   Future facultyCreateOnApprove(
       String facultyName, BuildContext context) async {
+    if (facultyNames.isEmpty) return;
     if (_checkIfFacultyExists(facultyName)) {
       facultyStreamController.add(1);
       return;
@@ -58,18 +60,18 @@ class FacultyMethods {
     });
   }
 
-  Future facultyEditOnApprove(String facultyName, BuildContext context) async {
-    if (_checkIfFacultyExists(facultyName)) {
+  Future facultyEditOnApprove(
+      FacultyModel facultyModel, BuildContext context) async {
+    if (facultyModel.facultyName!.isEmpty) return;
+    if (_checkIfFacultyExists(facultyModel.facultyName!)) {
       facultyStreamController.add(1);
       return;
     }
     facultyStreamController.add(3);
 
-    await facultyModel!
-        .update(FacultyModel(facultyName: facultyName))
-        .whenComplete(() async {
+    await facultyModel.update(facultyModel).whenComplete(() async {
       facultyList = [];
-      await facultyModel!.read(facultyList).whenComplete(() {
+      await facultyModel.read(facultyList).whenComplete(() {
         facultyStreamController.add(2);
         facultyStreamController.add(0);
       });
