@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/LectureNote.dart';
-import 'package:school_management/Screens/Admin/Faculty.dart';
+import 'package:school_management/Screens/Admin/Faculty/Faculty.dart';
 import 'package:school_management/Screens/Home_Page.dart';
 import 'package:school_management/Screens/LoginPage.dart';
 

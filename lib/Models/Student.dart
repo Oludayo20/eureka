@@ -1,41 +1,33 @@
 class Student {
   int? studentId;
-  String? phone;
-  String? profilePicture;
   int? programId;
-  String? email;
+  String? fullName;
   bool? isActivated;
   int? level;
   int? semester;
   Student(
       {this.studentId,
-      this.phone,
-      this.profilePicture,
       this.programId,
-      this.email,
       this.isActivated,
       this.level,
-      this.semester});
+      this.semester,
+      this.fullName});
 
   Student.fromJson(Map<String, dynamic> json) {
     studentId = json['studentId'];
-    phone = json['phone'];
-    profilePicture = json['profilePicture'];
     programId = json['programId'];
-    email = json['email'];
     isActivated = json['isActivated'];
     level = json['level'];
     semester = json['semester'];
+    fullName = json['fullName'];
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'studentId': studentId,
-        'phone': phone,
-        'profilePicture': profilePicture,
         'programId': programId,
-        'email': email,
         'isActivated': isActivated,
         'level': level,
         'semester': semester,
+        'fullName': fullName,
       };
 }

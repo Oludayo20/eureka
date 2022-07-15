@@ -1,14 +1,12 @@
 import 'dart:typed_data';
 
-import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:school_management/Models/Department.dart';
 import 'package:school_management/Models/LectureNote.dart';
 import 'package:school_management/Widgets/AppBar.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+import '../../services/CloudinaryService.dart';
 import '../Admin/AdminMainDrawer.dart';
 import 'QuizView/Quiz.dart';
 
@@ -35,30 +33,6 @@ class _LectureNoteViewState extends State<LectureNoteView> {
     model!.read(list, widget.courseId).whenComplete(() {
       setState(() {});
     });
-  }
-
-  Future getPdf() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      return result;
-    } else {
-      // User canceled the picker
-    }
-  }
-
-  Future uploadToCloudinary(ByteData byteData, String pdfName) async {
-    final cloudinary = CloudinaryPublic('richkazz', 'eene8be4', cache: false);
-
-    try {
-      CloudinaryResponse response = await cloudinary.uploadFile(
-        CloudinaryFile.fromByteData(byteData,
-            identifier: pdfName, resourceType: CloudinaryResourceType.Auto),
-      );
-      return response.secureUrl;
-    } on CloudinaryException catch (e) {
-      print(e.message);
-      print(e.request);
-    }
   }
 
   Future<void> _showMyDialogDelete(BuildContext context, int id) async {
@@ -209,7 +183,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                     ),
                     IconButton(
                         onPressed: () async {
-                          var result = await getPdf();
+                          var result = await CloudinaryService().getPdf();
 
                           if (result != null) {
                             pickerResult = result as FilePickerResult;
@@ -234,7 +208,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
               child: const Text('Approve'),
               onPressed: () async {
                 model.title = controller.text;
-                if(model.note==noteController.text){
+                if (model.note == noteController.text) {
                   await model.update(model).whenComplete(() {
                     list = [];
                     model.read(list, widget.courseId).whenComplete(() {
@@ -242,10 +216,13 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                       setState(() {});
                     });
                   });
-                }else{
-                  await uploadToCloudinary(
-                      ByteData.sublistView(pickerResult!.files.single.bytes!),
-                      pickerResult!.files.single.name).then((value) async {
+                } else {
+                  await CloudinaryService()
+                      .uploadToCloudinary(
+                          ByteData.sublistView(
+                              pickerResult!.files.single.bytes!),
+                          pickerResult!.files.single.name)
+                      .then((value) async {
                     model.note = value as String;
                     await model.update(model).whenComplete(() {
                       list = [];
@@ -256,8 +233,6 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                     });
                   });
                 }
-
-
               },
             ),
           ],
@@ -342,7 +317,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                   ),
                   IconButton(
                       onPressed: () async {
-                        var result = await getPdf();
+                        var result = await CloudinaryService().getPdf();
 
                         if (result != null) {
                           pickerResult = result as FilePickerResult;
@@ -365,10 +340,11 @@ class _LectureNoteViewState extends State<LectureNoteView> {
             TextButton(
               child: const Text('Approve'),
               onPressed: () async {
-                await uploadToCloudinary(
+                await CloudinaryService()
+                    .uploadToCloudinary(
                         ByteData.sublistView(pickerResult!.files.single.bytes!),
                         pickerResult!.files.single.name)
-                    .then((value){
+                    .then((value) {
                   model!
                       .create(LectureNote(
                           title: controller.text,
@@ -452,18 +428,20 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                   icon: Icon(
                     Icons.preview,
                   )),
-              TextButton(onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => QuizView(
-                      lectureNoteId: list[i].lectureNoteId!,
-                      title: " ",
-                    ),
-                  ),
-                );
-              }, child: Text("Quiz"))
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => QuizView(
+                          lectureNoteId: list[i].lectureNoteId!,
+                          title: " ",
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text("Quiz"))
             ],
           )
         ],

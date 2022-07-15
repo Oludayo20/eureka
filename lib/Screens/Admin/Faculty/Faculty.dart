@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:school_management/Widgets/AppBar.dart';
-import '../../Models/Faculty.dart';
-import '../../Util/ImagePath.dart';
-import '../../Util/Notify.dart';
-import 'AdminMainDrawer.dart';
-import 'Faculty/Methods.dart';
-import 'Faculty/Widgets.dart';
-import 'HomePage/DepartmentView.dart';
+import '../../../Models/Faculty.dart';
+import '../../../Util/ImagePath.dart';
+import '../../../Util/Notify.dart';
+import '../AdminMainDrawer.dart';
+import 'Methods.dart';
+import 'Widgets.dart';
+import '../HomePage/DepartmentView.dart';
 
 class Faculty extends StatefulWidget {
   const Faculty({Key? key}) : super(key: key);

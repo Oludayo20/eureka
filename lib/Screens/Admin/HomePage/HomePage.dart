@@ -9,7 +9,7 @@ import 'package:school_management/Widgets/UserDetailCard.dart';
 import '../../../Util/ImagePath.dart';
 import '../../Courses/Course.dart';
 import '../AdminMainDrawer.dart';
-import '../Faculty.dart';
+import '../Faculty/Faculty.dart';
 
 class AdminHome extends StatefulWidget {
   @override

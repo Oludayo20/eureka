@@ -18,7 +18,6 @@ class FacultyModel {
     DatabaseReference ref = FirebaseDatabase.instance.ref("Faculty");
     var x =await  ref.once();
     try{
-
       List<dynamic> values = x.snapshot.value as List<dynamic>;
       values.forEach((values) {
         if (values != null) facultyList.add(FacultyModel.fromJson(values));
@@ -29,7 +28,6 @@ class FacultyModel {
         values.forEach((key, value) {
           facultyList.add(FacultyModel.fromJson(value));
         });
-
       }catch(d){
 
       }
@@ -41,6 +39,7 @@ class FacultyModel {
     DatabaseReference ref = FirebaseDatabase.instance.ref("Faculty");
     await ref.child(faculty.facultyId.toString()).set(faculty.toJson());
   }
+
   Future delete(int id) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref("Faculty");
     await ref.child(id.toString()).remove();
@@ -51,8 +50,6 @@ class FacultyModel {
       DatabaseReference ref = FirebaseDatabase.instance.ref("Faculty");
       await ref.limitToLast(1).once().then((value) async {
         int count = 1;
-
-
         if(value.snapshot.value == null){
           faculty.facultyId = 1;
           await ref.child((count + 1).toString()).set(faculty.toJson());

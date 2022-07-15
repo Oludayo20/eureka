@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:school_management/Widgets/DrawerListTile.dart';
 
 import '../Courses/Course.dart';
-import 'Faculty.dart';
+import 'Faculty/Faculty.dart';
 import 'HomePage/HomePage.dart';
 
 class AdminMainDrawer extends StatefulWidget {

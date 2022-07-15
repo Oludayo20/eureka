@@ -5,10 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:school_management/Screens/Admin/Faculty.dart';
 import 'package:school_management/Screens/Admin/HomePage/HomePage.dart';
 
-import 'Screens/Home_Page.dart';
 import 'Util/Notify.dart';
 import 'firebase_options.dart';
 
@@ -21,7 +19,6 @@ void main() {
   init().whenComplete(() {
     runApp(MyApp());
   });
-
 }
 
 class MyApp extends StatelessWidget {
