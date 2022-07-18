@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:school_management/Screens/Admin/HomePage/HomePage.dart';
-
+import 'package:school_management/firebase_options.dart';
 import 'Util/Notify.dart';
-import 'firebase_options.dart';
 
 void main() {
   Future init() async {
