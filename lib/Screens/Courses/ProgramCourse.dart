@@ -51,12 +51,12 @@ class _ProgramCourseViewState extends State<ProgramCourseView> {
         index++;
         set.add(val.courseId!);
       });
+      courseCodeList.clear();
       await Course().read(allCourse).whenComplete(() {
         allCourse.forEach((course) {
-          if(courseCodeList.isEmpty){
-            courseCodeList.add(course.courseCode!);
-            courseCodeMap[course.courseCode!] = course.courseId!;
-          }
+          courseCodeList.add(course.courseCode!);
+          courseCodeMap[course.courseCode!] = course.courseId!;
+
           if (set.contains(course.courseId)) {
             list.add(course);
           }

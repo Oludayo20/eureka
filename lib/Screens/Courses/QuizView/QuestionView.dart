@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../../../Models/Quiz.dart';
+import '../QuizView/CRUD/Edit.dart';
+import '../QuizView/CRUD/Delete.dart';
 
 class QuestionView extends StatefulWidget {
   final int questionNumber;
@@ -13,7 +15,8 @@ class QuestionView extends StatefulWidget {
       {Key? key,
       required this.questionNumber,
       required this.quiz,
-      required this.selectedOption, required this.numberButtonStreamController})
+      required this.selectedOption,
+      required this.numberButtonStreamController})
       : super(key: key);
 
   @override
@@ -21,6 +24,8 @@ class QuestionView extends StatefulWidget {
 }
 
 class _QuestionViewState extends State<QuestionView> {
+  void refresh() => setState(() {});
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -31,20 +36,42 @@ class _QuestionViewState extends State<QuestionView> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            height: width < 600? height * 0.03:width * 0.03,
+            height: width < 600 ? height * 0.03 : width * 0.03,
             margin: EdgeInsets.only(bottom: 5),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                Container(
+                  child: IconButton(
+                      color: Colors.blue,
+                      onPressed: () {
+                        showMyDialogCEdit(context, widget.quiz);
+                      },
+                      icon: Icon(
+                        Icons.edit,
+                      )),
+                ),
+                Container(
+                  child: IconButton(
+                      color: Colors.red,
+                      onPressed: () {
+                        showMyDialogDelete(context, widget.quiz);
+                      },
+                      icon: Icon(
+                        Icons.delete,
+                      )),
+                ),
                 Container(
                   margin: EdgeInsets.only(right: 20),
                   child: Center(
                     child: Text(
                       "${widget.questionNumber}",
-                      style: TextStyle(fontSize:width < 600? height * 0.03:width * 0.03),
+                      style: TextStyle(
+                          fontSize: width < 600 ? height * 0.03 : width * 0.03),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -56,7 +83,7 @@ class _QuestionViewState extends State<QuestionView> {
                 child: Container(
                   child: Text(
                     "Select one:",
-                    style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                 ),
                 padding: EdgeInsets.only(
@@ -79,7 +106,9 @@ class _QuestionViewState extends State<QuestionView> {
       ),
     );
   }
-  Widget clearOption(){
+
+
+  Widget clearOption() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -100,9 +129,10 @@ class _QuestionViewState extends State<QuestionView> {
       ],
     );
   }
+
   Widget question(String question, double width) {
     return Container(
-      width:width < 600? width * 0.9: width * 0.7,
+      width: width < 600 ? width * 0.9 : width * 0.7,
       child: Card(
           child: Container(
         padding: EdgeInsets.all(10),
@@ -141,12 +171,12 @@ class _QuestionViewState extends State<QuestionView> {
   void onClickOption(int opt) {
     widget.selectedOption[widget.questionNumber] = opt;
     widget.numberButtonStreamController.add(widget.questionNumber);
-    setState((){});
+    setState(() {});
   }
+
   void onClickClearOption() {
     widget.selectedOption[widget.questionNumber] = 0;
     widget.numberButtonStreamController.add(widget.questionNumber);
-    setState((){});
+    setState(() {});
   }
-
 }

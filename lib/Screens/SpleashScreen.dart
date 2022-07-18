@@ -11,7 +11,6 @@ import 'package:school_management/Screens/LoginPage.dart';
 
 import 'Admin/HomePage/HomePage.dart';
 import 'Courses/Course.dart';
-import 'RequestLogin.dart';
 
 class SpleashScreen extends StatefulWidget {
   @override

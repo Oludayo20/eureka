@@ -6,7 +6,23 @@ import '../../../../../Models/Quiz.dart';
 import '../Stream.dart';
 import 'General.dart';
 
-Future<void> showMyDialogCreate(BuildContext context, int lectureNoteId) async {
+String answerToString(int ans) {
+  switch (ans) {
+    case 1:
+      return "A";
+    case 2:
+      return "B";
+    case 3:
+      return "C";
+    case 4:
+      return "D";
+    case 5:
+      return "E";
+  }
+  return "";
+}
+
+Future<void> showMyDialogCEdit(BuildContext context, Quiz quiz) async {
   final double width = MediaQuery.of(context).size.width;
   final double height = MediaQuery.of(context).size.height;
   TextEditingController questionController = TextEditingController();
@@ -16,6 +32,13 @@ Future<void> showMyDialogCreate(BuildContext context, int lectureNoteId) async {
   TextEditingController optionDControllerCode = TextEditingController();
   TextEditingController optionEControllerCode = TextEditingController();
   TextEditingController answerControllerCode = TextEditingController();
+  questionController.text = quiz.question!;
+  optionAControllerCode.text = quiz.options!.quizOptionA!;
+  optionBControllerCode.text = quiz.options!.quizOptionB!;
+  optionCControllerCode.text = quiz.options!.quizOptionC!;
+  optionDControllerCode.text = quiz.options!.quizOptionD!;
+  optionEControllerCode.text = quiz.options!.quizOptionE!;
+
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -32,6 +55,7 @@ Future<void> showMyDialogCreate(BuildContext context, int lectureNoteId) async {
             DropdownSearch<String>(
               validator: (v) => v == null ? "required field" : null,
               //hint: "Please Select Leave type",
+              selectedItem: answerToString(quiz.answer!),
               items: ["A", "B", "C", "D", "E"],
               onChanged: (value) {
                 answerControllerCode.text = value!;
@@ -72,10 +96,11 @@ Future<void> showMyDialogCreate(BuildContext context, int lectureNoteId) async {
               else if (answerControllerCode.text == "E") ans = 5;
 
               Quiz()
-                  .create(Quiz(
+                  .update(Quiz(
                 question: questionController.text,
-                lectureNoteId: lectureNoteId,
+                lectureNoteId: quiz.lectureNoteId,
                 answer: ans,
+                quizId: quiz.quizId,
                 options: QuizOptions(
                   quizOptionA: optionAControllerCode.text,
                   quizOptionB: optionBControllerCode.text,
