@@ -96,7 +96,7 @@ class AboutUs extends StatelessWidget {
     if (width < 650) isAndroid = true;
     return Container(
       width: width,
-      height:isAndroid? height * 1.3: height * 1.1,
+      height: isAndroid ? height * 1.3 : height * 1.1,
       child: Scaffold(
           extendBodyBehindAppBar: true,
           body: Container(
@@ -116,8 +116,7 @@ class AboutUs extends StatelessWidget {
                               width: width * 0.6,
                               height: isAndroid ? height * 0.6 : height * 1.1,
                               child: Image(
-                                  image: NetworkImage(
-                                      ImagePath.aboutUs),
+                                  image: NetworkImage(ImagePath.aboutUs),
 
                                   //image: AssetImage(ImagePath().aboutUsImage),
                                   fit: BoxFit.fill),
@@ -211,8 +210,7 @@ class AboutUs extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                       //image: NetworkImage(ImagePath().homePageImage),
-                                      image: NetworkImage(
-                                          ImagePath.aboutUs),
+                                      image: NetworkImage(ImagePath.aboutUs),
                                       fit: BoxFit.fill),
                                 )),
                             Row(
@@ -237,7 +235,6 @@ class AboutUs extends StatelessWidget {
                             ),
                           ],
                         ),
-
                 ],
               ),
             ),

@@ -4,6 +4,7 @@ import 'package:school_management/Screens/SignUp.dart';
 import '../../Util/ImagePath.dart';
 import '../../Widgets/Home_C_AppBar.dart';
 import '../Home_C/WebMenu.dart';
+import '../SignUp.dart';
 import 'AboutUs.dart';
 
 class HomeTop extends StatelessWidget {
@@ -107,8 +108,7 @@ class HomeTop extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    SignUp(),
+                                builder: (BuildContext context) => SignUp(),
                               ));
                         },
                         style: TextButton.styleFrom(

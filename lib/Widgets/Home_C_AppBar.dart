@@ -41,7 +41,9 @@ AppBar homePageAppBar(BuildContext context, bool isAndroid) {
             ),
             child: Text("Register")),
       ),
-      Container(width: 10,),
+      Container(
+        width: 10,
+      ),
       Center(
         child: ElevatedButton(
             onPressed: () {

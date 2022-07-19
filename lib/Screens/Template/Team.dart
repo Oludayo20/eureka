@@ -13,7 +13,7 @@ class Team extends StatelessWidget {
     String role,
   ) {
     return Container(
-      width: width < 600? width * 0.4:width * 0.2,
+      width: width < 600 ? width * 0.4 : width * 0.2,
       height: width < 600 ? height * 0.4 : height * 0.6,
       color: Colors.white,
       child: Column(
@@ -21,7 +21,7 @@ class Team extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width:width < 600? width * 0.4:width * 0.2,
+            width: width < 600 ? width * 0.4 : width * 0.2,
             height: width < 600 ? height * 0.2 : height * 0.4,
             child: Image(
                 image: NetworkImage(ImagePath.aboutUs),
@@ -64,7 +64,7 @@ class Team extends StatelessWidget {
     if (width < 650) isAndroid = true;
     return Container(
       width: width,
-      height:isAndroid?height * 1.2: height * 1.1,
+      height: isAndroid ? height * 1.2 : height * 1.1,
       child: Scaffold(
           extendBodyBehindAppBar: true,
           body: Container(
@@ -77,44 +77,77 @@ class Team extends StatelessWidget {
                   SizedBox(
                     height: height * 0.2,
                   ),
-                 width > 600? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _teamInfoBox(width, height, ImagePath.aboutUs, "Ph.D Adrian Molises",
-                          "DEVELOPER AND LEAD INSTRUCTOR"),
-                      _teamInfoBox(width, height, ImagePath.aboutUs, "Ph.D Adrian Molises",
-                          "DEVELOPER AND LEAD INSTRUCTOR"),
-                      _teamInfoBox(width, height, ImagePath.aboutUs, "Ph.D Adrian Molises",
-                          "DEVELOPER AND LEAD INSTRUCTOR"),
-                      _teamInfoBox(width, height, ImagePath.aboutUs, "Ph.D Adrian Molises",
-                          "DEVELOPER AND LEAD INSTRUCTOR"),
-                    ],
-                  )
-                     :Column(
-                   children: [
-                     Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                       children: [
-                         _teamInfoBox(width, height, ImagePath.aboutUs, "Ph.D Adrian Molises",
-                             "DEVELOPER AND LEAD INSTRUCTOR"),
-                         _teamInfoBox(width, height, ImagePath.aboutUs, "Ph.D Adrian Molises",
-                             "DEVELOPER AND LEAD INSTRUCTOR"),
-                       ],
-                     ),
-                     SizedBox(
-                       height: height * 0.01,
-                     ),
-                     Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                       children: [
-                         _teamInfoBox(width, height, ImagePath.aboutUs, "Ph.D Adrian Molises",
-                             "DEVELOPER AND LEAD INSTRUCTOR"),
-                         _teamInfoBox(width, height, ImagePath.aboutUs, "Ph.D Adrian Molises",
-                             "DEVELOPER AND LEAD INSTRUCTOR"),
-                       ],
-                     )
-                   ],
-                 )
+                  width > 600
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _teamInfoBox(
+                                width,
+                                height,
+                                ImagePath.aboutUs,
+                                "Ph.D Adrian Molises",
+                                "DEVELOPER AND LEAD INSTRUCTOR"),
+                            _teamInfoBox(
+                                width,
+                                height,
+                                ImagePath.aboutUs,
+                                "Ph.D Adrian Molises",
+                                "DEVELOPER AND LEAD INSTRUCTOR"),
+                            _teamInfoBox(
+                                width,
+                                height,
+                                ImagePath.aboutUs,
+                                "Ph.D Adrian Molises",
+                                "DEVELOPER AND LEAD INSTRUCTOR"),
+                            _teamInfoBox(
+                                width,
+                                height,
+                                ImagePath.aboutUs,
+                                "Ph.D Adrian Molises",
+                                "DEVELOPER AND LEAD INSTRUCTOR"),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _teamInfoBox(
+                                    width,
+                                    height,
+                                    ImagePath.aboutUs,
+                                    "Ph.D Adrian Molises",
+                                    "DEVELOPER AND LEAD INSTRUCTOR"),
+                                _teamInfoBox(
+                                    width,
+                                    height,
+                                    ImagePath.aboutUs,
+                                    "Ph.D Adrian Molises",
+                                    "DEVELOPER AND LEAD INSTRUCTOR"),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _teamInfoBox(
+                                    width,
+                                    height,
+                                    ImagePath.aboutUs,
+                                    "Ph.D Adrian Molises",
+                                    "DEVELOPER AND LEAD INSTRUCTOR"),
+                                _teamInfoBox(
+                                    width,
+                                    height,
+                                    ImagePath.aboutUs,
+                                    "Ph.D Adrian Molises",
+                                    "DEVELOPER AND LEAD INSTRUCTOR"),
+                              ],
+                            )
+                          ],
+                        )
                 ],
               ),
             ),

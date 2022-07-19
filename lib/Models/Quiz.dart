@@ -21,9 +21,7 @@ class Quiz {
     }catch(ex)
     {
      print(ex);
-
     }
-
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -50,6 +48,11 @@ class Quiz {
         });
       } catch (d) {}
     }
+  }
+
+  Future delete(int lectureNoteId, int id) async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref("Quiz");
+    await ref.child(lectureNoteId.toString()).child(id.toString()).remove();
   }
 
   Future create(Quiz data) async {
@@ -89,5 +92,13 @@ class Quiz {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future update(Quiz quiz) async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref("Quiz");
+    await ref
+        .child(quiz.lectureNoteId.toString())
+        .child(quiz.quizId.toString())
+        .set(quiz.toJson());
   }
 }

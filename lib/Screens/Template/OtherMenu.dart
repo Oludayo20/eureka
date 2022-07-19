@@ -70,7 +70,6 @@ class OtherMenu extends StatelessWidget {
                     height: height * 0.2,
                   ),
                   show[showing],
-
                 ],
               ),
             ),
