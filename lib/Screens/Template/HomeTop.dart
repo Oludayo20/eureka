@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_management/Screens/RequestLogin.dart';
+import 'package:school_management/Screens/SignUp.dart';
 
 import '../../Util/ImagePath.dart';
 import '../../Widgets/Home_C_AppBar.dart';
@@ -108,7 +108,7 @@ class HomeTop extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    RequestLogin(),
+                                    SignUp(),
                               ));
                         },
                         style: TextButton.styleFrom(

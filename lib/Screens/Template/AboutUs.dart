@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_management/Screens/RequestLogin.dart';
+import 'package:school_management/Screens/SignUp.dart';
 
 import '../../Util/ImagePath.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_management/Screens/Home_C/WebMenu.dart';
 import 'package:school_management/Screens/LoginPage.dart';
-import 'package:school_management/Screens/RequestLogin.dart';
+import 'package:school_management/Screens/SignUp.dart';
 
 AppBar homePageAppBar(BuildContext context, bool isAndroid) {
   return AppBar(
@@ -29,7 +29,7 @@ AppBar homePageAppBar(BuildContext context, bool isAndroid) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => RequestLogin(),
+                    builder: (BuildContext context) => SignUp(),
                   ));
             },
             style: TextButton.styleFrom(

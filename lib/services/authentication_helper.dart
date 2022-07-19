@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:school_management/Models/Student.dart';
 
 import '../Models/User.dart';
 
@@ -18,7 +19,10 @@ class AuthenticationHelper {
   get user => _auth.currentUser;
 
   //SIGN UP METHOD
-  Future signUp({required String email, required String password}) async {
+  Future signUp(
+      {required String email,
+      required String password,
+      required Student student}) async {
     try {
       var x = await _auth.createUserWithEmailAndPassword(
         email: email,

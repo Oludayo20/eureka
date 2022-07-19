@@ -1,5 +1,3 @@
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fzregex/utils/fzregex.dart';
@@ -7,12 +5,11 @@ import 'package:fzregex/utils/pattern.dart';
 import 'package:school_management/Screens/home.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 import 'package:school_management/services/UserModel.dart';
-
 import '../Util/Notify.dart';
 import '../services/authentication_helper.dart';
 import 'Admin/HomePage/HomePage.dart';
 import 'ForgetPasseord.dart';
-import 'RequestLogin.dart';
+import 'SignUp.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, this.title}) : super(key: key);
@@ -30,7 +27,6 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   void initState() {
-    // TODO: implement initState
     WidgetsFlutterBinding.ensureInitialized();
     // Firebase.initializeApp();
     super.initState();
@@ -54,7 +50,6 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     animationController!.dispose();
     super.dispose();
   }
@@ -164,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage>
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14,
-                                        color: Colors.grey),
+                                        color: Colors.black),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Colors.teal[200]!,
@@ -209,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage>
                                           fontFamily: 'Montserrat',
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14,
-                                          color: Colors.grey),
+                                          color: Colors.black),
                                       focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               color: Colors.teal[200]!))),
@@ -242,8 +237,7 @@ class _MyHomePageState extends State<MyHomePage>
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        RequestLogin(),
+                                    builder: (BuildContext context) => SignUp(),
                                   ));
                             },
                             child: Text(
@@ -258,6 +252,7 @@ class _MyHomePageState extends State<MyHomePage>
                       ),
                     ),
                   ),
+                  // Forgot Password
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
                     child: Transform(
@@ -332,20 +327,19 @@ class _MyHomePageState extends State<MyHomePage>
                               AuthenticationHelper()
                                   .signIn(email: _email!, password: _pass!)
                                   .then((value) {
-                                    if(value == _email){
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) =>
+                                if (value == _email) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
                                             _email! == "admin@gmail.com"
                                                 ? AdminHome()
                                                 : AdminHome(),
-                                                //: Home(),
-                                          ));
-                                    }else{
-                                      Notify.error(context,value);
-                                    }
-
+                                        // : Home(),
+                                      ));
+                                } else {
+                                  Notify.error(context, value);
+                                }
                               });
                             }
                           },
@@ -368,8 +362,7 @@ class _MyHomePageState extends State<MyHomePage>
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        RequestLogin(),
+                                    builder: (BuildContext context) => SignUp(),
                                   ));
                             },
                             elevation: 0.5,

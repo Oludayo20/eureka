@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:school_management/Screens/Admin/HomePage/HomePage.dart';
+import 'package:school_management/Screens/SignUp.dart';
 import 'package:school_management/firebase_options.dart';
 import 'Util/Notify.dart';
 
@@ -15,6 +16,7 @@ void main() {
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
+
   init().whenComplete(() {
     runApp(MyApp());
   });
@@ -30,27 +32,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Eureka',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-     home: AdminHome()
-    );
+        title: 'Eureka',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: CompleteRegistration()
+        // SignUp()
+        // MyHomePage()
+        // SpleashScreen()
+        // AdminHome()
+        );
   }
 }
+
 class Test extends StatelessWidget {
   const Test({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: TextButton(
-        onPressed: (){
-          Notify.success(context, "Success");
-        },
-        child: Text("Text"),
-      ),),
+      body: Center(
+        child: TextButton(
+          onPressed: () {
+            Notify.success(context, "Success");
+          },
+          child: Text("Text"),
+        ),
+      ),
     );
   }
 }
-
