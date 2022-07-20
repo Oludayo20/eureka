@@ -9,8 +9,8 @@ import 'package:school_management/Screens/Admin/HomePage/HomePage.dart';
 import 'package:school_management/Screens/SignUp.dart';
 import 'package:school_management/firebase_options.dart';
 
+import 'Models/Student.dart';
 import 'Util/Notify.dart';
-
 
 void main() {
   Future init() async {
@@ -38,7 +38,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: CompleteRegistration()
+        home: //Test()
+        CompleteRegistration()
         // SignUp()
         // MyHomePage()
         // SpleashScreen()
@@ -56,7 +57,7 @@ class Test extends StatelessWidget {
       body: Center(
         child: TextButton(
           onPressed: () {
-            Notify.success(context, "Success");
+
           },
           child: Text("Text"),
         ),
