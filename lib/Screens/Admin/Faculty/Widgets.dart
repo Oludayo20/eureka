@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../Models/Faculty.dart';
+import '../../../Util/Notify.dart';
 import 'Methods.dart';
 
 Future<void> showMyDialogCreate(
@@ -50,11 +51,14 @@ Future<void> showMyDialogCreate(
               if (controller.text.isNotEmpty) {
                 facultyMethods
                     .facultyCreateOnApprove(controller.text, context)
-                    .whenComplete(() {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                  facultyMethods.setState();
+                    .then((value) {
+                  if (value) {
+                    facultyMethods.setState();
+                  }
                 });
+              } else {
+                facultyMethods.facultyStreamController
+                    .add(4); // notify is empty
               }
             },
           ),
@@ -147,16 +151,15 @@ Future<void> showMyDialogEdit(BuildContext context, FacultyModel facultyModel,
           TextButton(
             child: const Text('Approve'),
             onPressed: () {
-              if (controller.text.isNotEmpty){
+              if (controller.text.isNotEmpty) {
                 facultyModel.facultyName = controller.text;
                 facultyMethods
                     .facultyEditOnApprove(facultyModel, context)
-                    .whenComplete(() {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
+                    .then((val) {
                 });
+              } else {
+                facultyMethods.facultyStreamController.add(4);
               }
-
             },
           ),
         ],
@@ -164,4 +167,3 @@ Future<void> showMyDialogEdit(BuildContext context, FacultyModel facultyModel,
     },
   );
 }
-

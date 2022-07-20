@@ -5,7 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:school_management/Screens/Admin/Faculty/Faculty.dart';
 import 'package:school_management/Screens/Admin/HomePage/HomePage.dart';
+import 'package:school_management/Screens/Courses/Course.dart';
 import 'package:school_management/Screens/SignUp.dart';
 import 'package:school_management/firebase_options.dart';
 
@@ -38,8 +40,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: //Test()
-        CompleteRegistration()
+        home: Faculty()
+      //Test()
+        //CompleteRegistration()
         // SignUp()
         // MyHomePage()
         // SpleashScreen()

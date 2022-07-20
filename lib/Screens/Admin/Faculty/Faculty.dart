@@ -28,6 +28,13 @@ class _FacultyState extends State<Faculty> {
       case 3:
         Notify.loading(context, "");
         break;
+      case 4:
+        Notify.error(context, "Faculty name cannot be empty");
+        break;
+      case 5:
+        Navigator.pop(context);
+        break;
+
     }
   }
 
@@ -160,11 +167,12 @@ class _FacultyState extends State<Faculty> {
         ),
         body: Container(
           decoration: BoxDecoration(
-              color: Colors.black,
-              image: DecorationImage(
+              color: Colors.white,
+              /*image: DecorationImage(
                   image: NetworkImage(ImagePath.home),
                   //image: AssetImage(ImagePath().homePageImageAssert),
-                  fit: isAndroid ? BoxFit.cover : BoxFit.fill)),
+                  fit: isAndroid ? BoxFit.cover : BoxFit.fill)),*/
+          ),
           child: ListView(
             children: facultyByRow(_facultyMethods!.facultyList, context),
           ),

@@ -20,9 +20,14 @@ class FacultyMethods {
     facultyList = [];
     facultyModel = FacultyModel();
     await facultyModel!.read(facultyList).whenComplete(() {
-      facultyList.forEach((element) {
-        facultyNames.add(element.facultyName!.toLowerCase());
-      });
+      fillCheckList();
+    });
+  }
+
+  void fillCheckList() {
+    facultyNames.clear();
+    facultyList.forEach((element) {
+      facultyNames.add(element.facultyName!.toLowerCase());
     });
   }
 
@@ -38,16 +43,16 @@ class FacultyMethods {
       await facultyModel!.read(facultyList).whenComplete(() {
         facultyStreamController.add(2);
         setState();
+        fillCheckList();
       });
     });
   }
 
-  Future facultyCreateOnApprove(
+  Future<bool> facultyCreateOnApprove(
       String facultyName, BuildContext context) async {
-    if (facultyNames.isEmpty) return;
     if (_checkIfFacultyExists(facultyName)) {
       facultyStreamController.add(1);
-      return;
+      return false;
     }
     facultyStreamController.add(3);
     await facultyModel!
@@ -55,26 +60,31 @@ class FacultyMethods {
         .whenComplete(() async {
       facultyList = [];
       await facultyModel!.read(facultyList).whenComplete(() {
-        facultyStreamController.add(2);
+        facultyStreamController.add(5); // notify pop
+        facultyStreamController.add(2); // notify success
+        fillCheckList();
       });
     });
+    return true;
   }
 
-  Future facultyEditOnApprove(
+  Future<bool> facultyEditOnApprove(
       FacultyModel facultyModel, BuildContext context) async {
-    if (facultyModel.facultyName!.isEmpty) return;
     if (_checkIfFacultyExists(facultyModel.facultyName!)) {
       facultyStreamController.add(1);
-      return;
+      return false;
     }
     facultyStreamController.add(3);
-
     await facultyModel.update(facultyModel).whenComplete(() async {
       facultyList = [];
       await facultyModel.read(facultyList).whenComplete(() {
+        facultyStreamController.add(5); // notify pop
+        facultyStreamController.add(5); // notify pop
         facultyStreamController.add(2);
         facultyStreamController.add(0);
+        facultyNames.add(facultyList.last.facultyName!.toLowerCase());
       });
     });
+    return true;
   }
 }
