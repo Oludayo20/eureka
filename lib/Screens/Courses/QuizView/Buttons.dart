@@ -36,6 +36,9 @@ class _NumberButtonsState extends State<NumberButtons> {
         setState(() {});
       }
     });
+    widget.selectedOption[widget.number] == 0
+        ? buttonColor = Colors.white
+        : buttonColor = Colors.black12;
   }
 
   @override
@@ -51,8 +54,7 @@ class _NumberButtonsState extends State<NumberButtons> {
         child: Text(
           "${widget.number}",
           style: TextStyle(
-
-              fontSize: widget.textButtonFontSize,
+            fontSize: widget.textButtonFontSize,
           ),
         ),
       ),

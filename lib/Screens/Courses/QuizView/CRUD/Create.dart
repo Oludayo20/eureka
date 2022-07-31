@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/QuizOption.dart';
+import 'package:school_management/Util/Notify.dart';
 
 import '../../../../../Models/Quiz.dart';
 import '../Stream.dart';
@@ -60,6 +61,18 @@ Future<void> showMyDialogCreate(BuildContext context, int lectureNoteId) async {
           TextButton(
             child: const Text('Approve'),
             onPressed: () {
+              var check = emptyField(
+                  questionController.text,
+                  optionAControllerCode.text,
+                  optionBControllerCode.text,
+                  optionCControllerCode.text,
+                  optionDControllerCode.text,
+                  optionEControllerCode.text,
+                  answerControllerCode.text);
+              if (check.isNotEmpty) {
+                Notify.error(context, check);
+                return;
+              }
               int ans = 0;
               if (answerControllerCode.text == "A")
                 ans = 1;

@@ -37,6 +37,13 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
                       AuthenticationHelper().signOut().whenComplete(() {
                         Navigator.popUntil(context,
                             (Route<dynamic> predicate) => predicate.isFirst);
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => HomePage(),
+                          ),
+                        );
                       });
                     },
                   ),

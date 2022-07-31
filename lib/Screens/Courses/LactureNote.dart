@@ -139,7 +139,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                 Container(
                   // height: height * 0.06,
                   height: height * 0.07,
-                  width: width * 0.75,
+                  width: width,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(5),

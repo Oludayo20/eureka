@@ -10,12 +10,12 @@ class BigScreen extends StatelessWidget {
       {Key? key,
       required this.buttonColumn,
       required this.questionMap,
-      required this.streamController})
+      required this.streamController, required this.submitMethod})
       : super(key: key);
   final Function buttonColumn;
   final StreamController<int> streamController;
   final Map<int, QuestionView> questionMap;
-
+  final Function submitMethod;
   @override
   Widget build(BuildContext context) {
     QuizMethods quizMethods = QuizMethods(
@@ -75,32 +75,9 @@ class BigScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Bouncing(
-                    child: Container(
-                        width: width * 0.04,
-                        height: width * 0.04,
-                        child: Center(
-                          child: Icon(
-                            Icons.skip_previous,
-                            color: Colors.black,
-                            size: width * 0.04,
-                          ),
-                        )),
-                    onPress: () => quizMethods.previousQuestion(),
-                  ),
-                  Bouncing(
-                    child: Container(
-                        width: width * 0.04,
-                        height: width * 0.04,
-                        child: Center(
-                          child: Icon(
-                            Icons.skip_next,
-                            color: Colors.black,
-                            size: width * 0.04,
-                          ),
-                        )),
-                    onPress: () => quizMethods.nextQuestion(),
-                  ),
+                  TextButton(onPressed: ()=>quizMethods.previousQuestion(), child: Text("Previous")),
+                  TextButton(onPressed: ()=>submitMethod(), child: Text("Submit")),
+                  TextButton(onPressed: ()=>quizMethods.nextQuestion(), child: Text("Next")),
                 ],
               ),
             )

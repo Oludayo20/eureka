@@ -136,6 +136,22 @@ class EachCourse extends StatelessWidget {
           child: ListView(
         children: lectureNotes(layout, context),
       )),
+      bottomSheet:  Padding(
+        padding: EdgeInsets.all(10),
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    "Back",
+                    style: TextStyle(fontSize: 20),
+                  )),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

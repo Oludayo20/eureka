@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:school_management/Models/LectureNote.dart';
 import 'package:school_management/Models/QuizResultInfo.dart';
+import 'package:school_management/Util/Notify.dart';
 
 import 'package:school_management/Widgets/AppBar.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 import 'package:school_management/Widgets/MainDrawer.dart';
 
+import '../../../../Models/Quiz.dart';
+import '../../../Courses/QuizView/Quiz.dart';
 import 'SubjectCard.dart';
 
 class ExamResult extends StatefulWidget {
@@ -67,7 +70,7 @@ class _ExamResultState extends State<ExamResult>
             transform: Matrix4.translationValues(
                 muchDelayedAnimation!.value * width, 0, 0),
             child: Text(
-              widget.lectureNote.title!,
+              "Note Title: ${widget.lectureNote.title!}",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 17,
@@ -94,8 +97,6 @@ class _ExamResultState extends State<ExamResult>
       height: height * 0.02,
     ));
 
-    int totalScore = 0;
-    int totalQuestion = 0;
     for (int i = 0; i < widget.quizResultInfo.length; i++) {
       var time = int.parse(widget.quizResultInfo[i].startTime!);
       var date = DateTime.fromMicrosecondsSinceEpoch(time);
@@ -106,8 +107,6 @@ class _ExamResultState extends State<ExamResult>
               hours: date.hour,
               seconds: date.second,
               minutes: date.minute));
-      totalScore += widget.quizResultInfo[i].score!;
-      totalQuestion += widget.quizResultInfo[i].questionNumber!;
       item.add(
         Transform(
           transform: Matrix4.translationValues(
@@ -127,141 +126,6 @@ class _ExamResultState extends State<ExamResult>
         height: height * 0.02,
       ));
     }
-    item.addAll([
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Transform(
-                transform: Matrix4.translationValues(
-                    muchDelayedAnimation!.value * width, 0, 0),
-                child: Text(
-                  "Total Marks:",
-                  style: TextStyle(
-                    fontSize: 15,
-                    //fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: height * 0.03,
-              ),
-              Transform(
-                transform: Matrix4.translationValues(
-                    delayedAnimation!.value * width, 0, 0),
-                child: Text(
-                  "$totalScore/$totalQuestion",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          Row(
-            children: [
-              Transform(
-                transform: Matrix4.translationValues(
-                    muchDelayedAnimation!.value * width, 0, 0),
-                child: Text(
-                  "Overall Grade:",
-                  style: TextStyle(
-                    fontSize: 15,
-                    //fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: height * 0.03,
-              ),
-              Transform(
-                transform: Matrix4.translationValues(
-                    delayedAnimation!.value * width, 0, 0),
-                child: Text(
-                  grade(totalQuestion, totalScore),
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(0, 18, 0, 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Transform(
-              transform: Matrix4.translationValues(
-                  muchDelayedAnimation!.value * width, 0, 0),
-              child: Bouncing(
-                onPress: () {},
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(3),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                        ),
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Save",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Transform(
-              transform: Matrix4.translationValues(
-                  delayedAnimation!.value * width, 0, 0),
-              child: Bouncing(
-                onPress: () {},
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(3),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                        ),
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Share",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      SizedBox(
-        height: height * 0.20,
-      ),
-    ]);
     return item;
   }
 
@@ -283,8 +147,31 @@ class _ExamResultState extends State<ExamResult>
       return "A";
   }
 
+  void takeQuiz() {
+    List<Quiz> quizList = [];
+    Notify.loading(context, "");
+    Quiz().read(quizList, widget.lectureNote.lectureNoteId!).whenComplete(() {
+      Navigator.pop(context);
+      if (quizList.length == 0) {
+        Notify.error(context, "Quiz not yet available");
+        return;
+      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => QuizView(
+            lectureNoteId: widget.lectureNote.lectureNoteId!,
+            title: "",
+            quizList: quizList,
+          ),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
     animationController!.forward();
     return AnimatedBuilder(
         animation: animationController!,
@@ -292,30 +179,95 @@ class _ExamResultState extends State<ExamResult>
           final GlobalKey<ScaffoldState> _scaffoldKey =
               new GlobalKey<ScaffoldState>();
           return Scaffold(
-              key: _scaffoldKey,
-              appBar: CommonAppBar(
-                menuenabled: true,
-                notificationenabled: false,
-                title: "Self Quiz",
-                ontap: () {
-                  _scaffoldKey.currentState!.openDrawer();
-                },
-              ),
-              drawer: Drawer(
-                elevation: 0,
-                child: MainDrawer(),
-              ),
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 15,
-                  ),
-                  child: Column(
-                    children: pastSelfQuizBuild(),
-                  ),
+            key: _scaffoldKey,
+            appBar: CommonAppBar(
+              menuenabled: true,
+              notificationenabled: false,
+              title: "Self Quiz",
+              ontap: () {
+                _scaffoldKey.currentState!.openDrawer();
+              },
+            ),
+            drawer: Drawer(
+              elevation: 0,
+              child: MainDrawer(),
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 15,
                 ),
-              ));
+                child: Column(
+                  children: pastSelfQuizBuild(),
+                ),
+              ),
+            ),
+            bottomSheet: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 18, 0, 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Transform(
+                    transform: Matrix4.translationValues(
+                        muchDelayedAnimation!.value * width, 0, 0),
+                    child: Bouncing(
+                      onPress: () => Navigator.pop(context),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(3),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                              ),
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Back",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Transform(
+                    transform: Matrix4.translationValues(
+                        delayedAnimation!.value * width, 0, 0),
+                    child: Bouncing(
+                      onPress: () => takeQuiz(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(3),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                              ),
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Take Quiz",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         });
   }
 }

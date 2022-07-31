@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:school_management/Screens/Courses/QuizView/SubmitView.dart';
 
 import '../../../../Models/Quiz.dart';
 import '../../../../Widgets/AppBar.dart';
@@ -12,8 +13,13 @@ import 'QuestionView.dart';
 import 'SmallScreen.dart';
 import 'Stream.dart';
 import '../QuizView/CRUD/Create.dart';
+
 class QuizView extends StatefulWidget {
-  const QuizView({Key? key, required this.title, required this.lectureNoteId, required this.quizList})
+  const QuizView(
+      {Key? key,
+      required this.title,
+      required this.lectureNoteId,
+      required this.quizList})
       : super(key: key);
   final String title;
   final int lectureNoteId;
@@ -43,8 +49,10 @@ class _QuizViewState extends State<QuizView> {
     });
     model = Quiz();
     isAdmin = AuthenticationHelper().isAdmin();
-    if(isAdmin)getQuestion();
-    else list = widget.quizList;
+    if (isAdmin)
+      getQuestion();
+    else
+      list = widget.quizList;
   }
 
   @override
@@ -52,6 +60,15 @@ class _QuizViewState extends State<QuizView> {
     // TODO: implement dispose
     streamController.close();
     super.dispose();
+  }
+
+  void submitMethod() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => SubmitView(selectedOption: selectedOption,),
+      ),
+    );
   }
 
   Future getQuestion() async {
@@ -64,7 +81,6 @@ class _QuizViewState extends State<QuizView> {
   void changeQuestion(int number) {
     streamController.add(number);
   }
-
 
   Widget optionsAdd(
       TextEditingController controller, double width, double height) {
@@ -183,11 +199,13 @@ class _QuizViewState extends State<QuizView> {
       ),
       body: width < 600
           ? SmallScreen(
+              submitMethod: submitMethod,
               questionMap: questionMap,
               buttonColumn: buttonColumn,
               streamController: streamController,
             )
           : BigScreen(
+              submitMethod: submitMethod,
               questionMap: questionMap,
               buttonColumn: buttonColumn,
               streamController: streamController,

@@ -10,11 +10,12 @@ class SmallScreen extends StatelessWidget {
       {Key? key,
         required this.buttonColumn,
         required this.questionMap,
-        required this.streamController})
+        required this.streamController, required this.submitMethod})
       : super(key: key);
   final Function buttonColumn;
   final StreamController<int> streamController;
   final Map<int, QuestionView> questionMap;
+  final Function submitMethod;
   @override
   Widget build(BuildContext context) {
     QuizMethods quizMethods = QuizMethods(
@@ -58,6 +59,7 @@ class SmallScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextButton(onPressed: ()=>quizMethods.previousQuestion(), child: Text("Previous")),
+              TextButton(onPressed: ()=>submitMethod(), child: Text("Submit")),
               TextButton(onPressed: ()=>quizMethods.nextQuestion(), child: Text("Next")),
 
             ],
