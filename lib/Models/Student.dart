@@ -30,20 +30,16 @@ class Student {
         'semester': semester,
         'fullName': fullName,
       };
-
+  DatabaseReference ref =
+  FirebaseDatabase.instance.ref(DataBaseHelper.studentDbName);
   Future create(Student student, String uid) async {
     try {
-      DatabaseReference ref =
-          FirebaseDatabase.instance.ref(DataBaseHelper.studentDbName);
       await ref.child(uid).set(student.toJson());
     } catch (e) {
       print(e);
     }
   }
-
   Future<Student?> read(String uid) async {
-    DatabaseReference ref =
-        FirebaseDatabase.instance.ref(DataBaseHelper.studentDbName);
     var x = await ref.child(uid).once();
     Student? student;
     if (x.snapshot.value == null) return null;
@@ -55,16 +51,10 @@ class Student {
     }
     return student;
   }
-
   Future update(Student student, String uid) async {
-    DatabaseReference ref =
-        FirebaseDatabase.instance.ref(DataBaseHelper.studentDbName);
     await ref.child(uid).set(student.toJson());
   }
-
   Future delete(String uid) async {
-    DatabaseReference ref =
-        FirebaseDatabase.instance.ref(DataBaseHelper.studentDbName);
     await ref.child(uid).remove();
   }
 }

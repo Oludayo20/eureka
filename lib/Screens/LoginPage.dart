@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fzregex/utils/fzregex.dart';
 import 'package:fzregex/utils/pattern.dart';
-import 'package:school_management/Screens/home.dart';
+import 'package:school_management/Screens/Students/Home/home.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 import 'package:school_management/services/UserModel.dart';
 import '../Util/Notify.dart';
@@ -140,10 +140,8 @@ class _MyHomePageState extends State<MyHomePage>
                               children: [
                                 TextFormField(
                                   validator: (value) {
-                                    if ((Fzregex.hasMatch(
-                                            value!, FzPattern.email) ==
-                                        false)) {
-                                      return "Enter Vaild Email address";
+                                    if (value!.isEmpty) {
+                                      return "Enter Valid Email address";
                                     } else {
                                       return null;
                                     }
@@ -324,9 +322,11 @@ class _MyHomePageState extends State<MyHomePage>
                                 _autoValidate = true;
                               });
                             }*/
+                              Notify.loading(context, "");
                               AuthenticationHelper()
                                   .signIn(email: _email!, password: _pass!)
                                   .then((value) {
+                                Navigator.pop(context);
                                 if (value == _email) {
                                   Navigator.push(
                                       context,
@@ -334,7 +334,7 @@ class _MyHomePageState extends State<MyHomePage>
                                         builder: (BuildContext context) =>
                                             _email! == "admin@gmail.com"
                                                 ? AdminHome()
-                                                : AdminHome(),
+                                                : StudentHome(),
                                         // : Home(),
                                       ));
                                 } else {
@@ -355,28 +355,7 @@ class _MyHomePageState extends State<MyHomePage>
                           ),
                         ),
                         SizedBox(height: 10.0),
-                        Bouncing(
-                          onPress: () {},
-                          child: MaterialButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) => SignUp(),
-                                  ));
-                            },
-                            elevation: 0.5,
-                            minWidth: MediaQuery.of(context).size.width,
-                            color: Colors.grey[300],
-                            child: ListTile(
-                              leading: Icon(
-                                Icons.fingerprint,
-                                color: Colors.black,
-                              ),
-                              title: Text('Request Login ID'),
-                            ),
-                          ),
-                        ),
+
                       ],
                     ),
                   ),

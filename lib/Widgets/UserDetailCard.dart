@@ -102,7 +102,7 @@ class _UserDetailCardState extends State<UserDetailCard>
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Standard: ${widget.user!.standard!}",
+                                          "Level: ${widget.user!.standard!}",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
@@ -112,7 +112,7 @@ class _UserDetailCardState extends State<UserDetailCard>
                                           width: 50,
                                         ),
                                         Text(
-                                          "Section: ${widget.user!.section}",
+                                          "Semester: ${widget.user!.section}",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,

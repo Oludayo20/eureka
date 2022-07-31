@@ -1,5 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 
+import '../services/DataBaseHelper.dart';
+
 class FacultyModel {
   int? facultyId;
   String? facultyName;
@@ -14,8 +16,9 @@ class FacultyModel {
         'facultyId': facultyId,
         'facultyName': facultyName,
       };
+
+  DatabaseReference ref = FirebaseDatabase.instance.ref(DataBaseHelper.facultyDbName);
   Future read(List<FacultyModel> facultyList) async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref("Faculty");
     var x =await  ref.once();
     try{
       List<dynamic> values = x.snapshot.value as List<dynamic>;
@@ -36,18 +39,13 @@ class FacultyModel {
 
   }
   Future update(FacultyModel faculty) async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref("Faculty");
     await ref.child(faculty.facultyId.toString()).set(faculty.toJson());
   }
-
   Future delete(int id) async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref("Faculty");
     await ref.child(id.toString()).remove();
   }
-
   Future create(FacultyModel faculty) async {
     try {
-      DatabaseReference ref = FirebaseDatabase.instance.ref("Faculty");
       await ref.limitToLast(1).once().then((value) async {
         int count = 1;
         if(value.snapshot.value == null){

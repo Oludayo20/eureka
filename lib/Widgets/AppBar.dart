@@ -28,16 +28,15 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
                 Card(
                   color: Colors.white30,
                   child: ListTile(
-                    trailing: Icon(Icons.logout, color: Colors.red,),
+                    trailing: Icon(
+                      Icons.logout,
+                      color: Colors.red,
+                    ),
                     leading: Text("Logout"),
-
                     onTap: () {
                       AuthenticationHelper().signOut().whenComplete(() {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => HomePage(),
-                            ));
+                        Navigator.popUntil(context,
+                            (Route<dynamic> predicate) => predicate.isFirst);
                       });
                     },
                   ),

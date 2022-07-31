@@ -6,6 +6,7 @@ import 'package:school_management/Models/LectureNote.dart';
 import 'package:school_management/Widgets/AppBar.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+import '../../Util/Notify.dart';
 import '../../services/CloudinaryService.dart';
 import '../Admin/AdminMainDrawer.dart';
 import 'QuizView/Quiz.dart';
@@ -112,9 +113,12 @@ class _LectureNoteViewState extends State<LectureNoteView> {
     final double height = MediaQuery.of(context).size.height;
     TextEditingController controller = TextEditingController();
     TextEditingController noteController = TextEditingController();
+    TextEditingController noteWriteUpController = TextEditingController();
     FilePickerResult? pickerResult;
     controller.text = model.title!;
-    noteController.text = model.note!;
+    noteController.text = model.pdfName!;
+    noteWriteUpController.text = model.noteWriteUp!;
+
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -150,6 +154,47 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                       contentPadding: EdgeInsets.all(7),
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Text("Note Write Up"),
+                    ),
+                  ],
+                ),
+                Container(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: 1,
+                    ),
+                    child: Container(
+                      // height: height * 0.06,
+                      height: height * 0.25,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: TextFormField(
+                        //autofocus: true,
+                        minLines: 1,
+                        maxLines: 10,
+                        controller: noteWriteUpController,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(7),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
                 ),
                 Row(
                   children: [
@@ -193,6 +238,10 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                         icon: Icon(Icons.upload_file))
                   ],
                 ),
+                SizedBox(
+                  height: 5,
+                ),
+               EditLectureNoteCheckBox(model: model,)
               ],
             ),
           ),
@@ -207,29 +256,28 @@ class _LectureNoteViewState extends State<LectureNoteView> {
             TextButton(
               child: const Text('Approve'),
               onPressed: () async {
+                if(controller.text.isEmpty){
+                  Notify.error(context, "Title cannot be empty");
+                  return;
+                }else if(noteWriteUpController.text.isEmpty){
+                  Notify.error(context, "Note write up cannot be empty");
+                  return;
+                }
+                Notify.loading(context, "");
                 model.title = controller.text;
-                if (model.note == noteController.text) {
+                model.noteWriteUp = noteWriteUpController.text;
+                model.pdfName = noteController.text;
+                model.link = noteController.text;
+                if(pickerResult != null){
+                  uploadAsPdf(model, pickerResult!);
+                }
+                else{
                   await model.update(model).whenComplete(() {
                     list = [];
                     model.read(list, widget.courseId).whenComplete(() {
                       Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                       setState(() {});
-                    });
-                  });
-                } else {
-                  await CloudinaryService()
-                      .uploadToCloudinary(
-                          ByteData.sublistView(
-                              pickerResult!.files.single.bytes!),
-                          pickerResult!.files.single.name)
-                      .then((value) async {
-                    model.note = value as String;
-                    await model.update(model).whenComplete(() {
-                      list = [];
-                      model.read(list, widget.courseId).whenComplete(() {
-                        Navigator.of(context).pop();
-                        setState(() {});
-                      });
                     });
                   });
                 }
@@ -240,12 +288,30 @@ class _LectureNoteViewState extends State<LectureNoteView> {
       },
     );
   }
-
+  Future<void> uploadAsPdf(LectureNote lectureNote,FilePickerResult pickerResult) async {
+    await CloudinaryService()
+        .uploadToCloudinary(
+        ByteData.sublistView(
+            pickerResult.files.single.bytes!),
+        pickerResult.files.single.name)
+        .then((value) async {
+      lectureNote.link = value as String;
+      await lectureNote.update(lectureNote).whenComplete(() {
+        list = [];
+        lectureNote.read(list, widget.courseId).whenComplete(() {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          setState(() {});
+        });
+      });
+    });
+  }
   Future<void> _showMyDialogCreate(BuildContext context) async {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     TextEditingController controller = TextEditingController();
     TextEditingController noteController = TextEditingController();
+    TextEditingController noteWriteUpController = TextEditingController();
     FilePickerResult? pickerResult;
     return showDialog<void>(
       context: context,
@@ -267,7 +333,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
               Container(
                 // height: height * 0.06,
 
-                width: width * 0.75,
+                width: width,
                 height: height * 0.07,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
@@ -284,11 +350,52 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 5,
+              ),
               Row(
                 children: [
                   Container(
                     margin: EdgeInsets.only(left: 5),
-                    child: Text("Note PDF Link"),
+                    child: Text("Note Write Up"),
+                  ),
+                ],
+              ),
+              Container(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 1,
+                  ),
+                  child: Container(
+                    // height: height * 0.06,
+                    height: height * 0.25,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      //autofocus: true,
+                      minLines: 1,
+                      maxLines: 10,
+                      keyboardType: TextInputType.multiline,
+                      controller: noteWriteUpController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(7),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 5),
+                    child: Text("Select Pdf"),
                   ),
                 ],
               ),
@@ -340,24 +447,57 @@ class _LectureNoteViewState extends State<LectureNoteView> {
             TextButton(
               child: const Text('Approve'),
               onPressed: () async {
-                await CloudinaryService()
-                    .uploadToCloudinary(
-                        ByteData.sublistView(pickerResult!.files.single.bytes!),
-                        pickerResult!.files.single.name)
-                    .then((value) {
+                if(controller.text.isEmpty){
+                  Notify.error(context, "Title cannot be empty");
+                  return;
+                }else if(noteWriteUpController.text.isEmpty){
+                  Notify.error(context, "Note write up cannot be empty");
+                  return;
+                }
+                Notify.loading(context, "");
+                if(pickerResult != null){
+                  await CloudinaryService()
+                      .uploadToCloudinary(
+                      ByteData.sublistView(pickerResult!.files.single.bytes!),
+                      pickerResult!.files.single.name)
+                      .then((value) {
+                    model!
+                        .create(LectureNote(
+                        title: controller.text,
+                        courseId: widget.courseId,
+                        link: value as String,
+                        pdfName: pickerResult!.files.single.name,
+                        noteWriteUp: noteWriteUpController.text))
+                        .whenComplete(() {
+                      list = [];
+                      model!.read(list, widget.courseId).whenComplete(() {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        setState(() {});
+                      });
+                    });
+                  });
+                }
+                else{
+
                   model!
                       .create(LectureNote(
-                          title: controller.text,
-                          courseId: widget.courseId,
-                          note: value as String))
+                      title: controller.text,
+                      courseId: widget.courseId,
+                      link: "not available",
+                      pdfName: "not available",
+                      isActive: false,
+                      noteWriteUp: noteWriteUpController.text))
                       .whenComplete(() {
                     list = [];
                     model!.read(list, widget.courseId).whenComplete(() {
                       Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                       setState(() {});
                     });
                   });
-                });
+                }
+
               },
             ),
           ],
@@ -423,7 +563,11 @@ class _LectureNoteViewState extends State<LectureNoteView> {
               IconButton(
                   color: Colors.green,
                   onPressed: () {
-                    _showMyDialogPreview(context, list[i].note!);
+                    if(list[i].link == "not available"){
+                      Notify.error(context, "No PDF available");
+                    }else{
+                      _showMyDialogPreview(context, list[i].link!);
+                    }
                   },
                   icon: Icon(
                     Icons.preview,
@@ -437,11 +581,16 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                         builder: (BuildContext context) => QuizView(
                           lectureNoteId: list[i].lectureNoteId!,
                           title: " ",
+                          quizList: [],
                         ),
                       ),
                     );
                   },
-                  child: Text("Quiz"))
+                  child: Text("Quiz")),
+              Icon(
+                list[i].isActive!?Icons.check_box:Icons.check_box_outline_blank
+              )
+
             ],
           )
         ],
@@ -482,3 +631,32 @@ class _LectureNoteViewState extends State<LectureNoteView> {
     );
   }
 }
+
+class EditLectureNoteCheckBox extends StatefulWidget {
+  const EditLectureNoteCheckBox({Key? key, required this.model}) : super(key: key);
+  final LectureNote model;
+  @override
+  State<EditLectureNoteCheckBox> createState() => _EditLectureNoteCheckBoxState();
+}
+
+class _EditLectureNoteCheckBoxState extends State<EditLectureNoteCheckBox> {
+  @override
+  Widget build(BuildContext context) {
+    return  Row(
+      children: [
+        Row(
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 5),
+              child: Text("Make visible to students"),
+            ),
+          ],
+        ),
+        Checkbox(value: widget.model.isActive, onChanged: (isActive){
+          setState((){widget.model.isActive = isActive;});
+        })
+      ],
+    );
+  }
+}
+

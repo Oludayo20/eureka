@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../../../Models/Quiz.dart';
+import '../../../services/authentication_helper.dart';
 import '../QuizView/CRUD/Edit.dart';
 import '../QuizView/CRUD/Delete.dart';
 
@@ -30,7 +31,7 @@ class _QuestionViewState extends State<QuestionView> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-
+    bool isAdmin =  AuthenticationHelper().isAdmin();
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -42,7 +43,7 @@ class _QuestionViewState extends State<QuestionView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
+                isAdmin? Container(
                   child: IconButton(
                       color: Colors.blue,
                       onPressed: () {
@@ -51,8 +52,8 @@ class _QuestionViewState extends State<QuestionView> {
                       icon: Icon(
                         Icons.edit,
                       )),
-                ),
-                Container(
+                ):Container(),
+                isAdmin?Container(
                   child: IconButton(
                       color: Colors.red,
                       onPressed: () {
@@ -61,7 +62,7 @@ class _QuestionViewState extends State<QuestionView> {
                       icon: Icon(
                         Icons.delete,
                       )),
-                ),
+                ):Container(),
                 Container(
                   margin: EdgeInsets.only(right: 20),
                   child: Center(

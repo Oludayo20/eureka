@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 
+import '../services/DataBaseHelper.dart';
 import 'QuizOption.dart';
 
 class Quiz {
@@ -32,7 +33,7 @@ class Quiz {
     'options': options!.toJson(),
   };
   Future read(List<Quiz> list, int id) async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref("Quiz");
+    DatabaseReference ref = FirebaseDatabase.instance.ref(DataBaseHelper.quizDbName);
     var x = await ref.child(id.toString()).once();
     if (x.snapshot.value == null) return;
     try {
@@ -51,13 +52,13 @@ class Quiz {
   }
 
   Future delete(int lectureNoteId, int id) async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref("Quiz");
+    DatabaseReference ref = FirebaseDatabase.instance.ref(DataBaseHelper.quizDbName);
     await ref.child(lectureNoteId.toString()).child(id.toString()).remove();
   }
 
   Future create(Quiz data) async {
     try {
-      DatabaseReference ref = FirebaseDatabase.instance.ref("Quiz");
+      DatabaseReference ref = FirebaseDatabase.instance.ref(DataBaseHelper.quizDbName);
       await ref
           .child(data.lectureNoteId.toString())
           .limitToLast(1)
@@ -95,7 +96,7 @@ class Quiz {
   }
 
   Future update(Quiz quiz) async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref("Quiz");
+    DatabaseReference ref = FirebaseDatabase.instance.ref(DataBaseHelper.quizDbName);
     await ref
         .child(quiz.lectureNoteId.toString())
         .child(quiz.quizId.toString())

@@ -1,4 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
+
+import '../services/DataBaseHelper.dart';
 class ProgramCourse {
   int? courseProgramId;
   int? programId;
@@ -16,13 +18,11 @@ class ProgramCourse {
     'programId': programId,
     'courseId': courseId,
   };
+  DatabaseReference ref = FirebaseDatabase.instance.ref(DataBaseHelper.programCourseDbName);
   Future delete(int id, int programId) async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref("ProgramCourse");
     await ref.child(programId.toString()).child(id.toString()).remove();
   }
   Future read(List<ProgramCourse> list, int facultyId) async {
-
-    DatabaseReference ref = FirebaseDatabase.instance.ref("ProgramCourse");
     var x = await ref.child(facultyId.toString()).once();
     if (x.snapshot.value == null) return;
     try {
@@ -40,10 +40,8 @@ class ProgramCourse {
     }
 
   }
-
   Future create(ProgramCourse data) async {
     try {
-      DatabaseReference ref = FirebaseDatabase.instance.ref("ProgramCourse");
       await ref
           .child(data.programId.toString())
           .limitToLast(1)

@@ -1,10 +1,5 @@
 import 'dart:async';
-
-import 'package:get/get.dart';
-import 'package:school_management/Screens/Home_Page.dart';
-
 import '../../../Models/Faculty.dart';
-import '../../../Util/Notify.dart';
 import 'package:flutter/material.dart';
 
 class FacultyMethods {
@@ -14,8 +9,6 @@ class FacultyMethods {
   FacultyModel? facultyModel;
   Set<String> facultyNames = {};
   Future initState() async {
-    // TODO: implement initState
-    //facultyStreamController = StreamController();
     showAddScreen = false;
     facultyList = [];
     facultyModel = FacultyModel();
@@ -80,8 +73,8 @@ class FacultyMethods {
       await facultyModel.read(facultyList).whenComplete(() {
         facultyStreamController.add(5); // notify pop
         facultyStreamController.add(5); // notify pop
-        facultyStreamController.add(2);
-        facultyStreamController.add(0);
+        facultyStreamController.add(2); // notify success
+        setState();
         facultyNames.add(facultyList.last.facultyName!.toLowerCase());
       });
     });

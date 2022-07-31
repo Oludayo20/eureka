@@ -10,7 +10,6 @@ class Layout {
   }) {
     width = size.width;
     height = size.height;
-    print(width);
     isAndroid = width < 600 ? true : false;
   }
 }

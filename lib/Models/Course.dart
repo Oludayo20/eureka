@@ -2,6 +2,8 @@ import 'dart:core';
 
 import 'package:firebase_database/firebase_database.dart';
 
+import '../services/DataBaseHelper.dart';
+
 class Course {
   int? courseId;
   String? courseTitle;
@@ -32,8 +34,8 @@ class Course {
         'semester': semester,
       };
 
+  DatabaseReference ref = FirebaseDatabase.instance.ref(DataBaseHelper.coursesNoteDbName);
   Future read(List<Course> list) async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref("Courses");
     var x = await ref.once();
     if (x.snapshot.value == null) return;
     try {
@@ -50,15 +52,12 @@ class Course {
       } catch (d) {}
     }
   }
-
   Future update(Course data) async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref("Courses");
     await ref
         .child(data.courseId.toString())
         .set(data.toJson());
   }
-Future readById(List<Course> list, int id) async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref("Courses");
+  Future readById(List<Course> list, int id) async {
     await ref
         .child(id.toString()).once().then((value){
           try{
@@ -68,15 +67,11 @@ Future readById(List<Course> list, int id) async {
           }
     });
   }
-
   Future delete(int id) async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref("Courses");
     await ref.child(id.toString()).remove();
   }
-
   Future create(Course data) async {
     try {
-      DatabaseReference ref = FirebaseDatabase.instance.ref("Courses");
       await ref
           .limitToLast(1)
           .once()

@@ -21,7 +21,6 @@ class Department {
   Future read(List<Department> deptList, int facultyId) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref("Department");
     var x = await ref.child(facultyId.toString()).once();
-    //orderByChild("facultyId").equalTo(facultyId.toString())
     if (x.snapshot.value == null) return;
     try {
       List<dynamic> values = x.snapshot.value as List<dynamic>;

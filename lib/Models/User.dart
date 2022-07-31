@@ -20,8 +20,9 @@ class CurrentUser {
   String? email;
   bool? emailVerified;
   bool? isAnonymous;
+  String? uid;
   CurrentUser(
-      {this.displayName, this.email, this.emailVerified, this.isAnonymous});
+      {this.displayName, this.email, this.emailVerified, this.isAnonymous,this.uid});
 
   CurrentUser.fromJson(Map<String, dynamic> json) {
     isAnonymous = json['isAnonymous'];

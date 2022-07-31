@@ -13,10 +13,11 @@ import 'SmallScreen.dart';
 import 'Stream.dart';
 import '../QuizView/CRUD/Create.dart';
 class QuizView extends StatefulWidget {
-  const QuizView({Key? key, required this.title, required this.lectureNoteId})
+  const QuizView({Key? key, required this.title, required this.lectureNoteId, required this.quizList})
       : super(key: key);
   final String title;
   final int lectureNoteId;
+  final List<Quiz> quizList;
   @override
   State<QuizView> createState() => _QuizViewState();
 }
@@ -42,7 +43,8 @@ class _QuizViewState extends State<QuizView> {
     });
     model = Quiz();
     isAdmin = AuthenticationHelper().isAdmin();
-    getQuestion();
+    if(isAdmin)getQuestion();
+    else list = widget.quizList;
   }
 
   @override
@@ -177,7 +179,7 @@ class _QuizViewState extends State<QuizView> {
         ontap: () {
           _scaffoldKey.currentState!.openDrawer();
         },
-        title: "${widget.title}/Quiz",
+        title: "Self Quiz",
       ),
       body: width < 600
           ? SmallScreen(

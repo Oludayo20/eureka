@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../Models/Faculty.dart';
 import '../../../Util/Notify.dart';
+import '../Department/DepartmentView.dart';
 import 'Methods.dart';
 
 Future<void> showMyDialogCreate(
@@ -166,4 +167,95 @@ Future<void> showMyDialogEdit(BuildContext context, FacultyModel facultyModel,
       );
     },
   );
+}
+
+List<Widget> facultyByRow(
+    List<FacultyModel> facultyList, BuildContext context, FacultyMethods facultyMethods) {
+  List<Widget> items = [];
+
+  items.add(Card(
+    color: Colors.white12,
+    child: ListTile(
+      trailing: Text(
+        "Action",
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+      ),
+      title: Text(
+        "Faculty Name",
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+      ),
+    ),
+  ));
+  for (var i = 0; i < facultyList.length; i += 1) {
+    items.add(Card(
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 20),
+              child: Text(
+                facultyList[i].facultyName!,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                IconButton(
+                    color: Colors.blue,
+                    onPressed: () {
+                      showMyDialogEdit(
+                          context, facultyList[i], facultyMethods);
+                    },
+                    icon: Icon(
+                      Icons.edit,
+                    )),
+                IconButton(
+                    color: Colors.red,
+                    onPressed: () {
+                      showMyDialogDelete(context, facultyList[i].facultyId!,
+                          facultyMethods);
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                    )),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => DepartmentView(
+                          facultyId: facultyList[i].facultyId!,
+                          title: facultyList[i].facultyName!,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Departments",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                      fontSize: 15,
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
+        )));
+  }
+
+  return items;
 }

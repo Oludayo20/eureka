@@ -2,13 +2,21 @@ import 'package:flutter/material.dart';
 
 class SubjectCard extends StatelessWidget {
   final String? subjectname;
-  final String? chapter;
+  final Function? reviewQuiz;
   final String? date;
   final String? time;
   final String? grade;
   final String? mark;
 
-  SubjectCard({Key? key, this.subjectname, this.chapter, this.date, this.time, this.grade, this.mark}) : super(key: key);
+  SubjectCard(
+      {Key? key,
+      this.subjectname,
+      this.reviewQuiz,
+      this.date,
+      this.time,
+      this.grade,
+      this.mark})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -59,12 +67,15 @@ class SubjectCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text(
-                      "${chapter} chapters",
-                      style: TextStyle(
-                        fontSize: 12,
+                    TextButton(
+                      onPressed: () => reviewQuiz,
+                      child: Text(
+                        "Review",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ],
