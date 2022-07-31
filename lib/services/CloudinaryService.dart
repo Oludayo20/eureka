@@ -2,7 +2,8 @@ import 'dart:typed_data';
 
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:file_picker/file_picker.dart';
-class CloudinaryService{
+
+class CloudinaryService {
   Future getPdf() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {

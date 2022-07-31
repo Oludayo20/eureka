@@ -13,6 +13,7 @@ import 'package:school_management/firebase_options.dart';
 
 import 'Models/Student.dart';
 import 'Util/Notify.dart';
+import 'Util/email.dart';
 
 void main() {
   Future init() async {
@@ -40,9 +41,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Faculty()
-      //Test()
-        //CompleteRegistration()
+        home: sendEmail()
+        // Faculty()
+        //Test()
+        // CompleteRegistration()
         // SignUp()
         // MyHomePage()
         // SpleashScreen()
@@ -59,9 +61,7 @@ class Test extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: TextButton(
-          onPressed: () {
-
-          },
+          onPressed: () {},
           child: Text("Text"),
         ),
       ),

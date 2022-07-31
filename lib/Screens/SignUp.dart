@@ -441,6 +441,8 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
 
   void _getSemester(String semester) {}
   void _getFaculty(String faculty) {}
+
+  
   void _getDepartment(String department) {
     List<Department> dList = [];
     departmentList.clear();
@@ -639,7 +641,7 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                                     ? layout.width * 0.8
                                     : layout.width * 0.34,
                                 "Program/Course",
-                                levelList,
+                                programList,
                                 _getProgramm),
                           ),
 

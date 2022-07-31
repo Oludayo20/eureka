@@ -8,21 +8,27 @@ class WebMenu extends StatelessWidget {
   WebMenu({this.isAndroid});
   @override
   Widget build(BuildContext context) {
-    return Obx(() => isAndroid!? Column(
-        children: List.generate(
-            _controller.menuItems.length,
+    return Obx(
+      () => isAndroid!
+          ? Column(
+              children: List.generate(
+                  _controller.menuItems.length,
+                  (index) => WebMenuItem(
+                        text: _controller.menuItems[index],
+                        isActive: index == _controller.selectedIndex,
+                        press: () => _controller.setMenuIndex(index),
+                      )))
+          : Row(
+              children: List.generate(
+                _controller.menuItems.length,
                 (index) => WebMenuItem(
-              text: _controller.menuItems[index],
-              isActive: index == _controller.selectedIndex,
-              press: () => _controller.setMenuIndex(index),
-            ))): Row(
-        children: List.generate(
-            _controller.menuItems.length,
-            (index) => WebMenuItem(
                   text: _controller.menuItems[index],
                   isActive: index == _controller.selectedIndex,
                   press: () => _controller.setMenuIndex(index),
-                ))));
+                ),
+              ),
+            ),
+    );
   }
 }
 
@@ -43,7 +49,6 @@ class WebMenuItem extends StatefulWidget {
 }
 
 class _WebMenuItemState extends State<WebMenuItem> {
-
   bool _isHover = false;
 
   Color _borderColor() {
@@ -61,7 +66,7 @@ class _WebMenuItemState extends State<WebMenuItem> {
       onTap: widget.press,
       onHover: (value) {
         setState(() {
-        _isHover = value;
+          _isHover = value;
         });
       },
       child: AnimatedContainer(
@@ -70,9 +75,7 @@ class _WebMenuItemState extends State<WebMenuItem> {
         padding: EdgeInsets.symmetric(vertical: 20 / 2),
         decoration: BoxDecoration(
             border: Border(
-          bottom: BorderSide(
-              color: _borderColor(),
-              width: 3),
+          bottom: BorderSide(color: _borderColor(), width: 3),
         )),
         child: Text(
           widget.text!,
