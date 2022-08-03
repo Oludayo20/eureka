@@ -12,12 +12,14 @@ class QuestionView extends StatefulWidget {
   final Map<int, int> selectedOption;
   final StreamController<int> numberButtonStreamController;
   final Quiz quiz;
+  final bool isReviewing;
   const QuestionView(
       {Key? key,
       required this.questionNumber,
       required this.quiz,
       required this.selectedOption,
-      required this.numberButtonStreamController})
+      required this.numberButtonStreamController,
+      required this.isReviewing})
       : super(key: key);
 
   @override
@@ -31,7 +33,7 @@ class _QuestionViewState extends State<QuestionView> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    bool isAdmin =  AuthenticationHelper().isAdmin();
+    bool isAdmin = AuthenticationHelper().isAdmin();
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -43,26 +45,30 @@ class _QuestionViewState extends State<QuestionView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                isAdmin? Container(
-                  child: IconButton(
-                      color: Colors.blue,
-                      onPressed: () {
-                        showMyDialogCEdit(context, widget.quiz);
-                      },
-                      icon: Icon(
-                        Icons.edit,
-                      )),
-                ):Container(),
-                isAdmin?Container(
-                  child: IconButton(
-                      color: Colors.red,
-                      onPressed: () {
-                        showMyDialogDelete(context, widget.quiz);
-                      },
-                      icon: Icon(
-                        Icons.delete,
-                      )),
-                ):Container(),
+                isAdmin
+                    ? Container(
+                        child: IconButton(
+                            color: Colors.blue,
+                            onPressed: () {
+                              showMyDialogCEdit(context, widget.quiz);
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                            )),
+                      )
+                    : Container(),
+                isAdmin
+                    ? Container(
+                        child: IconButton(
+                            color: Colors.red,
+                            onPressed: () {
+                              showMyDialogDelete(context, widget.quiz);
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                            )),
+                      )
+                    : Container(),
                 Container(
                   margin: EdgeInsets.only(right: 20),
                   child: Center(
@@ -108,7 +114,6 @@ class _QuestionViewState extends State<QuestionView> {
     );
   }
 
-
   Widget clearOption() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -145,9 +150,20 @@ class _QuestionViewState extends State<QuestionView> {
     );
   }
 
+  Color isCorrectOption(int opt) {
+    if (widget.selectedOption[widget.questionNumber] == widget.quiz.answer)
+      return Colors.greenAccent;
+    else
+      return Colors.redAccent;
+  }
+
   Widget options(String option, int opt) {
     return GestureDetector(
         child: Container(
+          color: widget.isReviewing &&
+                  opt == widget.selectedOption[widget.questionNumber]
+              ? isCorrectOption(opt)
+              : null,
           padding: EdgeInsets.all(10),
           child: Row(
             children: [
@@ -166,7 +182,9 @@ class _QuestionViewState extends State<QuestionView> {
             ],
           ),
         ),
-        onTap: () => onClickOption(opt));
+        onTap: () => widget.isReviewing || AuthenticationHelper().isAdmin()
+            ? () {}
+            : onClickOption(opt));
   }
 
   void onClickOption(int opt) {

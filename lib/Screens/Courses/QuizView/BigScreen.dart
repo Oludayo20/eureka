@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../../../Widgets/BouncingButton.dart';
+import '../../../services/authentication_helper.dart';
+import 'CRUD/Create.dart';
 import 'Methods.dart';
 import 'QuestionView.dart';
 import 'ViewQuestions.dart';
@@ -10,12 +11,16 @@ class BigScreen extends StatelessWidget {
       {Key? key,
       required this.buttonColumn,
       required this.questionMap,
-      required this.streamController, required this.submitMethod})
+      required this.streamController,
+      required this.submitMethod,
+      required this.isReviewing, required this.lectureNoteId})
       : super(key: key);
   final Function buttonColumn;
   final StreamController<int> streamController;
   final Map<int, QuestionView> questionMap;
   final Function submitMethod;
+  final bool isReviewing;
+  final int lectureNoteId;
   @override
   Widget build(BuildContext context) {
     QuizMethods quizMethods = QuizMethods(
@@ -54,14 +59,15 @@ class BigScreen extends StatelessWidget {
               ),
             ),
             Container(
-              width: width * 0.7,
-              height: height * 0.8,
-              child: questionMap.isNotEmpty?ViewQuestions(
-                controller2: controller2,
-                questionMap: questionMap,
-                streamController: streamController,
-              ):Container()
-            ),
+                width: width * 0.7,
+                height: height * 0.8,
+                child: questionMap.isNotEmpty
+                    ? ViewQuestions(
+                        controller2: controller2,
+                        questionMap: questionMap,
+                        streamController: streamController,
+                      )
+                    : Container()),
           ],
         ),
         Row(
@@ -75,9 +81,27 @@ class BigScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextButton(onPressed: ()=>quizMethods.previousQuestion(), child: Text("Previous")),
-                  TextButton(onPressed: ()=>submitMethod(), child: Text("Submit")),
-                  TextButton(onPressed: ()=>quizMethods.nextQuestion(), child: Text("Next")),
+                  TextButton(
+                      onPressed: () => quizMethods.previousQuestion(),
+                      child: Text("Previous")),
+                  AuthenticationHelper().isAdmin()
+                      ? TextButton(
+                      onPressed: () {
+                        showMyDialogCreate(context, lectureNoteId);
+                      },
+                      child: Text("Add new Quiz"))
+                      : isReviewing
+                          ? TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text("End review"))
+                          : TextButton(
+                              onPressed: () => submitMethod(),
+                              child: Text("Submit")),
+                  TextButton(
+                      onPressed: () => quizMethods.nextQuestion(),
+                      child: Text("Next")),
                 ],
               ),
             )

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:school_management/Screens/SignUp.dart';
-
 import '../../Util/ImagePath.dart';
 
 class AboutUs extends StatelessWidget {
@@ -23,6 +21,7 @@ class AboutUs extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+
                     Container(
                       width: height * 0.07,
                       height: height * 0.1,
@@ -213,6 +212,9 @@ class AboutUs extends StatelessWidget {
                                       image: NetworkImage(ImagePath.aboutUs),
                                       fit: BoxFit.fill),
                                 )),
+                            SizedBox(
+                              height: height * 0.1,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [

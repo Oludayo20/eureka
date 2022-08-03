@@ -579,10 +579,13 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                       context,
                       MaterialPageRoute(
                         builder: (BuildContext context) => QuizView(
+                          quizViewArgument: QuizViewArgument(
+                            isReviewing: false,
+                            selectedOption: {},
                           lectureNoteId: list[i].lectureNoteId!,
                           title: " ",
                           quizList: [],
-                        ),
+                        )),
                       ),
                     );
                   },

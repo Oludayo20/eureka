@@ -1,16 +1,11 @@
-// import 'package:firebase_core/firebase_core.dart';
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get_utils/get_utils.dart';
 import 'package:school_management/Models/ProgramCourse.dart';
 import 'package:school_management/Models/User.dart';
 import 'package:school_management/Screens/Students/EachCourse/EachCourse.dart';
 import 'package:school_management/Util/Notify.dart';
 import 'package:school_management/Widgets/AppBar.dart';
 import 'package:school_management/Widgets/MainDrawer.dart';
-
 import '../../../Models/Course.dart';
 import '../../../Models/LectureNote.dart';
 import '../../../Models/Student.dart';
@@ -27,7 +22,7 @@ class StudentHome extends StatefulWidget {
 
 class _HomeState extends State<StudentHome>
     with SingleTickerProviderStateMixin {
-  Animation? animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
+  Animation? animation, delayedAnimation, muchDelayedAnimation, leftCurve;
   AnimationController? animationController;
   List<Widget> showingWidgets = [];
   int selectedCourse = 0;
@@ -38,7 +33,6 @@ class _HomeState extends State<StudentHome>
   void initState() {
     // TODO: implement initState
     super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([]);
     animationController =
         AnimationController(duration: Duration(seconds: 3), vsync: this);
     animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
@@ -52,7 +46,7 @@ class _HomeState extends State<StudentHome>
         parent: animationController!,
         curve: Interval(0.8, 1.0, curve: Curves.fastOutSlowIn)));
 
-    LeftCurve = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
+    leftCurve = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
         parent: animationController!,
         curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
     AuthenticationHelper authenticationHelper = AuthenticationHelper();
@@ -148,7 +142,6 @@ class _HomeState extends State<StudentHome>
                 color: Colors.black,
                 image: DecorationImage(
                     image: NetworkImage(ImagePath.home),
-                    //image: AssetImage(ImagePath().homePageImageAssert),
                     fit: layout.isAndroid ? BoxFit.cover : BoxFit.fill)),
             child: ListView(
               children: studentCoursesByColumn(

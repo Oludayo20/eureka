@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:school_management/Models/User.dart';
 import 'package:school_management/Widgets/AppBar.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
@@ -17,15 +16,13 @@ class AdminHome extends StatefulWidget {
 }
 
 class _HomeState extends State<AdminHome> with SingleTickerProviderStateMixin {
-  Animation? animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
+  Animation? animation, delayedAnimation, muchDelayedAnimation, leftCurve;
   AnimationController? animationController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // Firebase.initializeApp();
-    SystemChrome.setEnabledSystemUIOverlays([]);
     animationController =
         AnimationController(duration: Duration(seconds: 3), vsync: this);
     animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
@@ -39,7 +36,7 @@ class _HomeState extends State<AdminHome> with SingleTickerProviderStateMixin {
         parent: animationController!,
         curve: Interval(0.8, 1.0, curve: Curves.fastOutSlowIn)));
 
-    LeftCurve = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
+    leftCurve = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
         parent: animationController!,
         curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
   }
@@ -54,7 +51,6 @@ class _HomeState extends State<AdminHome> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
 
     animationController!.forward();
     return AnimatedBuilder(

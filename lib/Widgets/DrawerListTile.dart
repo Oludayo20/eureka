@@ -11,7 +11,7 @@ class DrawerListTile extends StatelessWidget {
     return ListTile(
       onTap:ontap,
       leading: Image.asset(
-        "assets/${imgpath}",
+        "assets/$imgpath",
         height: 30,
       ),
       contentPadding: EdgeInsets.only(
@@ -20,7 +20,7 @@ class DrawerListTile extends StatelessWidget {
         bottom: 5,
       ),
       title: Text(
-        "${name}",
+        "$name",
         style: TextStyle(
           fontWeight: FontWeight.bold,
         ),

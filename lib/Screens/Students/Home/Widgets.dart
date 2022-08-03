@@ -35,15 +35,7 @@ List<Widget> studentCoursesByColumn(
     Animation muchDelayedAnimation,
     Student student,
     Function showEachCourse) {
-
   List<Widget> items = [];
-  /*items.add(UserDetailCard(
-      user: UserApp(
-    standard: "1",
-    section: "First",
-    profilePic: "profile.png",
-    userName: student.fullName,
-  )));*/
   for (var i = 0; i < courseList.length; i += 2) {
     items.add(Padding(
       padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),

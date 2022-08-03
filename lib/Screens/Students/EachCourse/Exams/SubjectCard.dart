@@ -1,25 +1,53 @@
 import 'package:flutter/material.dart';
 
+import '../../../../Models/Quiz.dart';
+import '../../../../Models/QuizResult.dart';
+import '../../../../Util/Notify.dart';
+import '../../../../services/authentication_helper.dart';
+import '../../../Courses/QuizView/Quiz.dart';
+
 class SubjectCard extends StatelessWidget {
   final String? subjectname;
-  final Function? reviewQuiz;
   final String? date;
-  final String? time;
+  final String? timeTaken;
+  final String? startTime;
   final String? grade;
   final String? mark;
-
+  final int lectureNoteId;
   SubjectCard(
       {Key? key,
       this.subjectname,
-      this.reviewQuiz,
       this.date,
-      this.time,
+      this.timeTaken,
       this.grade,
-      this.mark})
+      this.mark, required this.lectureNoteId, this.startTime})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
+    Future<void> reviewQuiz() async {
+      Notify.loading(context, "");
+      var uid = AuthenticationHelper().getUser()!.uid!;
+      await QuizResult().read(lectureNoteId, uid, startTime!).then((value) async {
+        List<Quiz> quizList = [];
+        await Quiz().read(quizList, lectureNoteId).whenComplete(() {
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => QuizView(
+                  quizViewArgument: QuizViewArgument(
+                    isReviewing: true,
+                    selectedOption: value,
+                    lectureNoteId: lectureNoteId,
+                    title: "",
+                    quizList: quizList,
+                  )),
+            ),
+          );
+        });
+      });
+    }
+
     final double height = MediaQuery.of(context).size.height;
     return Container(
       decoration: BoxDecoration(
@@ -60,7 +88,7 @@ class SubjectCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Text(
-                        "${subjectname}",
+                        "$subjectname",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -68,7 +96,7 @@ class SubjectCard extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () => reviewQuiz,
+                      onPressed: () => reviewQuiz(),
                       child: Text(
                         "Review",
                         style: TextStyle(
@@ -86,7 +114,7 @@ class SubjectCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    "${date}",
+                    "$date",
                     style: TextStyle(
                       fontSize: 12,
                     ),
@@ -95,7 +123,7 @@ class SubjectCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    "${time}",
+                    "$timeTaken",
                     style: TextStyle(
                       fontSize: 12,
                     ),
@@ -105,7 +133,7 @@ class SubjectCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Marks:${mark}",
+                      "Marks:$mark",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -115,7 +143,7 @@ class SubjectCard extends StatelessWidget {
                       width: 5,
                     ),
                     Text(
-                      "Grade:${grade}",
+                      "Grade:$grade",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,

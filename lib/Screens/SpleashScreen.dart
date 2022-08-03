@@ -1,17 +1,9 @@
 import 'dart:async';
 // import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:school_management/Models/LectureNote.dart';
-import 'package:school_management/Screens/Admin/Faculty/Faculty.dart';
-import 'package:school_management/Screens/Home_Page.dart';
-import 'package:school_management/Screens/LoginPage.dart';
 
-import 'Admin/HomePage/HomePage.dart';
 import 'Courses/Course.dart';
-import 'SignUp.dart';
 
 class SpleashScreen extends StatefulWidget {
   @override

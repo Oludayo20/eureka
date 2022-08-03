@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/LectureNote.dart';
-
 import '../../../../Models/QuizResultInfo.dart';
 import '../../../../Util/screen_layout.dart';
 import '../../../../Widgets/AppBar.dart';
 import '../../../../Widgets/MainDrawer.dart';
 import '../../../../services/authentication_helper.dart';
+import '../../Events.dart';
 import '../DisplayNote.dart';
 import '../Exams/Exam_Rseult.dart';
 
@@ -17,19 +17,17 @@ class NoteView extends StatelessWidget {
     void onSelfQuizClick() {
       var uid = AuthenticationHelper().getUser()!.uid!;
       QuizResultInfo().read(lectureNote.lectureNoteId!, uid).then((value) {
-        Navigator.push(
+        print(uid);
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => ExamResult(
-              quizResultInfo: value,
-              lectureNote: lectureNote,
-            ),
-          ),
+          ExamResult.routeName,
+          arguments: ExamResultArguments(
+              lectureNote:lectureNote, quizResultInfo: value),
         );
       });
     }
-
     Layout layout = Layout(size: MediaQuery.of(context).size);
+
     final GlobalKey<ScaffoldState> _scaffoldKey =
         new GlobalKey<ScaffoldState>();
     return Scaffold(
@@ -85,14 +83,32 @@ class NoteView extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-          padding: EdgeInsets.all(20),
-          child: Container(
-            //height: layout.height * 0.8,
-            child: ListView(children: [
+      body: layout.isAndroid
+          ? Container(
+          padding: EdgeInsets.all(10),
+          child: ListView(
+            children: [
+              SizedBox(height: layout.height * 0.02,),
               Text(lectureNote.noteWriteUp!),
-            ]),
-          )),
+              SizedBox(height: layout.height * 0.3,),
+              EurekaEvents()
+            ],
+          ))
+          : Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Container(
+              width: layout.width * 0.45,
+              padding: EdgeInsets.all(10),
+              child: ListView(
+                children: [
+                  SizedBox(height: layout.height * 0.02,),
+                  Text(lectureNote.noteWriteUp!),
+                ],
+              )),
+          EurekaEvents()
+        ],
+      ),
     );
   }
 }

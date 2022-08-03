@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:school_management/Screens/SignUp.dart';
-
 import '../../Util/ImagePath.dart';
 import '../../Widgets/Home_C_AppBar.dart';
 import '../Home_C/WebMenu.dart';

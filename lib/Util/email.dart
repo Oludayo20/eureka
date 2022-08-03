@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class sendEmail extends StatefulWidget {
-  sendEmail({Key? key}) : super(key: key);
+class SendEmail extends StatefulWidget {
+  SendEmail({Key? key}) : super(key: key);
 
   @override
-  State<sendEmail> createState() => _sendEmailState();
+  State<SendEmail> createState() => _SendEmailState();
 }
 
-class _sendEmailState extends State<sendEmail> {
+class _SendEmailState extends State<SendEmail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

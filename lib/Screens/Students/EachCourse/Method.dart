@@ -1,4 +1,3 @@
-import '../../../Models/Course.dart';
 import '../../../Models/LectureNote.dart';
 
 class EachCourseMethod {

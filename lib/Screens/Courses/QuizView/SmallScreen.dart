@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../../../Widgets/BouncingButton.dart';
+import '../../../services/authentication_helper.dart';
+import 'CRUD/Create.dart';
 import 'Methods.dart';
 import 'QuestionView.dart';
 import 'ViewQuestions.dart';
@@ -8,14 +9,18 @@ import 'ViewQuestions.dart';
 class SmallScreen extends StatelessWidget {
   const SmallScreen(
       {Key? key,
-        required this.buttonColumn,
-        required this.questionMap,
-        required this.streamController, required this.submitMethod})
+      required this.buttonColumn,
+      required this.questionMap,
+      required this.streamController,
+      required this.submitMethod,
+      required this.isReviewing, required this.lectureNoteId})
       : super(key: key);
   final Function buttonColumn;
   final StreamController<int> streamController;
   final Map<int, QuestionView> questionMap;
   final Function submitMethod;
+  final bool isReviewing;
+  final int lectureNoteId;
   @override
   Widget build(BuildContext context) {
     QuizMethods quizMethods = QuizMethods(
@@ -27,7 +32,7 @@ class SmallScreen extends StatelessWidget {
     double textButtonHeight = height * 0.05;
     ScrollController controller = ScrollController();
     ScrollController controller2 = ScrollController();
-    Widget buttonCol(){
+    Widget buttonCol() {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: buttonColumn(
@@ -38,30 +43,48 @@ class SmallScreen extends StatelessWidget {
             textButtonWidth: textButtonWidth),
       );
     }
+
     var butC = buttonCol();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          width: width * 0.9,
-          height: height * 0.7,
-
-          child: questionMap.isNotEmpty?ViewQuestions(
-            controller2: controller2,
-            questionMap: questionMap,
-            streamController: streamController,
-          ):Container()
-        ),
+            width: width * 0.9,
+            height: height * 0.7,
+            child: questionMap.isNotEmpty
+                ? ViewQuestions(
+                    controller2: controller2,
+                    questionMap: questionMap,
+                    streamController: streamController,
+                  )
+                : Container()),
         Container(
           width: width * 0.7,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextButton(onPressed: ()=>quizMethods.previousQuestion(), child: Text("Previous")),
-              TextButton(onPressed: ()=>submitMethod(), child: Text("Submit")),
-              TextButton(onPressed: ()=>quizMethods.nextQuestion(), child: Text("Next")),
-
+              TextButton(
+                  onPressed: () => quizMethods.previousQuestion(),
+                  child: Text("Previous")),
+              AuthenticationHelper().isAdmin()
+                  ? TextButton(
+                  onPressed: () {
+                    showMyDialogCreate(context, lectureNoteId);
+                  },
+                  child: Text("Add new Quiz"))
+                  : isReviewing
+                      ? TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("End review"))
+                      : TextButton(
+                          onPressed: () => submitMethod(),
+                          child: Text("Submit")),
+              TextButton(
+                  onPressed: () => quizMethods.nextQuestion(),
+                  child: Text("Next")),
             ],
           ),
         ),
@@ -75,9 +98,7 @@ class SmallScreen extends StatelessWidget {
             controller: controller,
             child: ListView(
               controller: controller,
-              children: [
-                butC
-              ],
+              children: [butC],
             ),
           ),
         ),

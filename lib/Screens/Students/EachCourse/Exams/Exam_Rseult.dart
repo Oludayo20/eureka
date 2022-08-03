@@ -1,38 +1,36 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_utils/get_utils.dart';
 import 'package:school_management/Models/LectureNote.dart';
 import 'package:school_management/Models/QuizResultInfo.dart';
 import 'package:school_management/Util/Notify.dart';
-
 import 'package:school_management/Widgets/AppBar.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 import 'package:school_management/Widgets/MainDrawer.dart';
-
 import '../../../../Models/Quiz.dart';
 import '../../../Courses/QuizView/Quiz.dart';
 import 'SubjectCard.dart';
 
-class ExamResult extends StatefulWidget {
-  const ExamResult(
-      {Key? key, required this.lectureNote, required this.quizResultInfo})
-      : super(key: key);
+class ExamResultArguments {
   final LectureNote lectureNote;
   final List<QuizResultInfo> quizResultInfo;
+  ExamResultArguments(
+      {required this.lectureNote, required this.quizResultInfo});
+}
+
+class ExamResult extends StatefulWidget {
+  const ExamResult({Key? key}) : super(key: key);
+  static const routeName = '/selfQuizResultPage';
   @override
   _ExamResultState createState() => _ExamResultState();
 }
 
 class _ExamResultState extends State<ExamResult>
     with SingleTickerProviderStateMixin {
-  Animation? animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
+  Animation? animation, delayedAnimation, muchDelayedAnimation, leftCurve;
   AnimationController? animationController;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    //SystemChrome.setEnabledSystemUIOverlays([]);
-
     animationController =
         AnimationController(duration: Duration(seconds: 3), vsync: this);
     animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
@@ -54,7 +52,7 @@ class _ExamResultState extends State<ExamResult>
     super.dispose();
   }
 
-  List<Widget> pastSelfQuizBuild() {
+  List<Widget> pastSelfQuizBuild(ExamResultArguments arguments) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     List<Widget> item = [];
@@ -70,7 +68,7 @@ class _ExamResultState extends State<ExamResult>
             transform: Matrix4.translationValues(
                 muchDelayedAnimation!.value * width, 0, 0),
             child: Text(
-              "Note Title: ${widget.lectureNote.title!}",
+              "Note Title: ${arguments.lectureNote.title!}",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 17,
@@ -97,11 +95,11 @@ class _ExamResultState extends State<ExamResult>
       height: height * 0.02,
     ));
 
-    for (int i = 0; i < widget.quizResultInfo.length; i++) {
-      var time = int.parse(widget.quizResultInfo[i].startTime!);
+    for (int i = 0; i < arguments.quizResultInfo.length; i++) {
+      var time = int.parse(arguments.quizResultInfo[i].startTime!);
       var date = DateTime.fromMicrosecondsSinceEpoch(time);
       var timeTaken = DateTime.fromMicrosecondsSinceEpoch(
-              int.parse(widget.quizResultInfo[i].endTime!))
+              int.parse(arguments.quizResultInfo[i].endTime!))
           .subtract(Duration(
               days: date.day,
               hours: date.hour,
@@ -113,12 +111,13 @@ class _ExamResultState extends State<ExamResult>
               muchDelayedAnimation!.value * width, 0, 0),
           child: SubjectCard(
             subjectname: "Quiz ${i + 1}",
-            reviewQuiz: () => reviewQuiz(widget.quizResultInfo[i].startTime!),
+            lectureNoteId:  arguments.lectureNote.lectureNoteId!,
             date: "${date.day}/${date.month}/${date.year}",
-            grade: grade(widget.quizResultInfo[i].questionNumber!,
-                widget.quizResultInfo[i].score!),
-            mark: "${widget.quizResultInfo[i].score}",
-            time: "${timeTaken.hour}:${timeTaken.minute}:${timeTaken.second}",
+            grade: grade(arguments.quizResultInfo[i].questionNumber!,
+                arguments.quizResultInfo[i].score!),
+            mark: "${arguments.quizResultInfo[i].score}",
+            timeTaken: "${timeTaken.hour}:${timeTaken.minute}:${timeTaken.second}",
+            startTime: arguments.quizResultInfo[i].startTime!,
           ),
         ),
       );
@@ -126,12 +125,12 @@ class _ExamResultState extends State<ExamResult>
         height: height * 0.02,
       ));
     }
+    item.add(SizedBox(
+      height: height * 0.1,
+    ));
     return item;
   }
 
-  void reviewQuiz(String time) {
-    print(time);
-  }
 
   String grade(int total, int score) {
     var pec = (total / score) * 100;
@@ -147,10 +146,12 @@ class _ExamResultState extends State<ExamResult>
       return "A";
   }
 
-  void takeQuiz() {
+  void takeQuiz(ExamResultArguments arguments) {
     List<Quiz> quizList = [];
     Notify.loading(context, "");
-    Quiz().read(quizList, widget.lectureNote.lectureNoteId!).whenComplete(() {
+    Quiz()
+        .read(quizList, arguments.lectureNote.lectureNoteId!)
+        .whenComplete(() {
       Navigator.pop(context);
       if (quizList.length == 0) {
         Notify.error(context, "Quiz not yet available");
@@ -160,10 +161,13 @@ class _ExamResultState extends State<ExamResult>
         context,
         MaterialPageRoute(
           builder: (BuildContext context) => QuizView(
-            lectureNoteId: widget.lectureNote.lectureNoteId!,
+              quizViewArgument: QuizViewArgument(
+                isReviewing: false,
+            selectedOption: {},
+            lectureNoteId: arguments.lectureNote.lectureNoteId!,
             title: "",
             quizList: quizList,
-          ),
+          )),
         ),
       );
     });
@@ -171,6 +175,11 @@ class _ExamResultState extends State<ExamResult>
 
   @override
   Widget build(BuildContext context) {
+    if (ModalRoute.of(context)!.settings.arguments == null) {
+      Navigator.popUntil(context, ModalRoute.withName("/"));
+    }
+    final args =
+        ModalRoute.of(context)!.settings.arguments as ExamResultArguments;
     final double width = MediaQuery.of(context).size.width;
     animationController!.forward();
     return AnimatedBuilder(
@@ -199,7 +208,7 @@ class _ExamResultState extends State<ExamResult>
                   horizontal: 15,
                 ),
                 child: Column(
-                  children: pastSelfQuizBuild(),
+                  children: pastSelfQuizBuild(args),
                 ),
               ),
             ),
@@ -240,7 +249,7 @@ class _ExamResultState extends State<ExamResult>
                     transform: Matrix4.translationValues(
                         delayedAnimation!.value * width, 0, 0),
                     child: Bouncing(
-                      onPress: () => takeQuiz(),
+                      onPress: () => takeQuiz(args),
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.blue,

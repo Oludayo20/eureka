@@ -5,13 +5,8 @@ import 'package:fzregex/utils/pattern.dart';
 import 'package:school_management/Models/Department.dart';
 import 'package:school_management/Models/Faculty.dart';
 import 'package:school_management/Models/Programs.dart';
-import 'package:school_management/Models/User.dart';
-import 'package:school_management/Screens/Admin/HomePage/HomePage.dart';
-import 'package:school_management/Util/Notify.dart';
 import 'package:school_management/Util/screen_layout.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
-import '../services/authentication_helper.dart';
-import 'RequestProcessing.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -45,9 +40,8 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
 
   bool passshow1 = false;
   bool passshow2 = false;
-  String? _pass;
   var confirmPass;
-  late String email, phno, _class, name, rollno = "";
+  late String email, phno, name, rollno = "";
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   @override
@@ -127,7 +121,6 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                 TextFormField(
                                   validator: (value) {
                                     RegExp nameRegExp = RegExp('[a-zA-Z]');
-                                    RegExp numberRegExp = RegExp(r'\d');
                                     if (value!.isEmpty) {
                                       return 'You Must enter your Username!';
                                     } else if (nameRegExp.hasMatch(value)) {
@@ -283,7 +276,6 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                     }
                                   },
                                   onSaved: (val) {
-                                    _pass = val;
                                   },
                                   decoration: InputDecoration(
                                       suffix: passshow2 == false
@@ -407,7 +399,6 @@ class CompleteRegistration extends StatefulWidget {
 class _CompleteRegistrationState extends State<CompleteRegistration> {
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
-  String _selectedItemCountry = "Italia";
 
   List<String> facultyList = [];
   Map<String, int> facultyMap = {};
@@ -439,7 +430,6 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
   }
 
   void _getSemester(String semester) {}
-  void _getFaculty(String faculty) {}
 
 
   void _getDepartment(String department) {

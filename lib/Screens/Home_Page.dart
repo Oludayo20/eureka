@@ -53,12 +53,12 @@ class _HomePageState extends State<HomePage> {
       )
     ];
     return Scaffold(
-      bottomSheet: Container(
+     /* bottomSheet: Container(
         width: width,
         height: height * 0.12,
         color: Colors.black,
         child: Image(image: NetworkImage(ImagePath.awRap), fit: BoxFit.cover),
-      ),
+      ),*/
       body: Container(
         width: width,
         height: width > 600 ? height * 1.3 : height * 1.5,

@@ -19,4 +19,8 @@ class ImagePath {
       "https://res.cloudinary.com/richkazz/image/upload/v1657756482/TeamHome_la37a2.webp";
   static String teamAssets = "TeamHome.webp";
   static String team = teamNetwork;
+  static String dayoProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/Dayo_tepm5z.jpg";
+  static String dipoProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/Dipo_dvozjl.jpg";
+  static String davidProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/David_v1b5jj.jpg";
+  static String karoProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529121/Eureka/Profile%20Pic/karo_dqicoq.jpg";
 }

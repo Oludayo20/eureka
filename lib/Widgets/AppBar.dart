@@ -69,7 +69,7 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        "${title}",
+        "$title",
         style: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,

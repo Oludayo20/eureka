@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'QuestionView.dart';
 
 class NumberButtons extends StatefulWidget {
   const NumberButtons(
@@ -34,6 +33,7 @@ class _NumberButtonsState extends State<NumberButtons> {
             ? buttonColor = Colors.white
             : buttonColor = Colors.black12;
         setState(() {});
+        print(event);
       }
     });
     widget.selectedOption[widget.number] == 0

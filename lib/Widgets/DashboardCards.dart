@@ -15,7 +15,7 @@ class DashboardCard extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     return Container(
       padding: EdgeInsets.all(10),
-      height: height * 0.17,
+      height: height * 0.2,
       width: width * 0.30,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -32,13 +32,13 @@ class DashboardCard extends StatelessWidget {
           child: Column(
             children: [
               Image.asset(
-                "assets/${imgpath}",
+                "assets/$imgpath",
                 width: 60,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
-                  "${name}",
+                  "$name",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,

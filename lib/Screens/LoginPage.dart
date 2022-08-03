@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fzregex/utils/fzregex.dart';
-import 'package:fzregex/utils/pattern.dart';
 import 'package:school_management/Screens/Students/Home/home.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
-import 'package:school_management/services/UserModel.dart';
 import '../Util/Notify.dart';
 import '../services/authentication_helper.dart';
 import 'Admin/HomePage/HomePage.dart';
@@ -22,7 +18,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  Animation? animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
+  Animation? animation, delayedAnimation, muchDelayedAnimation, leftCurve;
   AnimationController? animationController;
 
   @override
@@ -43,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage>
         parent: animationController!,
         curve: Interval(0.8, 1.0, curve: Curves.fastOutSlowIn)));
 
-    LeftCurve = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
+    leftCurve = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
         parent: animationController!,
         curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
   }
@@ -60,12 +56,10 @@ class _MyHomePageState extends State<MyHomePage>
   // }
 
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  bool _autoValidate = false;
   bool passshow = false;
   String? _pass;
   String? _email;
   String? user1;
-  // FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -129,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage>
                 padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
                 child: Transform(
                   transform:
-                      Matrix4.translationValues(LeftCurve!.value * width, 0, 0),
+                      Matrix4.translationValues(leftCurve!.value * width, 0, 0),
                   child: Container(
                     child: Column(
                       children: <Widget>[

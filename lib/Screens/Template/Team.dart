@@ -1,65 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:school_management/Screens/SignUp.dart';
-
 import '../../Util/ImagePath.dart';
+import '../../Util/screen_layout.dart';
 
 class Team extends StatelessWidget {
   const Team({Key? key}) : super(key: key);
+
   Widget _teamInfoBox(
-    double width,
-    double height,
     String image,
     String name,
     String role,
+      Layout layout
   ) {
+
     return Container(
-      width: width < 600 ? width * 0.4 : width * 0.2,
-      height: width < 600 ? height * 0.4 : height * 0.6,
+      width: layout.isAndroid ? layout.width * 0.4 : layout.width * 0.2,
+      height: layout.isAndroid? layout.height * 0.4 : layout.height * 0.6,
       color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: width < 600 ? width * 0.4 : width * 0.2,
-            height: width < 600 ? height * 0.2 : height * 0.4,
+            width: layout.isAndroid ? layout.width * 0.4 : layout.width * 0.2,
+            height: layout.isAndroid ? layout.height * 0.2 : layout.height * 0.4,
             child: Image(
-                image: NetworkImage(ImagePath.aboutUs),
+                image: NetworkImage(image),
                 //image: AssetImage(ImagePath().aboutUsImage),
-                fit: BoxFit.fill),
-          ),
-          Center(
-            child: Text(
-              name,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: height * 0.025,
-                  fontWeight: FontWeight.bold),
-            ),
+                fit: BoxFit.cover),
           ),
           SizedBox(
-            height: height * 0.02,
+            height: layout.height * 0.02,
           ),
-          Center(
-            child: Text(
-              role,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: height * 0.02,
-              ),
+         Container(
+            width: layout.isAndroid ? layout.width * 0.4 : layout.width * 0.2,
+            height: layout.isAndroid ? layout.height * 0.15 : layout.height * 0.15,
+            child:   Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Center(
+                  child: Text(
+                    name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: layout.height * 0.025,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    role,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: layout.height * 0.02,
+                    ),
+                  ),
+                )
+              ],
             ),
-          )
+          ),
+
+
         ],
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+    Layout layout = Layout(size: MediaQuery.of(context).size);
     bool isAndroid = false;
     if (width < 650) isAndroid = true;
     return Container(
@@ -75,36 +86,29 @@ class Team extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    height: height * 0.2,
+                    height: height * 0.1,
                   ),
                   width > 600
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             _teamInfoBox(
-                                width,
-                                height,
-                                ImagePath.aboutUs,
-                                "Ph.D Adrian Molises",
-                                "DEVELOPER AND LEAD INSTRUCTOR"),
+                                ImagePath.davidProfilePic,
+                                "Muraina David",
+                                "DEVELOPER AND LEAD INSTRUCTOR",
+                            layout),
                             _teamInfoBox(
-                                width,
-                                height,
-                                ImagePath.aboutUs,
-                                "Ph.D Adrian Molises",
-                                "DEVELOPER AND LEAD INSTRUCTOR"),
+                                ImagePath.karoProfilePic,
+                                "Edaware Richard",
+                                "DEVELOPER AND LEAD INSTRUCTOR",layout),
                             _teamInfoBox(
-                                width,
-                                height,
-                                ImagePath.aboutUs,
-                                "Ph.D Adrian Molises",
-                                "DEVELOPER AND LEAD INSTRUCTOR"),
+                                ImagePath.dipoProfilePic,
+                                "Dipo",
+                                "DEVELOPER AND LEAD INSTRUCTOR",layout),
                             _teamInfoBox(
-                                width,
-                                height,
-                                ImagePath.aboutUs,
-                                "Ph.D Adrian Molises",
-                                "DEVELOPER AND LEAD INSTRUCTOR"),
+                                ImagePath.dayoProfilePic,
+                                "A.Dayo",
+                                "DEVELOPER AND LEAD INSTRUCTOR",layout),
                           ],
                         )
                       : Column(
@@ -113,37 +117,29 @@ class Team extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 _teamInfoBox(
-                                    width,
-                                    height,
-                                    ImagePath.aboutUs,
-                                    "Ph.D Adrian Molises",
-                                    "DEVELOPER AND LEAD INSTRUCTOR"),
+                                    ImagePath.davidProfilePic,
+                                    "Muraina David",
+                                    "DEVELOPER AND LEAD INSTRUCTOR",layout),
                                 _teamInfoBox(
-                                    width,
-                                    height,
-                                    ImagePath.aboutUs,
-                                    "Ph.D Adrian Molises",
-                                    "DEVELOPER AND LEAD INSTRUCTOR"),
+                                    ImagePath.karoProfilePic,
+                                    "Edaware Richard",
+                                    "DEVELOPER AND LEAD INSTRUCTOR",layout),
                               ],
                             ),
                             SizedBox(
-                              height: height * 0.01,
+                              height: height * 0.1,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 _teamInfoBox(
-                                    width,
-                                    height,
-                                    ImagePath.aboutUs,
-                                    "Ph.D Adrian Molises",
-                                    "DEVELOPER AND LEAD INSTRUCTOR"),
+                                    ImagePath.dipoProfilePic,
+                                    "Dipo",
+                                    "DEVELOPER AND LEAD INSTRUCTOR",layout),
                                 _teamInfoBox(
-                                    width,
-                                    height,
-                                    ImagePath.aboutUs,
-                                    "Ph.D Adrian Molises",
-                                    "DEVELOPER AND LEAD INSTRUCTOR"),
+                                    ImagePath.dayoProfilePic,
+                                    "A. Dayo",
+                                    "DEVELOPER AND LEAD INSTRUCTOR",layout),
                               ],
                             )
                           ],

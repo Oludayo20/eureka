@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/QuizResultInfo.dart';
-import 'package:school_management/Screens/Students/EachCourse/DisplayNote.dart';
 import 'package:school_management/services/authentication_helper.dart';
-
 import '../../../Models/Course.dart';
 import '../../../Util/screen_layout.dart';
 import '../../../Widgets/AppBar.dart';
 import '../../../Widgets/MainDrawer.dart';
+import '../Events.dart';
 import 'Exams/Exam_Rseult.dart';
 import 'Method.dart';
 import 'NoteDisplay/NoteView.dart';
@@ -26,22 +25,23 @@ class EachCourse extends StatelessWidget {
         height: 20,
       ));
     }
+    if (layout.isAndroid) {
+      item.add(EurekaEvents());
+    }
     return item;
   }
 
   void onSelfQuizClick(BuildContext context, int index) {
     var uid = AuthenticationHelper().getUser()!.uid!;
+    print(uid);
     QuizResultInfo()
         .read(eachCourseMethod.list[index].lectureNoteId!, uid)
         .then((value) {
-      Navigator.push(
+      Navigator.pushNamed(
         context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => ExamResult(
-            quizResultInfo: value,
-            lectureNote: eachCourseMethod.list[index],
-          ),
-        ),
+        ExamResult.routeName,
+        arguments: ExamResultArguments(
+            lectureNote: eachCourseMethod.list[index], quizResultInfo: value),
       );
     });
   }
@@ -61,9 +61,9 @@ class EachCourse extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Container(
-          //width: layout.width * 0.7,
-          height: layout.height * 0.4,
+          height: layout.height * 0.2,
           child: Card(
+
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +89,7 @@ class EachCourse extends StatelessWidget {
                         title,
                         style: TextStyle(
                           fontSize: 20,
-                          color: Colors.black,
+                          color: Colors.greenAccent,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -132,11 +132,23 @@ class EachCourse extends StatelessWidget {
         },
         title: "Student Dashboard",
       ),
-      body: Container(
-          child: ListView(
-        children: lectureNotes(layout, context),
-      )),
-      bottomSheet:  Padding(
+      body: layout.isAndroid
+          ? Container(
+              child: ListView(
+              children: lectureNotes(layout, context),
+            ))
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                    width: layout.width * 0.45,
+                    child: ListView(
+                      children: lectureNotes(layout, context),
+                    )),
+                EurekaEvents()
+              ],
+            ),
+      bottomSheet: Padding(
         padding: EdgeInsets.all(10),
         child: Container(
           child: Row(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../Models/Faculty.dart';
-import '../../../Util/Notify.dart';
 import '../Department/DepartmentView.dart';
 import 'Methods.dart';
 

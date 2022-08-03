@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:school_management/Models/LectureNote.dart';
 import 'package:school_management/Screens/Courses/QuizView/SubmitView.dart';
-
 import '../../../../Models/Quiz.dart';
 import '../../../../Widgets/AppBar.dart';
 import '../../../../Widgets/BouncingButton.dart';
 import '../../../../services/authentication_helper.dart';
+import '../../../Widgets/MainDrawer.dart';
 import '../../Admin/AdminMainDrawer.dart';
 import 'BigScreen.dart';
 import 'Buttons.dart';
@@ -14,33 +15,44 @@ import 'SmallScreen.dart';
 import 'Stream.dart';
 import '../QuizView/CRUD/Create.dart';
 
-class QuizView extends StatefulWidget {
-  const QuizView(
-      {Key? key,
-      required this.title,
-      required this.lectureNoteId,
-      required this.quizList})
-      : super(key: key);
+class QuizViewArgument {
   final String title;
   final int lectureNoteId;
   final List<Quiz> quizList;
+  Map<int, int> selectedOption = {};
+  final bool isReviewing;
+  QuizViewArgument(
+      {required this.isReviewing,
+      required this.title,
+      required this.lectureNoteId,
+      required this.quizList,
+      required this.selectedOption});
+}
+
+class QuizView extends StatefulWidget {
+  const QuizView({
+    Key? key,
+    required this.quizViewArgument,
+  }) : super(key: key);
+  final QuizViewArgument quizViewArgument;
   @override
   State<QuizView> createState() => _QuizViewState();
 }
 
 class _QuizViewState extends State<QuizView> {
   Map<int, QuestionView> questionMap = Map<int, QuestionView>();
-  Map<int, int> selectedOption = Map<int, int>();
   late StreamController<int> streamController;
-
+  QuizViewArgument? quizViewArgument;
   late StreamController<int> numberButtonStreamController;
   List<Quiz> list = [];
   Quiz? model;
   int numberOfQuestion = 0;
   bool isAdmin = false;
+  final String quizStartTime = DateTime.now().microsecondsSinceEpoch.toString();
   @override
   void initState() {
     super.initState();
+    quizViewArgument = widget.quizViewArgument;
     quizController = StreamController();
     streamController = StreamController.broadcast();
     numberButtonStreamController = StreamController.broadcast();
@@ -52,7 +64,7 @@ class _QuizViewState extends State<QuizView> {
     if (isAdmin)
       getQuestion();
     else
-      list = widget.quizList;
+      list = quizViewArgument!.quizList;
   }
 
   @override
@@ -66,14 +78,21 @@ class _QuizViewState extends State<QuizView> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => SubmitView(selectedOption: selectedOption,),
+        builder: (BuildContext context) => SubmitView(
+          quizStartTime: quizStartTime,
+          quizList: widget.quizViewArgument.quizList,
+          selectedOption: quizViewArgument!.selectedOption,
+          lectureNote: LectureNote(
+              title: quizViewArgument!.title,
+              lectureNoteId: quizViewArgument!.lectureNoteId),
+        ),
       ),
     );
   }
 
   Future getQuestion() async {
     list = [];
-    model!.read(list, widget.lectureNoteId).whenComplete(() {
+    model!.read(list, quizViewArgument!.lectureNoteId).whenComplete(() {
       setState(() {});
     });
   }
@@ -125,16 +144,21 @@ class _QuizViewState extends State<QuizView> {
     List<Widget> buttons = [];
     for (var i = number; i < number + length; i++) {
       questionMap[i] = QuestionView(
+        isReviewing: quizViewArgument!.isReviewing,
         numberButtonStreamController: numberButtonStreamController,
-        selectedOption: selectedOption,
+        selectedOption: quizViewArgument!.selectedOption,
         questionNumber: i,
         quiz: list[i - 1],
       );
-      selectedOption[i] = 0;
+
+      if (!quizViewArgument!.selectedOption.containsKey(i)) {
+        quizViewArgument!.selectedOption[i] = 0;
+      }
+
       buttons.add(Bouncing(
           onPress: () => changeQuestion(i),
           child: NumberButtons(
-            selectedOption: selectedOption,
+            selectedOption: quizViewArgument!.selectedOption,
             numberButtonStreamController: numberButtonStreamController,
             number: i,
             textButtonFontSize: textButtonFontSize,
@@ -187,7 +211,8 @@ class _QuizViewState extends State<QuizView> {
       key: _scaffoldKey,
       drawer: Drawer(
         elevation: 0,
-        child: AdminMainDrawer(),
+        child:
+            AuthenticationHelper().isAdmin() ? AdminMainDrawer() : MainDrawer(),
       ),
       appBar: CommonAppBar(
         menuenabled: true,
@@ -199,26 +224,21 @@ class _QuizViewState extends State<QuizView> {
       ),
       body: width < 600
           ? SmallScreen(
+              isReviewing: quizViewArgument!.isReviewing,
               submitMethod: submitMethod,
               questionMap: questionMap,
               buttonColumn: buttonColumn,
               streamController: streamController,
+              lectureNoteId: quizViewArgument!.lectureNoteId,
             )
           : BigScreen(
+              isReviewing: quizViewArgument!.isReviewing,
               submitMethod: submitMethod,
               questionMap: questionMap,
               buttonColumn: buttonColumn,
               streamController: streamController,
+              lectureNoteId: quizViewArgument!.lectureNoteId,
             ),
-      floatingActionButtonLocation:
-          isAdmin ? FloatingActionButtonLocation.centerDocked : null,
-      floatingActionButton: isAdmin
-          ? FloatingActionButton(
-              onPressed: () =>
-                  showMyDialogCreate(context, widget.lectureNoteId),
-              child: Icon(Icons.add),
-            )
-          : null,
     );
   }
 }

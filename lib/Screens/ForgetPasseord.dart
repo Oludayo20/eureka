@@ -10,7 +10,7 @@ class ForgetPassword extends StatefulWidget {
 
 class _ForgetPasswordState extends State<ForgetPassword>
     with SingleTickerProviderStateMixin {
-  Animation? animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
+  Animation? animation, delayedAnimation, muchDelayedAnimation, leftCurve;
   AnimationController? animationController;
 
   @override
@@ -30,15 +30,12 @@ class _ForgetPasswordState extends State<ForgetPassword>
         parent: animationController!,
         curve: Interval(0.8, 1.0, curve: Curves.fastOutSlowIn)));
 
-    LeftCurve = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
+    leftCurve = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
         parent: animationController!,
         curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
   }
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  bool _autovalidate = false;
-  String? _email;
-  String? _rollno;
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -101,7 +98,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
                 padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
                 child: Transform(
                   transform:
-                      Matrix4.translationValues(LeftCurve!.value * width, 0, 0),
+                      Matrix4.translationValues(leftCurve!.value * width, 0, 0),
                   child: Container(
                     child: Column(
                       children: <Widget>[
@@ -119,7 +116,6 @@ class _ForgetPasswordState extends State<ForgetPassword>
                                     }
                                   },
                                   onSaved: (val) {
-                                    _rollno = val;
                                   },
                                   decoration: InputDecoration(
                                       labelText: 'Roll Number',
@@ -145,7 +141,6 @@ class _ForgetPasswordState extends State<ForgetPassword>
                                     }
                                   },
                                   onSaved: (value) {
-                                    _email = value;
                                   },
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
@@ -188,7 +183,6 @@ class _ForgetPasswordState extends State<ForgetPassword>
                               _formkey.currentState!.save();
                               try {} catch (e) {}
                             } else {
-                              _autovalidate = true;
                             }
                           },
                           child: MaterialButton(
