@@ -13,18 +13,17 @@ import 'Buttons.dart';
 import 'QuestionView.dart';
 import 'SmallScreen.dart';
 import 'Stream.dart';
-import '../QuizView/CRUD/Create.dart';
 
 class QuizViewArgument {
   final String title;
-  final int lectureNoteId;
+  final LectureNote lectureNote;
   final List<Quiz> quizList;
   Map<int, int> selectedOption = {};
   final bool isReviewing;
   QuizViewArgument(
       {required this.isReviewing,
       required this.title,
-      required this.lectureNoteId,
+      required this.lectureNote,
       required this.quizList,
       required this.selectedOption});
 }
@@ -82,9 +81,7 @@ class _QuizViewState extends State<QuizView> {
           quizStartTime: quizStartTime,
           quizList: widget.quizViewArgument.quizList,
           selectedOption: quizViewArgument!.selectedOption,
-          lectureNote: LectureNote(
-              title: quizViewArgument!.title,
-              lectureNoteId: quizViewArgument!.lectureNoteId),
+          lectureNote: quizViewArgument!.lectureNote,
         ),
       ),
     );
@@ -92,7 +89,7 @@ class _QuizViewState extends State<QuizView> {
 
   Future getQuestion() async {
     list = [];
-    model!.read(list, quizViewArgument!.lectureNoteId).whenComplete(() {
+    model!.read(list, quizViewArgument!.lectureNote.lectureNoteId!).whenComplete(() {
       setState(() {});
     });
   }
@@ -229,7 +226,7 @@ class _QuizViewState extends State<QuizView> {
               questionMap: questionMap,
               buttonColumn: buttonColumn,
               streamController: streamController,
-              lectureNoteId: quizViewArgument!.lectureNoteId,
+              lectureNoteId: quizViewArgument!.lectureNote.lectureNoteId!,
             )
           : BigScreen(
               isReviewing: quizViewArgument!.isReviewing,
@@ -237,7 +234,7 @@ class _QuizViewState extends State<QuizView> {
               questionMap: questionMap,
               buttonColumn: buttonColumn,
               streamController: streamController,
-              lectureNoteId: quizViewArgument!.lectureNoteId,
+              lectureNoteId: quizViewArgument!.lectureNote.lectureNoteId!,
             ),
     );
   }

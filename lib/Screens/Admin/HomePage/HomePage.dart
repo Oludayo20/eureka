@@ -4,11 +4,9 @@ import 'package:school_management/Widgets/AppBar.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 import 'package:school_management/Widgets/DashboardCards.dart';
 import 'package:school_management/Widgets/UserDetailCard.dart';
-
 import '../../../Util/ImagePath.dart';
 import '../../Courses/Course.dart';
 import '../AdminMainDrawer.dart';
-import '../Faculty/Faculty.dart';
 
 class AdminHome extends StatefulWidget {
   @override
@@ -66,7 +64,7 @@ class _HomeState extends State<AdminHome> with SingleTickerProviderStateMixin {
           ),
           appBar: CommonAppBar(
             menuenabled: true,
-            notificationenabled: true,
+            notificationenabled: false,
             ontap: () {
               _scaffoldKey.currentState!.openDrawer();
             },
@@ -102,12 +100,12 @@ class _HomeState extends State<AdminHome> with SingleTickerProviderStateMixin {
                               muchDelayedAnimation!.value * width, 0, 0),
                           child: Bouncing(
                             onPress: () {
-                              Navigator.push(
+                              /*Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         Faculty(),
-                                  ));
+                                  ));*/
                             },
                             child: DashboardCard(
                               name: "Faculty",

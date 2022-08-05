@@ -1,32 +1,25 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/Course.dart';
+import 'package:school_management/Util/Notify.dart';
 
 import '../../../Widgets/AppBar.dart';
 import '../Admin/AdminMainDrawer.dart';
 import 'LactureNote.dart';
 
 class CourseView extends StatefulWidget {
-  const CourseView({Key? key})
-      : super(key: key);
+  const CourseView({Key? key}) : super(key: key);
   @override
   State<CourseView> createState() => _CourseViewState();
 }
 
 class _CourseViewState extends State<CourseView> {
-  List<Course> list = [];
   Course? model;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    list = [];
-    model = Course();
-    model!.read(list).whenComplete(() {
-      setState(() {});
-    });
   }
-
 
   Future<void> _showMyDialogDelete(BuildContext context, int id) async {
     return showDialog<void>(
@@ -53,12 +46,11 @@ class _CourseViewState extends State<CourseView> {
             TextButton(
               child: const Text('Approve'),
               onPressed: () {
-                model!.delete(id).whenComplete(() {
-                  list = [];
-                  model!.read(list).whenComplete(() {
-                    Navigator.of(context).pop();
-                    setState(() {});
-                  });
+                Notify.loading(context, "");
+                Course.delete(id).whenComplete(() async {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  setState(() {});
                 });
               },
             ),
@@ -215,14 +207,26 @@ class _CourseViewState extends State<CourseView> {
             TextButton(
               child: const Text('Approve'),
               onPressed: () {
+                if (controllerCourseCode.text.isEmpty) {
+                  Notify.error(context, "Course Code cannot be empty");
+                  return;
+                } else if (controller.text.isEmpty) {
+                  Notify.error(context, "Course title cannot be empty");
+                  return;
+                } else if (model.level == 0) {
+                  Notify.error(context, "Level must be selected");
+                  return;
+                } else if (model.semester == 0) {
+                  Notify.error(context, "Semester must be selected");
+                  return;
+                }
+                Notify.loading(context, "");
                 model.courseTitle = controller.text;
                 model.courseCode = controllerCourseCode.text;
-                model.update(model).whenComplete(() {
-                  list = [];
-                  model.read(list).whenComplete(() {
-                    Navigator.of(context).pop();
-                    setState(() {});
-                  });
+                model.update(model).whenComplete(() async {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  setState(() {});
                 });
               },
             ),
@@ -368,20 +372,35 @@ class _CourseViewState extends State<CourseView> {
             TextButton(
               child: const Text('Approve'),
               onPressed: () {
-                model!
-                    .create(Course(
-                        courseCode: controller.text,
-                        courseTitle: controllerCode.text,
-                        level: level,
-                        semester: semester,
-                        courseId: 1))
-                    .whenComplete(() {
-                  list = [];
-                  model!.read(list).whenComplete(() {
+                try {
+                  if (controller.text.isEmpty) {
+                    Notify.error(context, "Course Code cannot be empty");
+                    return;
+                  } else if (controllerCode.text.isEmpty) {
+                    Notify.error(context, "Course title cannot be empty");
+                    return;
+                  } else if (level == 0) {
+                    Notify.error(context, "Level must be selected");
+                    return;
+                  } else if (semester == 0) {
+                    Notify.error(context, "Semester must be selected");
+                    return;
+                  }
+                  Notify.loading(context, "");
+                  Course.create(Course(
+                          courseCode: controller.text,
+                          courseTitle: controllerCode.text,
+                          level: level,
+                          semester: semester,
+                          courseId: 1))
+                      .whenComplete(() {
+                    Navigator.of(context).pop();
                     Navigator.of(context).pop();
                     setState(() {});
                   });
-                });
+                } catch (e) {
+                  print(e);
+                }
               },
             ),
           ],
@@ -408,13 +427,47 @@ class _CourseViewState extends State<CourseView> {
         },
         title: "Courses",
       ),
-      body: MyStatelessWidget(
-        list: list,
-        showCreate: _showMyDialogCreate,
-        showDelete: _showMyDialogDelete,
-        showEdit: _showMyDialogEdit,
+      body: FutureBuilder<List<Course>>(
+        future:
+            Course.getCourse(), // a previously-obtained Future<String> or null
+        builder: (BuildContext context, AsyncSnapshot<List<Course>> snapshot) {
+          Widget children;
+          if (snapshot.hasData) {
+            children = MyStatelessWidget(
+              list: snapshot.data!,
+              showCreate: _showMyDialogCreate,
+              showDelete: _showMyDialogDelete,
+              showEdit: _showMyDialogEdit,
+            );
+          } else if (snapshot.hasError) {
+            children = Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            children = Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: CircularProgressIndicator(
+                        color: Colors.lime,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Getting Course...'),
+                    )
+                  ]),
+            );
+          }
+          return Center(
+            child: children,
+          );
+        },
       ),
-      // body: ListView(children: rows1(list, context)),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showMyDialogCreate(context);
@@ -439,7 +492,8 @@ class MyStatelessWidget extends StatelessWidget {
   final Function showDelete;
   final Course model = Course();
 
-  Future<void> _showMyDialogActionButton(BuildContext context, Course course) async {
+  Future<void> _showMyDialogActionButton(
+      BuildContext context, Course course) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -493,12 +547,12 @@ class MyStatelessWidget extends StatelessWidget {
                 Navigator.of(context).pop();
               },
             ),
-
           ],
         );
       },
     );
   }
+
   List<TableRow> tableRows(double width, double height, BuildContext context) {
     List<TableRow> item = [];
     item.add(TableRow(
@@ -602,21 +656,18 @@ class MyStatelessWidget extends StatelessWidget {
           level = "500 Level";
         }
         item.add(TableRow(
-
           children: <Widget>[
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.top,
               child: Container(
-                margin: EdgeInsets.only(left: 5, top: 5),
+                  margin: EdgeInsets.only(left: 5, top: 5),
                   height: 40,
                   width: width * 0.20,
                   child: Center(
-                    child: ListView(children: [
-                      Text(
-                        element.courseTitle!,
-                      )
-                    ],),
-                  )),
+                      child: Text(
+                    element.courseTitle!,
+                    overflow: TextOverflow.fade,
+                  ))),
             ),
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.top,
@@ -647,22 +698,21 @@ class MyStatelessWidget extends StatelessWidget {
                   width: width * 0.20,
                   child: Center(
                     child: Text(
-                      element.semester == 1?"First":"Second",
+                      element.semester == 1 ? "First" : "Second",
                     ),
                   )),
             ),
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.top,
               child: Container(
-
                   height: 40,
                   width: width * 0.20,
                   child: Center(
-                    child: IconButton(
-                      onPressed:()=> _showMyDialogActionButton(context, element),
-                      icon: Icon(Icons.mouse),
-                    )
-                  )),
+                      child: IconButton(
+                    onPressed: () =>
+                        _showMyDialogActionButton(context, element),
+                    icon: Icon(Icons.mouse),
+                  ))),
             ),
           ],
         ));

@@ -75,25 +75,22 @@ class Notify {
       builder: (BuildContext context) {
         return Container(
           child: AlertDialog(
-              backgroundColor: Colors.white,
-              alignment: Alignment.topRight,
+              backgroundColor: Colors.transparent,
+              alignment: Alignment.center,
               elevation: 0,
               content: Container(
-                color: Colors.white,
-                height: 30,
+                color: Colors.transparent,
+                height: 70,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CircularProgressIndicator(
-                      color: Colors.blueAccent,
+                    SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: CircularProgressIndicator(
+                        color: Colors.lime,
+                      ),
                     ),
-                    CircularProgressIndicator(
-                      color: Colors.redAccent,
-                    ),
-                    CircularProgressIndicator(
-                      color: Colors.yellow,
-                    ),
-
                   ],
                 ),
               )),

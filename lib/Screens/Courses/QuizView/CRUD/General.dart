@@ -41,10 +41,11 @@ String emptyField(
     String d,
     String e,
     String answer,
+    bool isEdit
     ) {
   if (question.isEmpty)
     return "Question field cannot be empty";
-  else if (answer.isEmpty)
+  else if (answer.isEmpty && !isEdit)
     return "Answer field cannot be empty";
   else if (a.isEmpty)
     return "Option A field cannot be empty";

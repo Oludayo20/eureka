@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:school_management/Models/OpenNote.dart';
 import 'package:school_management/services/authentication_helper.dart';
 
 import '../../../Models/LectureNote.dart';
@@ -141,8 +142,7 @@ class SubmitView extends StatelessWidget {
                     context,
                     ExamResult.routeName,
                     arguments: ExamResultArguments(
-                        lectureNote: lectureNote,
-                        quizResultInfo: value),
+                        lectureNote: lectureNote, quizResultInfo: value),
                   );
                 });
               },
@@ -156,15 +156,24 @@ class SubmitView extends StatelessWidget {
   int computeScore() {
     int score = 0;
     for (var i = 0; i < quizList.length; i++) {
-      if (quizList[i].answer == selectedOption[i+1]) {
+      if (quizList[i].answer == selectedOption[i + 1]) {
         score++;
       }
     }
     return score;
   }
 
+  Future unlockNextNote(String uid) async {
+    await OpenNote.create(
+        uid, lectureNote.courseId!, lectureNote.lectureNoteId!);
+  }
+
   Future submitClick() async {
+    var uid = AuthenticationHelper().getUser()!.uid!;
     int score = computeScore();
+    if (score == quizList.length) {
+      //await unlockNextNote(uid);
+    }
     await QuizResult().create(
         QuizResult(
             quizResultInfo: QuizResultInfo(
@@ -174,6 +183,6 @@ class SubmitView extends StatelessWidget {
                 score: score),
             selectedOption: selectedOption),
         quizList[0].lectureNoteId!,
-        AuthenticationHelper().getUser()!.uid!);
+        uid);
   }
 }

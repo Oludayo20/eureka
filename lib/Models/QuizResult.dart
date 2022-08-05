@@ -19,7 +19,6 @@ class QuizResult {
       FirebaseDatabase.instance.ref(DataBaseHelper.studentDbName);
   Future create(QuizResult quizResult, int lectureNoteId, String uid) async {
     try {
-      print(quizResult.quizResultInfo!.startTime!);
       await QuizResultInfo().create(quizResult.quizResultInfo!, lectureNoteId, uid);
       await ref
           .child(uid)

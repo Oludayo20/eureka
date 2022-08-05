@@ -18,7 +18,7 @@ class LectureNote {
       this.noteWriteUp,
       this.pdfName,
       this.isActive});
-  DatabaseReference ref =
+  static DatabaseReference ref =
       FirebaseDatabase.instance.ref(DataBaseHelper.lectureNoteDbName);
   LectureNote.fromJson(Map<String, dynamic> json) {
     lectureNoteId = json['lectureNoteId'];
@@ -38,7 +38,7 @@ class LectureNote {
         'pdfName': pdfName,
         'isActive': isActive,
       };
-  Future read(List<LectureNote> list, int courseId) async {
+  static Future read(List<LectureNote> list, int courseId) async {
     var x = await ref.child(courseId.toString()).once();
     if (x.snapshot.value == null) return;
     try {
@@ -55,7 +55,11 @@ class LectureNote {
       } catch (d) {}
     }
   }
-
+  static Future<List<LectureNote>> getLectureNote(courseId) async {
+    List<LectureNote> list = [];
+    await read(list, courseId);
+    return list;
+  }
   Future delete(int courseId, int id) async {
     await ref.child(courseId.toString()).child(id.toString()).remove();
   }

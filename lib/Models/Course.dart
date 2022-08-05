@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import '../services/DataBaseHelper.dart';
@@ -34,9 +35,11 @@ class Course {
         'semester': semester,
       };
 
-  DatabaseReference ref = FirebaseDatabase.instance.ref(DataBaseHelper.coursesNoteDbName);
+  static DatabaseReference ref = FirebaseDatabase.instance.ref(DataBaseHelper.coursesNoteDbName);
   Future read(List<Course> list) async {
-    var x = await ref.once();
+    var x = await ref.once().catchError((error) {
+      Exception("Something went wrong: ${error.message}");
+    });
     if (x.snapshot.value == null) return;
     try {
       List<dynamic> values = x.snapshot.value as List<dynamic>;
@@ -49,7 +52,9 @@ class Course {
         values.forEach((key, value) {
           list.add(Course.fromJson(value));
         });
-      } catch (d) {}
+      } on FirebaseAuthException catch (e)  {
+        print(e);
+      }
     }
   }
   Future update(Course data) async {
@@ -67,10 +72,17 @@ class Course {
           }
     });
   }
-  Future delete(int id) async {
+  static Future delete(int id) async {
     await ref.child(id.toString()).remove();
   }
-  Future create(Course data) async {
+  static Future<List<Course>> getCourse() async {
+    List<Course> courseList = [];
+    if (courseList.isEmpty) {
+      await Course().read(courseList);
+    }
+    return courseList;
+  }
+  static Future create(Course data) async {
     try {
       await ref
           .limitToLast(1)

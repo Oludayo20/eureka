@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import '../Models/User.dart';
+import 'AuthExceptionHandler.dart';
 
 class AuthenticationHelper {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  static String emailVerifiedError = "An email has been sent, please go verify. Check your spam";
+  AuthStatus _status = AuthStatus.successful;
   bool isSignedIn() {
-    var uer = _auth.currentUser;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    var uer = auth.currentUser;
     if (uer == null || !uer.emailVerified && !isAdmin()) return false;
     return true;
   }
@@ -24,28 +26,27 @@ class AuthenticationHelper {
   get user => _auth.currentUser;
 
   //SIGN UP METHOD
-  Future signUp(
+  Future<AuthStatus> signUp(
       {required String email,
       required String password,
       required String displayName /*required Student student*/}) async {
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential newUser = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      await userCredential.user!.updateDisplayName(displayName);
-      await userCredential.user!.sendEmailVerification();
-      return emailVerifiedError;
+      _auth.currentUser!.updateDisplayName(displayName);
+      await sendVerificationMail(newUser);
+      _status = AuthStatus.successful;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        return "The password provided is too weak.";
-      } else if (e.code == 'email-already-in-use') {
-        return 'The account already exists for that email.';
-      }
-    } catch (e) {
-      print(e);
+      _status = AuthExceptionHandler.handleAuthException(e);
     }
+    return _status;
+  }
+
+  Future sendVerificationMail(UserCredential credential) async {
+    await credential.user!.sendEmailVerification();
+    return await signOut();
   }
 
   bool isAdmin() {
@@ -62,22 +63,26 @@ class AuthenticationHelper {
     }
   }
 
-  //SIGN IN METHOD
-  Future signIn({required String email, required String password}) async {
+  Future<AuthStatus> signIn({
+    required String email,
+    required String password,
+  }) async {
     try {
+      _auth.setPersistence(Persistence.SESSION);
       var x = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       if (!x.user!.emailVerified && !isAdmin()) {
-        await user.sendEmailVerification();
-        return emailVerifiedError;
+        await sendVerificationMail(x);
+        return AuthStatus.emailVerifiedError;
       }
-      return x.user!.email;
+      _status = AuthStatus.successful;
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      _status = AuthExceptionHandler.handleAuthException(e);
     }
+    return _status;
   }
-
   //SIGN OUT METHOD
+
   Future signOut() async {
     await _auth.signOut();
   }

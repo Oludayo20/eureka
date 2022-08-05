@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_management/Screens/Students/Home/home.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
+import 'package:school_management/services/AuthExceptionHandler.dart';
 import '../Util/Notify.dart';
 import '../services/authentication_helper.dart';
 import 'Admin/HomePage/HomePage.dart';
@@ -321,7 +322,7 @@ class _MyHomePageState extends State<MyHomePage>
                                   .signIn(email: _email!, password: _pass!)
                                   .then((value) {
                                 Navigator.pop(context);
-                                if (value == _email) {
+                                if (value.name == AuthStatus.successful.name) {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -332,7 +333,7 @@ class _MyHomePageState extends State<MyHomePage>
                                         // : Home(),
                                       ));
                                 } else {
-                                  Notify.error(context, value);
+                                  Notify.error(context, AuthExceptionHandler.generateErrorMessage(value));
                                 }
                               });
                             }

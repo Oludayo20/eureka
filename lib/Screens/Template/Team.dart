@@ -103,7 +103,7 @@ class Team extends StatelessWidget {
                                 "DEVELOPER AND LEAD INSTRUCTOR",layout),
                             _teamInfoBox(
                                 ImagePath.dipoProfilePic,
-                                "Dipo",
+                                "Oladipupo Adesilu",
                                 "DEVELOPER AND LEAD INSTRUCTOR",layout),
                             _teamInfoBox(
                                 ImagePath.dayoProfilePic,
@@ -134,7 +134,7 @@ class Team extends StatelessWidget {
                               children: [
                                 _teamInfoBox(
                                     ImagePath.dipoProfilePic,
-                                    "Dipo",
+                                    "Oladipupo Adesilu",
                                     "DEVELOPER AND LEAD INSTRUCTOR",layout),
                                 _teamInfoBox(
                                     ImagePath.dayoProfilePic,

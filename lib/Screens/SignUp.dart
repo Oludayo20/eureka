@@ -7,6 +7,10 @@ import 'package:school_management/Models/Faculty.dart';
 import 'package:school_management/Models/Programs.dart';
 import 'package:school_management/Util/screen_layout.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
+import 'package:school_management/services/AuthExceptionHandler.dart';
+
+import '../Util/Notify.dart';
+import '../services/authentication_helper.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -41,7 +45,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
   bool passshow1 = false;
   bool passshow2 = false;
   var confirmPass;
-  late String email, phno, name, rollno = "";
+  late String email, phno, name, rollno, _pass = "";
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   @override
@@ -75,7 +79,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                         Container(
                           child: Padding(
                             padding:
-                            const EdgeInsets.fromLTRB(70.0, 35.0, 0, 0),
+                                const EdgeInsets.fromLTRB(70.0, 35.0, 0, 0),
                             child: Text(
                               'Yourself',
                               style: TextStyle(
@@ -109,7 +113,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                 padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
                 child: Transform(
                   transform:
-                  Matrix4.translationValues(LeftCurve!.value * width, 0, 0),
+                      Matrix4.translationValues(LeftCurve!.value * width, 0, 0),
                   child: Container(
                     child: Column(
                       children: <Widget>[
@@ -126,7 +130,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                     } else if (nameRegExp.hasMatch(value)) {
                                       return null;
                                     } else {
-                                      return 'Enter Vaild username';
+                                      return 'Enter valid username';
                                     }
                                   },
                                   onSaved: (val) {
@@ -154,7 +158,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                 TextFormField(
                                   validator: (value) {
                                     if ((Fzregex.hasMatch(
-                                        value!, FzPattern.email) ==
+                                            value!, FzPattern.email) ==
                                         false)) {
                                       return "Enter Vaild Email address";
                                     } else {
@@ -175,7 +179,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                         color: Colors.black),
                                     focusedBorder: UnderlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Colors.teal),
+                                          BorderSide(color: Colors.teal),
                                     ),
                                   ),
                                 ),
@@ -232,21 +236,21 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                   decoration: InputDecoration(
                                       suffix: passshow1 == false
                                           ? IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            passshow1 = true;
-                                          });
-                                        },
-                                        icon: Icon(Icons.lock_open),
-                                      )
+                                              onPressed: () {
+                                                setState(() {
+                                                  passshow1 = true;
+                                                });
+                                              },
+                                              icon: Icon(Icons.lock_open),
+                                            )
                                           : IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            passshow1 = false;
-                                          });
-                                        },
-                                        icon: Icon(Icons.lock),
-                                      ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  passshow1 = false;
+                                                });
+                                              },
+                                              icon: Icon(Icons.lock),
+                                            ),
                                       labelText: 'Password',
                                       contentPadding: EdgeInsets.all(5),
                                       labelStyle: TextStyle(
@@ -258,7 +262,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                           borderSide: BorderSide(
                                               color: Colors.teal[200]!))),
                                   obscureText:
-                                  passshow1 == false ? true : false,
+                                      passshow1 == false ? true : false,
                                 ),
 
                                 //  Password 2
@@ -268,7 +272,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                     if (val!.isEmpty) {
                                       return "Please Re-Enter New Password";
                                     } else if (val.length < 6) {
-                                      return "Password must be atleast 8 characters long";
+                                      return "Password must be at least 8 characters long";
                                     } else if (val != confirmPass) {
                                       return "Password must be same as above";
                                     } else {
@@ -276,25 +280,26 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                     }
                                   },
                                   onSaved: (val) {
+                                    _pass = val!;
                                   },
                                   decoration: InputDecoration(
                                       suffix: passshow2 == false
                                           ? IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            passshow2 = true;
-                                          });
-                                        },
-                                        icon: Icon(Icons.lock_open),
-                                      )
+                                              onPressed: () {
+                                                setState(() {
+                                                  passshow2 = true;
+                                                });
+                                              },
+                                              icon: Icon(Icons.lock_open),
+                                            )
                                           : IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            passshow2 = false;
-                                          });
-                                        },
-                                        icon: Icon(Icons.lock),
-                                      ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  passshow2 = false;
+                                                });
+                                              },
+                                              icon: Icon(Icons.lock),
+                                            ),
                                       labelText: 'Confirm Password',
                                       contentPadding: EdgeInsets.all(5),
                                       labelStyle: TextStyle(
@@ -306,7 +311,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                           borderSide: BorderSide(
                                               color: Colors.teal[200]!))),
                                   obscureText:
-                                  passshow2 == false ? true : false,
+                                      passshow2 == false ? true : false,
                                 ),
                               ],
                             )),
@@ -332,30 +337,37 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                           onPress: () {
                             if (_formkey.currentState!.validate()) {
                               _formkey.currentState!.save();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        CompleteRegistration(
-                                          // userApp: UserApp(
-                                          //     email: email, password: _pass),
-                                        ),
-                                  ));
-                              // AuthenticationHelper()
-                              //     .signUp(email: email, password: _pass!)
-                              //     .then((value) {
-                              //   if (value == email) {
-                              //     Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //           builder: (BuildContext context) =>
-                              //               CompleteRegistration(),
-                              //         ));
-                              //   } else {
-                              //     Notify.error(context, value);
-                              //     print(value);
-                              //   }
-                              // });
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (BuildContext context) =>
+                              //           CompleteRegistration(
+                              //             // userApp: UserApp(
+                              //             //     email: email, password: _pass),
+                              //           ),
+                              //     ));
+                              Notify.loading(context, "");
+                              AuthenticationHelper()
+                                  .signUp(
+                                      email: email,
+                                      password: _pass,
+                                      displayName: name)
+                                  .then((value) {
+                                if (value == AuthStatus.successful) {
+                                  Navigator.popUntil(
+                                      context,
+                                      (Route<dynamic> predicate) =>
+                                          predicate.isFirst);
+                                  Notify.success(context,  AuthExceptionHandler.generateErrorMessage(
+                                      AuthStatus.emailVerifiedError));
+                                } else {
+                                  Notify.error(
+                                      context,
+                                      AuthExceptionHandler.generateErrorMessage(
+                                          value));
+                                  print(value);
+                                }
+                              });
                             }
                           },
                           child: MaterialButton(
@@ -399,7 +411,6 @@ class CompleteRegistration extends StatefulWidget {
 class _CompleteRegistrationState extends State<CompleteRegistration> {
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
-
   List<String> facultyList = [];
   Map<String, int> facultyMap = {};
 
@@ -430,7 +441,6 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
   }
 
   void _getSemester(String semester) {}
-
 
   void _getDepartment(String department) {
     List<Department> dList = [];
@@ -561,18 +571,18 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                 padding: const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
                 child: Container(
                     child: Column(
-                      children: <Widget>[
-                        Form(
-                          key: _formkey,
-                          child: Column(
-                            children: [
-                              layout.isAndroid
-                                  ? Padding(
+                  children: <Widget>[
+                    Form(
+                      key: _formkey,
+                      child: Column(
+                        children: [
+                          layout.isAndroid
+                              ? Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       30.0, 10, 30, 10),
                                   child: Column(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         _dropDown(layout.width * 0.8, "Level",
                                             levelList, _getLevel),
@@ -585,114 +595,114 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                                             semesterList,
                                             _getSemester),
                                       ]))
-                                  : Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    30.0, 10, 30, 10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    _dropDown(layout.width * 0.15, "Level",
-                                        levelList, _getLevel),
-                                    _dropDown(layout.width * 0.15, "Semester",
-                                        levelList, _getSemester),
-                                  ],
-                                ),
-                              ),
-
-                              Padding(
-                                padding:
-                                const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
-                                child: _dropDown(
-                                    layout.isAndroid
-                                        ? layout.width * 0.8
-                                        : layout.width * 0.34,
-                                    "Faculty",
-                                    facultyList,
-                                    _getDepartment),
-                              ),
-                              Padding(
-                                padding:
-                                const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
-                                child: _dropDown(
-                                    layout.isAndroid
-                                        ? layout.width * 0.8
-                                        : layout.width * 0.34,
-                                    "Department",
-                                    departmentList,
-                                    _getProgramm),
-                              ),
-                              Padding(
-                                padding:
-                                const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
-                                child: _dropDown(
-                                    layout.isAndroid
-                                        ? layout.width * 0.8
-                                        : layout.width * 0.34,
-                                    "Program/Course",
-                                    programList,
-                                    _getProgramm),
-                              ),
-
-                              // Button
-                              Padding(
-                                padding:
-                                const EdgeInsets.fromLTRB(20.0, 5, 20.0, 5),
-                                child: Container(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Bouncing(
-                                        onPress: () {
-                                          if (_formkey.currentState!.validate()) {
-                                            _formkey.currentState!.save();
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (BuildContext context) =>
-                                                      CompleteRegistration(
-                                                        // userApp: UserApp(
-                                                        //     email: email, password: _pass),
-                                                      ),
-                                                ));
-                                            // AuthenticationHelper()
-                                            //     .signUp(email: email, password: _pass!)
-                                            //     .then((value) {
-                                            //   if (value == email) {
-                                            //     Navigator.push(
-                                            //         context,
-                                            //         MaterialPageRoute(
-                                            //           builder: (BuildContext context) =>
-                                            //               CompleteRegistration(),
-                                            //         ));
-                                            //   } else {
-                                            //     Notify.error(context, value);
-                                            //     print(value);
-                                            //   }
-                                            // });
-                                          }
-                                        },
-                                        child: MaterialButton(
-                                          onPressed: () {},
-                                          elevation: 0.0,
-                                          minWidth:
-                                          MediaQuery.of(context).size.width,
-                                          height: 50.0,
-                                          color: Colors.teal[200],
-                                          child: Text(
-                                            "Register",
-                                            style: TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      ),
+                              : Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      30.0, 10, 30, 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      _dropDown(layout.width * 0.15, "Level",
+                                          levelList, _getLevel),
+                                      _dropDown(layout.width * 0.15, "Semester",
+                                          levelList, _getSemester),
                                     ],
                                   ),
                                 ),
-                              ),
-                            ],
+
+                          Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
+                            child: _dropDown(
+                                layout.isAndroid
+                                    ? layout.width * 0.8
+                                    : layout.width * 0.34,
+                                "Faculty",
+                                facultyList,
+                                _getDepartment),
                           ),
-                        )
-                      ],
-                    )),
+                          Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
+                            child: _dropDown(
+                                layout.isAndroid
+                                    ? layout.width * 0.8
+                                    : layout.width * 0.34,
+                                "Department",
+                                departmentList,
+                                _getProgramm),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(30.0, 10, 30, 10),
+                            child: _dropDown(
+                                layout.isAndroid
+                                    ? layout.width * 0.8
+                                    : layout.width * 0.34,
+                                "Program/Course",
+                                programList,
+                                _getProgramm),
+                          ),
+
+                          // Button
+                          Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(20.0, 5, 20.0, 5),
+                            child: Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Bouncing(
+                                    onPress: () {
+                                      if (_formkey.currentState!.validate()) {
+                                        _formkey.currentState!.save();
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  CompleteRegistration(
+                                                      // userApp: UserApp(
+                                                      //     email: email, password: _pass),
+                                                      ),
+                                            ));
+                                        // AuthenticationHelper()
+                                        //     .signUp(email: email, password: _pass!)
+                                        //     .then((value) {
+                                        //   if (value == email) {
+                                        //     Navigator.push(
+                                        //         context,
+                                        //         MaterialPageRoute(
+                                        //           builder: (BuildContext context) =>
+                                        //               CompleteRegistration(),
+                                        //         ));
+                                        //   } else {
+                                        //     Notify.error(context, value);
+                                        //     print(value);
+                                        //   }
+                                        // });
+                                      }
+                                    },
+                                    child: MaterialButton(
+                                      onPressed: () {},
+                                      elevation: 0.0,
+                                      minWidth:
+                                          MediaQuery.of(context).size.width,
+                                      height: 50.0,
+                                      color: Colors.teal[200],
+                                      child: Text(
+                                        "Register",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )),
               )
             ],
           ),

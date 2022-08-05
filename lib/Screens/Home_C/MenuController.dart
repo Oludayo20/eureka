@@ -5,7 +5,7 @@ class MenuController extends GetxController {
   RxInt _selectedIndex = 0.obs;
 
   int get selectedIndex => _selectedIndex.value;
-  List<String> get menuItems => ["Home", "Team", "About Us", "Contact Us"];
+  List<String> get menuItems => ["Home", "Team", "About Us"];
 
   void setMenuIndex(int index) {
     _selectedIndex.value = index;

@@ -5,7 +5,6 @@ import '../../../../Util/screen_layout.dart';
 import '../../../../Widgets/AppBar.dart';
 import '../../../../Widgets/MainDrawer.dart';
 import '../../../../services/authentication_helper.dart';
-import '../../Events.dart';
 import '../DisplayNote.dart';
 import '../Exams/Exam_Rseult.dart';
 
@@ -38,7 +37,7 @@ class NoteView extends StatelessWidget {
       ),
       appBar: CommonAppBar(
         menuenabled: true,
-        notificationenabled: true,
+        notificationenabled: false,
         ontap: () {
           _scaffoldKey.currentState!.openDrawer();
         },
@@ -83,32 +82,15 @@ class NoteView extends StatelessWidget {
           ),
         ),
       ),
-      body: layout.isAndroid
-          ? Container(
-          padding: EdgeInsets.all(10),
+      body:Container(
+          padding: EdgeInsets.only(left: 20,right: 20),
           child: ListView(
             children: [
               SizedBox(height: layout.height * 0.02,),
-              Text(lectureNote.noteWriteUp!),
+              Text(lectureNote.noteWriteUp!,style: TextStyle(fontSize: 17),),
               SizedBox(height: layout.height * 0.3,),
-              EurekaEvents()
             ],
           ))
-          : Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-              width: layout.width * 0.45,
-              padding: EdgeInsets.all(10),
-              child: ListView(
-                children: [
-                  SizedBox(height: layout.height * 0.02,),
-                  Text(lectureNote.noteWriteUp!),
-                ],
-              )),
-          EurekaEvents()
-        ],
-      ),
     );
   }
 }

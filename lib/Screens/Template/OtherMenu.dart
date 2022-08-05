@@ -40,7 +40,6 @@ class OtherMenu extends StatelessWidget {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: NetworkImage(ImagePath.team),
-                    //image: AssetImage(ImagePath().homePageImageAssert),
                     fit: isAndroid ? BoxFit.cover : BoxFit.fill)),
             child: Container(
               width: width,

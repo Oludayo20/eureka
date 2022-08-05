@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,15 +11,34 @@ import 'Screens/Students/EachCourse/Exams/Exam_Rseult.dart';
 import 'Screens/Students/Home/home.dart';
 
 void main() {
-  Future init() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  Future<bool> init() async {
+    try{
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      return true;
+    }on FirebaseOptions catch(e){
+      print(e);
+      return false;
+    }
+
   }
 
   //runApp(MyApp());
-  init().whenComplete(() {
-    runApp(MyApp());
+  init().then((val) {
+    if(val){
+      FirebaseAuth.instance
+          .authStateChanges()
+          .listen((User? user) {
+        if (user != null) {
+          runApp(MyApp());
+        }
+      });
+      runApp(MyApp());
+    }else{
+      runApp(ErrorMain());
+    }
+
   });
 }
 
@@ -27,7 +47,6 @@ class MyApp extends StatelessWidget {
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
-
   @override
   Widget build(BuildContext context) {
     AuthenticationHelper authenticationHelper = AuthenticationHelper();
@@ -69,3 +88,15 @@ class Test extends StatelessWidget {
     );
   }
 }
+
+class ErrorMain extends StatelessWidget {
+  const ErrorMain({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text("NetWork error"),
+    );
+  }
+}
+

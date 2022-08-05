@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:school_management/Widgets/DrawerListTile.dart';
-
 import '../Courses/Course.dart';
-import 'Faculty/Faculty.dart';
 import 'HomePage/HomePage.dart';
 
 class AdminMainDrawer extends StatefulWidget {
@@ -30,12 +28,12 @@ class _MainDrawerState extends State<AdminMainDrawer> {
           imgpath: "attendance.png",
           name: "Faculty",
           ontap: () {
-            Navigator.push(
+           /* Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (BuildContext context) => Faculty(),
               ),
-            );
+            );*/
           },
         ),
         DrawerListTile(

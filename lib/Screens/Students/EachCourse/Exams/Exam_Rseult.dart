@@ -111,12 +111,13 @@ class _ExamResultState extends State<ExamResult>
               muchDelayedAnimation!.value * width, 0, 0),
           child: SubjectCard(
             subjectname: "Quiz ${i + 1}",
-            lectureNoteId:  arguments.lectureNote.lectureNoteId!,
+            lectureNote: arguments.lectureNote,
             date: "${date.day}/${date.month}/${date.year}",
             grade: grade(arguments.quizResultInfo[i].questionNumber!,
                 arguments.quizResultInfo[i].score!),
             mark: "${arguments.quizResultInfo[i].score}",
-            timeTaken: "${timeTaken.hour}:${timeTaken.minute}:${timeTaken.second}",
+            timeTaken:
+                "${timeTaken.hour}:${timeTaken.minute}:${timeTaken.second}",
             startTime: arguments.quizResultInfo[i].startTime!,
           ),
         ),
@@ -130,7 +131,6 @@ class _ExamResultState extends State<ExamResult>
     ));
     return item;
   }
-
 
   String grade(int total, int score) {
     var pec = (total / score) * 100;
@@ -162,9 +162,9 @@ class _ExamResultState extends State<ExamResult>
         MaterialPageRoute(
           builder: (BuildContext context) => QuizView(
               quizViewArgument: QuizViewArgument(
-                isReviewing: false,
+            isReviewing: false,
             selectedOption: {},
-            lectureNoteId: arguments.lectureNote.lectureNoteId!,
+            lectureNote: arguments.lectureNote,
             title: "",
             quizList: quizList,
           )),

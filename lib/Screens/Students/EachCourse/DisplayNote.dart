@@ -18,7 +18,7 @@ class DisplayNote extends StatelessWidget {
       ),
       appBar: CommonAppBar(
         menuenabled: true,
-        notificationenabled: true,
+        notificationenabled: false,
         ontap: () {
           _scaffoldKey.currentState!.openDrawer();
         },

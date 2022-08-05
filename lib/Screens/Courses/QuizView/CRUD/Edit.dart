@@ -92,7 +92,7 @@ Future<void> showMyDialogCEdit(BuildContext context, Quiz quiz) async {
                   optionCControllerCode.text,
                   optionDControllerCode.text,
                   optionEControllerCode.text,
-                  answerControllerCode.text);
+                  answerControllerCode.text,true);
               if (check.isNotEmpty) {
                 Notify.error(context, check);
                 return;

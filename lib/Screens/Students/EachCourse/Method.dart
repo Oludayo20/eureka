@@ -3,7 +3,7 @@ import '../../../Models/LectureNote.dart';
 class EachCourseMethod {
   List<LectureNote> list = [];
   Future getLectureNote(int courseId) async {
-    await LectureNote().read(list, courseId);
+    list = await LectureNote.getLectureNote(list);
   }
   void passOnlyActiveLectureNote(){
     List<LectureNote> lectureNoteList = [];

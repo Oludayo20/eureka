@@ -68,7 +68,8 @@ Future<void> showMyDialogCreate(BuildContext context, int lectureNoteId) async {
                   optionCControllerCode.text,
                   optionDControllerCode.text,
                   optionEControllerCode.text,
-                  answerControllerCode.text);
+                  answerControllerCode.text,
+              false);
               if (check.isNotEmpty) {
                 Notify.error(context, check);
                 return;

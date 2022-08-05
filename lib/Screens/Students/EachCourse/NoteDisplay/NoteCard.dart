@@ -1,51 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/LectureNote.dart';
-
-import '../../../../Models/Quiz.dart';
-import '../../../../Models/QuizResult.dart';
-import '../../../../Util/Notify.dart';
+import '../../../../Models/QuizResultInfo.dart';
 import '../../../../services/authentication_helper.dart';
-import '../../../Courses/QuizView/Quiz.dart';
+import '../Exams/Exam_Rseult.dart';
+import 'NoteView.dart';
 
-class SubjectCard extends StatelessWidget {
-  final String? subjectname;
-  final String? date;
-  final String? timeTaken;
-  final String? startTime;
-  final String? grade;
-  final String? mark;
-  final LectureNote lectureNote;
-  SubjectCard(
-      {Key? key,
-      this.subjectname,
-      this.date,
-      this.timeTaken,
-      this.grade,
-      this.mark, required this.lectureNote, this.startTime})
-      : super(key: key);
+class NoteCard extends StatelessWidget {
+  NoteCard({
+    Key? key,
+    this.lectureNote, required this.num,
+  }) : super(key: key);
+  final LectureNote? lectureNote;
+  final int num;
   @override
   Widget build(BuildContext context) {
-    Future<void> reviewQuiz() async {
-      Notify.loading(context, "");
+    void onDisplayNoteClick(BuildContext context) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+              NoteView(lectureNote: lectureNote!),
+        ),
+      );
+    }
+
+    void onSelfQuizClick(BuildContext context) {
       var uid = AuthenticationHelper().getUser()!.uid!;
-      await QuizResult().read(lectureNote.lectureNoteId!, uid, startTime!).then((value) async {
-        List<Quiz> quizList = [];
-        await Quiz().read(quizList, lectureNote.lectureNoteId!).whenComplete(() {
-          Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => QuizView(
-                  quizViewArgument: QuizViewArgument(
-                    isReviewing: true,
-                    selectedOption: value,
-                    lectureNote: lectureNote,
-                    title: "",
-                    quizList: quizList,
-                  )),
-            ),
-          );
-        });
+      print(uid);
+      QuizResultInfo().read(lectureNote!.lectureNoteId!, uid).then((value) {
+        Navigator.pushNamed(
+          context,
+          ExamResult.routeName,
+          arguments: ExamResultArguments(
+              lectureNote: lectureNote!, quizResultInfo: value),
+        );
       });
     }
 
@@ -76,7 +64,7 @@ class SubjectCard extends StatelessWidget {
                   width: 5,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.amberAccent,
+                    color: Colors.redAccent,
                   ),
                   height: height * 0.1,
                 ),
@@ -86,10 +74,13 @@ class SubjectCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
+                    Container(
+                      width: 100,
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: Text(
-                        "$subjectname",
+                        "${lectureNote!.title}",
+                        overflow: TextOverflow.fade,
+                        maxLines: 1,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -97,9 +88,9 @@ class SubjectCard extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () => reviewQuiz(),
+                      onPressed: () => onDisplayNoteClick(context),
                       child: Text(
-                        "Review",
+                        "View",
                         style: TextStyle(
                           fontSize: 12,
                         ),
@@ -115,26 +106,28 @@ class SubjectCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    "$date",
+                    "Note $num",
                     style: TextStyle(
                       fontSize: 12,
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    "$timeTaken",
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: TextButton(
+                      child: Text(
+                        "Self Quiz",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      onPressed: () => onSelfQuizClick(context),
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Marks:$mark",
+                      "",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -144,7 +137,7 @@ class SubjectCard extends StatelessWidget {
                       width: 5,
                     ),
                     Text(
-                      "Grade:$grade",
+                      "",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,

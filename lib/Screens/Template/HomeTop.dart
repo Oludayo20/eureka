@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:school_management/Screens/SignUp.dart';
-
 import '../../Util/ImagePath.dart';
 import '../../Widgets/Home_C_AppBar.dart';
 import '../Home_C/WebMenu.dart';
-import '../SignUp.dart';
 import 'AboutUs.dart';
 
 class HomeTop extends StatelessWidget {
@@ -75,19 +72,16 @@ class HomeTop extends StatelessWidget {
                   Row(
                     children: [
                       Padding(padding: EdgeInsets.all(20)),
-                      Text(
-                        isAndroid
-                            ? "Far far away, behind the word mountains\nFar from the countries"
-                            : "Far far away, behind the word mountains far from the countries",
+                      Text("We make the complex simple",
                         style: TextStyle(
                             color: Colors.white, fontSize: width * 0.03),
                       ),
                     ],
                   ),
-                  Row(
+                  /*Row(
                     children: [
                       Padding(padding: EdgeInsets.all(20)),
-                      ElevatedButton(
+                     *//* ElevatedButton(
                         onPressed: () {},
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.symmetric(
@@ -97,11 +91,7 @@ class HomeTop extends StatelessWidget {
                           backgroundColor: Colors.teal[200],
                         ),
                         child: Text("View Courses"),
-                      ),
-                      // Icon(
-                      //   Icons.arrow_forward,
-                      //   color: Colors.white,
-                      // ),
+                      ),*//*
                       Padding(padding: EdgeInsets.all(20)),
                       ElevatedButton(
                         onPressed: () {
@@ -121,7 +111,7 @@ class HomeTop extends StatelessWidget {
                         child: Text("Register"),
                       ),
                     ],
-                  ),
+                  ),*/
                   SizedBox(
                     height: height * 0.2,
                   ),

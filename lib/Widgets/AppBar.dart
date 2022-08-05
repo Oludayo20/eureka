@@ -21,7 +21,7 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Profile'),
+          title: const Text('Logout'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -98,10 +98,7 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
               ),
         InkWell(
           onTap: () => _showMyDialogProfileAction(context),
-          child: Image.asset(
-            "assets/profile.png",
-            width: 35,
-          ),
+          child: Icon(Icons.settings, size: 30, color: Colors.grey,),
         ),
       ],
       centerTitle: true,
