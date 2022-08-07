@@ -146,31 +146,28 @@ class _ExamResultState extends State<ExamResult>
       return "A";
   }
 
-  void takeQuiz(ExamResultArguments arguments) {
-    List<Quiz> quizList = [];
+  Future<void> takeQuiz(ExamResultArguments arguments) async {
     Notify.loading(context, "");
-    Quiz()
-        .read(quizList, arguments.lectureNote.lectureNoteId!)
-        .whenComplete(() {
-      Navigator.pop(context);
-      if (quizList.length == 0) {
-        Notify.error(context, "Quiz not yet available");
-        return;
-      }
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => QuizView(
-              quizViewArgument: QuizViewArgument(
-            isReviewing: false,
-            selectedOption: {},
-            lectureNote: arguments.lectureNote,
-            title: "",
-            quizList: quizList,
-          )),
-        ),
-      );
-    });
+    List<Quiz> quizList = await Quiz.read(
+        arguments.lectureNote.courseId!, arguments.lectureNote.lectureNoteId!);
+    Navigator.pop(context);
+    if (quizList.length == 0) {
+      Notify.error(context, "Quiz not yet available");
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => QuizView(
+            quizViewArgument: QuizViewArgument(
+          isReviewing: false,
+          selectedOption: {},
+          lectureNote: arguments.lectureNote,
+          title: "",
+          quizList: quizList,
+        )),
+      ),
+    );
   }
 
   @override
@@ -249,7 +246,9 @@ class _ExamResultState extends State<ExamResult>
                     transform: Matrix4.translationValues(
                         delayedAnimation!.value * width, 0, 0),
                     child: Bouncing(
-                      onPress: () => takeQuiz(args),
+                      onPress: () async {
+                        await takeQuiz(args);
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.blue,

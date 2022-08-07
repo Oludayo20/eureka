@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../../../Models/LectureNote.dart';
 import '../../../services/authentication_helper.dart';
 import 'CRUD/Create.dart';
 import 'Methods.dart';
@@ -13,14 +14,14 @@ class BigScreen extends StatelessWidget {
       required this.questionMap,
       required this.streamController,
       required this.submitMethod,
-      required this.isReviewing, required this.lectureNoteId})
+      required this.isReviewing, required this.lectureNote})
       : super(key: key);
   final Function buttonColumn;
   final StreamController<int> streamController;
   final Map<int, QuestionView> questionMap;
   final Function submitMethod;
   final bool isReviewing;
-  final int lectureNoteId;
+  final LectureNote lectureNote;
   @override
   Widget build(BuildContext context) {
     QuizMethods quizMethods = QuizMethods(
@@ -87,7 +88,7 @@ class BigScreen extends StatelessWidget {
                   AuthenticationHelper().isAdmin()
                       ? TextButton(
                       onPressed: () {
-                        showMyDialogCreate(context, lectureNoteId);
+                        showMyDialogCreate(context, lectureNote.courseId!,lectureNote.lectureNoteId!);
                       },
                       child: Text("Add new Quiz"))
                       : isReviewing

@@ -21,31 +21,34 @@ class SubjectCard extends StatelessWidget {
       this.date,
       this.timeTaken,
       this.grade,
-      this.mark, required this.lectureNote, this.startTime})
+      this.mark,
+      required this.lectureNote,
+      this.startTime})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     Future<void> reviewQuiz() async {
       Notify.loading(context, "");
       var uid = AuthenticationHelper().getUser()!.uid!;
-      await QuizResult().read(lectureNote.lectureNoteId!, uid, startTime!).then((value) async {
-        List<Quiz> quizList = [];
-        await Quiz().read(quizList, lectureNote.lectureNoteId!).whenComplete(() {
-          Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => QuizView(
-                  quizViewArgument: QuizViewArgument(
-                    isReviewing: true,
-                    selectedOption: value,
-                    lectureNote: lectureNote,
-                    title: "",
-                    quizList: quizList,
-                  )),
-            ),
-          );
-        });
+      await QuizResult()
+          .read(lectureNote.lectureNoteId!, uid, startTime!)
+          .then((value) async {
+        List<Quiz> quizList =
+            await Quiz.read(lectureNote.courseId!, lectureNote.lectureNoteId!);
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => QuizView(
+                quizViewArgument: QuizViewArgument(
+              isReviewing: true,
+              selectedOption: value,
+              lectureNote: lectureNote,
+              title: "",
+              quizList: quizList,
+            )),
+          ),
+        );
       });
     }
 

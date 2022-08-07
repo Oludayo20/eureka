@@ -87,10 +87,10 @@ class _HomeState extends State<StudentHome>
     selectedCourse = index;
     await LectureNote.read(eachCourseMethod!.list, courseList[index].courseId!)
         .whenComplete(() {
+      eachCourseMethod!.passOnlyActiveLectureNote();
       if (eachCourseMethod!.list.isEmpty) {
         Notify.error(context, "Lecture note not available");
       } else {
-        eachCourseMethod!.passOnlyActiveLectureNote();
         Navigator.push(
           context,
           MaterialPageRoute(

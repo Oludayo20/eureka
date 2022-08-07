@@ -29,8 +29,8 @@ Future<void> showMyDialogDelete(BuildContext context, Quiz quiz) async {
             child: const Text('Approve'),
             onPressed: () {
               Notify.loading(context, "");
-              Quiz()
-                  .delete(quiz.lectureNoteId!, quiz.quizId!)
+              Quiz
+                  .delete(quiz.courseId!,quiz.lectureNoteId!, quiz.quizId!)
                   .whenComplete(() {
                 Navigator.pop(context);
                 Navigator.pop(context);

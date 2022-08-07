@@ -7,7 +7,7 @@ import '../../../../../Models/Quiz.dart';
 import '../Stream.dart';
 import 'General.dart';
 
-Future<void> showMyDialogCreate(BuildContext context, int lectureNoteId) async {
+Future<void> showMyDialogCreate(BuildContext context,int courseId, int lectureNoteId) async {
   final double width = MediaQuery.of(context).size.width;
   final double height = MediaQuery.of(context).size.height;
   TextEditingController questionController = TextEditingController();
@@ -23,12 +23,10 @@ Future<void> showMyDialogCreate(BuildContext context, int lectureNoteId) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Add Course'),
-        content: SingleChildScrollView(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        content: Scaffold(
+            body: ListView(
           children: [
-            heading("Question"),
-            optionsAdd(questionController, width, height),
+            optionsAdd(questionController,"Question" ),
             heading("Answer"),
             DropdownSearch<String>(
               validator: (v) => v == null ? "required field" : null,
@@ -38,16 +36,11 @@ Future<void> showMyDialogCreate(BuildContext context, int lectureNoteId) async {
                 answerControllerCode.text = value!;
               },
             ),
-            heading("Option A"),
-            optionsAdd(optionAControllerCode, width, height),
-            heading("Option B"),
-            optionsAdd(optionBControllerCode, width, height),
-            heading("Option C"),
-            optionsAdd(optionCControllerCode, width, height),
-            heading("Option D"),
-            optionsAdd(optionDControllerCode, width, height),
-            heading("Option E"),
-            optionsAdd(optionEControllerCode, width, height),
+            optionsAdd(optionAControllerCode, "Option A"),
+            optionsAdd(optionBControllerCode, "Option B"),
+            optionsAdd(optionCControllerCode,"Option C"),
+            optionsAdd(optionDControllerCode, "Option D"),
+            optionsAdd(optionEControllerCode, "Option E"),
           ],
         )),
         actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -85,8 +78,10 @@ Future<void> showMyDialogCreate(BuildContext context, int lectureNoteId) async {
                 ans = 4;
               else if (answerControllerCode.text == "E") ans = 5;
 
-              Quiz()
+              Quiz
                   .create(Quiz(
+                courseId: courseId,
+                quizId: DateTime.now().microsecondsSinceEpoch,
                 question: questionController.text,
                 lectureNoteId: lectureNoteId,
                 answer: ans,

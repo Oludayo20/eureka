@@ -60,50 +60,23 @@ class LectureNote {
     await read(list, courseId);
     return list;
   }
-  Future delete(int courseId, int id) async {
+  static Future delete(int courseId, int id) async {
     await ref.child(courseId.toString()).child(id.toString()).remove();
   }
 
-  Future update(LectureNote data) async {
+  static Future update(LectureNote data) async {
     await ref
         .child(data.courseId.toString())
         .child(data.lectureNoteId.toString())
         .set(data.toJson());
   }
 
-  Future create(LectureNote data) async {
+  static Future create(LectureNote data) async {
     try {
       await ref
           .child(data.courseId.toString())
-          .limitToLast(1)
-          .once()
-          .then((value) async {
-        int count = 1;
-        if (value.snapshot.value == null) {
-          data.lectureNoteId = 1;
-          await ref
-              .child(data.courseId.toString())
-              .child(data.lectureNoteId.toString())
-              .set(data.toJson());
-        } else {
-          try {
-            var val = value.snapshot.value as Map<dynamic, dynamic>;
-
-            val.forEach((key, value) {
-              if (key != null) {
-                try {
-                  count = int.parse(key);
-                } catch (e) {}
-              }
-            });
-          } catch (u) {}
-          data.lectureNoteId = count + 1;
-          await ref
-              .child(data.courseId.toString())
-              .child(data.lectureNoteId.toString())
-              .set(data.toJson());
-        }
-      });
+          .child(data.lectureNoteId.toString())
+          .set(data.toJson());
     } catch (e) {
       print(e);
     }

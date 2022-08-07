@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:school_management/Screens/Admin/HomePage/HomePage.dart';
+import 'package:school_management/Widgets/TextFieldCard.dart';
 import 'package:school_management/firebase_options.dart';
 import 'package:school_management/services/authentication_helper.dart';
 import 'Screens/Home_Page.dart';
@@ -12,33 +13,29 @@ import 'Screens/Students/Home/home.dart';
 
 void main() {
   Future<bool> init() async {
-    try{
+    try {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
       return true;
-    }on FirebaseOptions catch(e){
+    } on FirebaseOptions catch (e) {
       print(e);
       return false;
     }
-
   }
 
   //runApp(MyApp());
-  init().then((val) {
-    if(val){
-      FirebaseAuth.instance
-          .authStateChanges()
-          .listen((User? user) {
+   init().then((val) {
+    if (val) {
+      FirebaseAuth.instance.authStateChanges().listen((User? user) {
         if (user != null) {
           runApp(MyApp());
         }
       });
       runApp(MyApp());
-    }else{
+    } else {
       runApp(ErrorMain());
     }
-
   });
 }
 
@@ -47,6 +44,7 @@ class MyApp extends StatelessWidget {
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
+
   @override
   Widget build(BuildContext context) {
     AuthenticationHelper authenticationHelper = AuthenticationHelper();
@@ -56,6 +54,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/',
+      //initialRoute: 'test',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
         '/': (context) {
@@ -65,6 +64,7 @@ class MyApp extends StatelessWidget {
                   ? AdminHome()
                   : StudentHome();
         },
+        'test': (context) => Test(),
         ExamResult.routeName: (context) => const ExamResult(),
         // When navigating to the "/second" route, build the SecondScreen widget.
         //'/second': (context) => const SecondScreen(),
@@ -78,12 +78,18 @@ class Test extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
     return Scaffold(
-      body: Center(
-        child: TextButton(
-          onPressed: () {},
-          child: Text("Text"),
-        ),
+      body: ListView(
+        children: [
+          TextFieldCard(
+            controller: controller,
+            originalHeight: 30,
+            headerText: "Karo",
+            width: 170,
+          ),
+
+        ],
       ),
     );
   }
@@ -99,4 +105,3 @@ class ErrorMain extends StatelessWidget {
     );
   }
 }
-

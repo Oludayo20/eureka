@@ -88,10 +88,9 @@ class _QuizViewState extends State<QuizView> {
   }
 
   Future getQuestion() async {
-    list = [];
-    model!.read(list, quizViewArgument!.lectureNote.lectureNoteId!).whenComplete(() {
-      setState(() {});
-    });
+    list = await Quiz.read(quizViewArgument!.lectureNote.courseId!,
+        quizViewArgument!.lectureNote.lectureNoteId!);
+    setState(() {});
   }
 
   void changeQuestion(int number) {
@@ -226,7 +225,7 @@ class _QuizViewState extends State<QuizView> {
               questionMap: questionMap,
               buttonColumn: buttonColumn,
               streamController: streamController,
-              lectureNoteId: quizViewArgument!.lectureNote.lectureNoteId!,
+              lectureNote: quizViewArgument!.lectureNote,
             )
           : BigScreen(
               isReviewing: quizViewArgument!.isReviewing,
@@ -234,7 +233,7 @@ class _QuizViewState extends State<QuizView> {
               questionMap: questionMap,
               buttonColumn: buttonColumn,
               streamController: streamController,
-              lectureNoteId: quizViewArgument!.lectureNote.lectureNoteId!,
+              lectureNote: quizViewArgument!.lectureNote,
             ),
     );
   }

@@ -50,8 +50,7 @@ Future<void> showMyDialogCEdit(BuildContext context, Quiz quiz) async {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            heading("Question"),
-            optionsAdd(questionController, width, height),
+            optionsAdd(questionController, "Question"),
             heading("Answer"),
             DropdownSearch<String>(
               validator: (v) => v == null ? "required field" : null,
@@ -62,16 +61,11 @@ Future<void> showMyDialogCEdit(BuildContext context, Quiz quiz) async {
                 answerControllerCode.text = value!;
               },
             ),
-            heading("Option A"),
-            optionsAdd(optionAControllerCode, width, height),
-            heading("Option B"),
-            optionsAdd(optionBControllerCode, width, height),
-            heading("Option C"),
-            optionsAdd(optionCControllerCode, width, height),
-            heading("Option D"),
-            optionsAdd(optionDControllerCode, width, height),
-            heading("Option E"),
-            optionsAdd(optionEControllerCode, width, height),
+            optionsAdd(optionAControllerCode, "Option A"),
+            optionsAdd(optionBControllerCode, "Option B"),
+            optionsAdd(optionCControllerCode,"Option C"),
+            optionsAdd(optionDControllerCode, "Option D"),
+            optionsAdd(optionEControllerCode, "Option E"),
           ],
         )),
         actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -108,7 +102,7 @@ Future<void> showMyDialogCEdit(BuildContext context, Quiz quiz) async {
                 ans = 4;
               else if (answerControllerCode.text == "E") ans = 5;
 
-              Quiz()
+              Quiz
                   .update(Quiz(
                 question: questionController.text,
                 lectureNoteId: quiz.lectureNoteId,

@@ -4,6 +4,7 @@ import 'package:school_management/Models/Course.dart';
 import 'package:school_management/Util/Notify.dart';
 
 import '../../../Widgets/AppBar.dart';
+import '../../Widgets/TextFieldCard.dart';
 import '../Admin/AdminMainDrawer.dart';
 import 'LactureNote.dart';
 
@@ -85,62 +86,20 @@ class _CourseViewState extends State<CourseView> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Edit Course'),
-          content: SingleChildScrollView(
-              child: Column(
+          content: Scaffold(
+              body: ListView(
             children: [
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Text("Course Code"),
-                  ),
-                ],
+              TextFieldCard(
+                width: double.infinity,
+                controller: controllerCourseCode,
+                originalHeight: 30,
+                headerText: "Course Code",
               ),
-              Container(
-                // height: height * 0.06,
-                height: height * 0.07,
-                width: width * 0.75,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: TextFormField(
-                  controller: controller,
-                  //autofocus: true,
-                  minLines: 1,
-                  maxLines: 10,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(7),
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Text("Course Title"),
-                  ),
-                ],
-              ),
-              Container(
-                // height: height * 0.06,
-                height: height * 0.07,
-                width: width * 0.75,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: TextFormField(
-                  controller: controllerCourseCode,
-                  //autofocus: true,
-                  minLines: 1,
-                  maxLines: 10,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(7),
-                  ),
-                ),
+              TextFieldCard(
+                width: double.infinity,
+                controller: controller,
+                originalHeight: 30,
+                headerText: "Course Title",
               ),
               Row(
                 children: [
@@ -249,63 +208,20 @@ class _CourseViewState extends State<CourseView> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Add Course'),
-          content: SingleChildScrollView(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          content: Scaffold(
+              body: ListView(
             children: [
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Text("Course Code"),
-                  ),
-                ],
+              TextFieldCard(
+                width: double.infinity,
+                controller: controller,
+                originalHeight: 30,
+                headerText: "Course Code",
               ),
-              Container(
-                // height: height * 0.06,
-                height: height * 0.07,
-                width: width * 0.75,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: TextFormField(
-                  controller: controller,
-                  //autofocus: true,
-                  minLines: 1,
-                  maxLines: 10,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(7),
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Text("Course Title"),
-                  ),
-                ],
-              ),
-              Container(
-                // height: height * 0.06,
-                height: height * 0.07,
-                width: width * 0.75,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: TextFormField(
-                  controller: controllerCode,
-                  //autofocus: true,
-                  minLines: 1,
-                  maxLines: 10,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(7),
-                  ),
-                ),
+              TextFieldCard(
+                width: double.infinity,
+                controller: controllerCode,
+                originalHeight: 30,
+                headerText: "Course Title",
               ),
               Row(
                 children: [
@@ -392,7 +308,7 @@ class _CourseViewState extends State<CourseView> {
                           courseTitle: controllerCode.text,
                           level: level,
                           semester: semester,
-                          courseId: 1))
+                          courseId: DateTime.now().microsecondsSinceEpoch))
                       .whenComplete(() {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();

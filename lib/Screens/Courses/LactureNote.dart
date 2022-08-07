@@ -7,6 +7,7 @@ import 'package:school_management/Widgets/AppBar.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../Util/Notify.dart';
+import '../../Widgets/TextFieldCard.dart';
 import '../../services/CloudinaryService.dart';
 import '../Admin/AdminMainDrawer.dart';
 import 'QuizView/Quiz.dart';
@@ -57,7 +58,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
             TextButton(
               child: const Text('Approve'),
               onPressed: () {
-                model!.delete(widget.courseId, id).whenComplete(() {
+                LectureNote.delete(widget.courseId, id).whenComplete(() {
                   Navigator.of(context).pop();
                   setState(() {});
                 });
@@ -118,121 +119,61 @@ class _LectureNoteViewState extends State<LectureNoteView> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Edit Lecture Note'),
-          content: SingleChildScrollView(
-            child: Column(
+          content: Scaffold(
+            body: ListView(
               children: [
-                Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Text("Note title"),
-                    ),
-                  ],
+                TextFieldCard(
+                  width: double.infinity,
+                  controller: controller,
+                  originalHeight: 30,
+                  headerText: "Note title",
                 ),
-                Container(
-                  // height: height * 0.06,
-                  height: height * 0.07,
-                  width: width,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: TextFormField(
-                    controller: controller,
-                    //autofocus: true,
-                    minLines: 1,
-                    maxLines: 10,
-                    keyboardType: TextInputType.multiline,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(7),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
+                TextFieldCard(
+                  width: double.infinity,
+                  controller: noteWriteUpController,
+                  originalHeight: 30,
+                  headerText: "Note Write Up",
                 ),
                 Row(
                   children: [
                     Container(
                       margin: EdgeInsets.only(left: 5),
-                      child: Text("Note Write Up"),
+                      child: Text("Select Pdf"),
                     ),
                   ],
                 ),
-                Container(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: 1,
+                SizedBox(height: 3,),
+                Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Container(
+                    // height: height * 0.06,
+                    width: double.infinity,
+                    height: height * 0.07,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    child: Container(
-                      // height: height * 0.06,
-                      height: height * 0.25,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: TextFormField(
-                        //autofocus: true,
-                        minLines: 1,
-                        maxLines: 10,
-                        controller: noteWriteUpController,
-                        keyboardType: TextInputType.multiline,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(7),
-                        ),
+                    child: TextFormField(
+                      enabled: true,
+                      controller: noteController,
+                      //autofocus: true,
+                      minLines: 1,
+                      maxLines: 10,
+                      keyboardType: TextInputType.multiline,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            onPressed: () async {
+                              var result = await CloudinaryService().getPdf();
+                              if (result != null) {
+                                pickerResult = result as FilePickerResult;
+                                noteController.text = result.files.single.name;
+                              }
+                            },
+                            icon: Icon(Icons.upload_file)),
+                        contentPadding: EdgeInsets.all(7),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Text("Note PDF Link"),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                      // height: height * 0.06,
-                      height: height * 0.07,
-                      width: width * 0.5,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: TextFormField(
-                        enabled: false,
-                        controller: noteController,
-                        //autofocus: true,
-                        minLines: 1,
-                        maxLines: 10,
-                        keyboardType: TextInputType.multiline,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(7),
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                        onPressed: () async {
-                          var result = await CloudinaryService().getPdf();
-
-                          if (result != null) {
-                            pickerResult = result as FilePickerResult;
-                            noteController.text = result.files.single.name;
-                          }
-                        },
-                        icon: Icon(Icons.upload_file))
-                  ],
-                ),
-                SizedBox(
-                  height: 5,
                 ),
                 EditLectureNoteCheckBox(
                   model: model,
@@ -266,7 +207,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                 if (pickerResult != null) {
                   uploadAsPdf(model, pickerResult!);
                 } else {
-                  await model.update(model).whenComplete(() {
+                  await LectureNote.update(model).whenComplete(() {
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();
                     setState(() {});
@@ -288,7 +229,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
             pickerResult.files.single.name)
         .then((value) async {
       lectureNote.link = value as String;
-      await lectureNote.update(lectureNote).whenComplete(() {
+      await LectureNote.update(lectureNote).whenComplete(() {
         Navigator.of(context).pop();
         Navigator.of(context).pop();
         setState(() {});
@@ -309,123 +250,64 @@ class _LectureNoteViewState extends State<LectureNoteView> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Add Lecture Note'),
-          content: SingleChildScrollView(
-              child: Column(
-            children: [
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Text("Note title"),
-                  ),
-                ],
-              ),
-              Container(
-                // height: height * 0.06,
-
-                width: width,
-                height: height * 0.07,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: TextFormField(
+          content: Scaffold(
+            body: ListView(
+              children: [
+                TextFieldCard(
+                  width: double.infinity,
                   controller: controller,
-                  //autofocus: true,
-                  minLines: 1,
-                  maxLines: 10,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(7),
-                  ),
+                  originalHeight: 30,
+                  headerText: "Note title",
                 ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Text("Note Write Up"),
-                  ),
-                ],
-              ),
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: 1,
-                  ),
+                TextFieldCard(
+                  width: double.infinity,
+                  controller: noteWriteUpController,
+                  originalHeight: 30,
+                  headerText: "Note Write Up",
+                ),
+                Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 5),
+                      child: Text("Select Pdf"),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.all(5),
                   child: Container(
                     // height: height * 0.06,
-                    height: height * 0.25,
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      //autofocus: true,
-                      minLines: 1,
-                      maxLines: 10,
-                      keyboardType: TextInputType.multiline,
-                      controller: noteWriteUpController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.all(7),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    child: Text("Select Pdf"),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                    // height: height * 0.06,
-
-                    width: width * 0.5,
                     height: height * 0.07,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
-                      enabled: false,
+                      enabled: true,
                       controller: noteController,
                       //autofocus: true,
                       minLines: 1,
                       maxLines: 10,
                       keyboardType: TextInputType.multiline,
                       decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            onPressed: () async {
+                              var result = await CloudinaryService().getPdf();
+                              if (result != null) {
+                                pickerResult = result as FilePickerResult;
+                                noteController.text = result.files.single.name;
+                              }
+                            },
+                            icon: Icon(Icons.upload_file)),
                         contentPadding: EdgeInsets.all(7),
                       ),
                     ),
                   ),
-                  IconButton(
-                      onPressed: () async {
-                        var result = await CloudinaryService().getPdf();
-
-                        if (result != null) {
-                          pickerResult = result as FilePickerResult;
-                          noteController.text = result.files.single.name;
-                        }
-                      },
-                      icon: Icon(Icons.upload_file))
-                ],
-              ),
-            ],
-          )),
+                )
+              ],
+            ),
+          ),
           actionsAlignment: MainAxisAlignment.spaceBetween,
           actions: <Widget>[
             TextButton(
@@ -452,9 +334,10 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                               pickerResult!.files.single.bytes!),
                           pickerResult!.files.single.name)
                       .then((value) {
-                    model!
-                        .create(LectureNote(
+                    LectureNote.create(LectureNote(
                             title: controller.text,
+                            lectureNoteId:
+                                DateTime.now().microsecondsSinceEpoch,
                             courseId: widget.courseId,
                             link: value as String,
                             pdfName: pickerResult!.files.single.name,
@@ -466,9 +349,9 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                     });
                   });
                 } else {
-                  model!
-                      .create(LectureNote(
+                  LectureNote.create(LectureNote(
                           title: controller.text,
+                          lectureNoteId: DateTime.now().microsecondsSinceEpoch,
                           courseId: widget.courseId,
                           link: "not available",
                           pdfName: "not available",
