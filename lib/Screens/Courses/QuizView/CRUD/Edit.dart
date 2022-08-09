@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/QuizOption.dart';
+import 'package:school_management/Widgets/CardMaker.dart';
 
 import '../../../../../Models/Quiz.dart';
 import '../../../../Util/Notify.dart';
@@ -24,8 +25,6 @@ String answerToString(int ans) {
 }
 
 Future<void> showMyDialogCEdit(BuildContext context, Quiz quiz) async {
-  final double width = MediaQuery.of(context).size.width;
-  final double height = MediaQuery.of(context).size.height;
   TextEditingController questionController = TextEditingController();
   TextEditingController optionAControllerCode = TextEditingController();
   TextEditingController optionBControllerCode = TextEditingController();
@@ -44,11 +43,8 @@ Future<void> showMyDialogCEdit(BuildContext context, Quiz quiz) async {
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Add Course'),
-        content: SingleChildScrollView(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      return CardMaker(
+        body: ListView(
           children: [
             optionsAdd(questionController, "Question"),
             heading("Answer"),
@@ -63,66 +59,63 @@ Future<void> showMyDialogCEdit(BuildContext context, Quiz quiz) async {
             ),
             optionsAdd(optionAControllerCode, "Option A"),
             optionsAdd(optionBControllerCode, "Option B"),
-            optionsAdd(optionCControllerCode,"Option C"),
+            optionsAdd(optionCControllerCode, "Option C"),
             optionsAdd(optionDControllerCode, "Option D"),
             optionsAdd(optionEControllerCode, "Option E"),
           ],
-        )),
-        actionsAlignment: MainAxisAlignment.spaceBetween,
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Cancel'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          TextButton(
-            child: const Text('Approve'),
-            onPressed: () {
-              var check = emptyField(
-                  questionController.text,
-                  optionAControllerCode.text,
-                  optionBControllerCode.text,
-                  optionCControllerCode.text,
-                  optionDControllerCode.text,
-                  optionEControllerCode.text,
-                  answerControllerCode.text,true);
-              if (check.isNotEmpty) {
-                Notify.error(context, check);
-                return;
-              }
-              int ans = 0;
-              if (answerControllerCode.text == "A")
-                ans = 1;
-              else if (answerControllerCode.text == "B")
-                ans = 2;
-              else if (answerControllerCode.text == "C")
-                ans = 3;
-              else if (answerControllerCode.text == "D")
-                ans = 4;
-              else if (answerControllerCode.text == "E") ans = 5;
+        ),
+        title: 'Add Course',
+        footerActionLeft: TextButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        footerActionRight: TextButton(
+          child: const Text('Approve'),
+          onPressed: () {
+            var check = emptyField(
+                questionController.text,
+                optionAControllerCode.text,
+                optionBControllerCode.text,
+                optionCControllerCode.text,
+                optionDControllerCode.text,
+                optionEControllerCode.text,
+                answerControllerCode.text,
+                true);
+            if (check.isNotEmpty) {
+              Notify.error(context, check);
+              return;
+            }
+            int ans = 0;
+            if (answerControllerCode.text == "A")
+              ans = 1;
+            else if (answerControllerCode.text == "B")
+              ans = 2;
+            else if (answerControllerCode.text == "C")
+              ans = 3;
+            else if (answerControllerCode.text == "D")
+              ans = 4;
+            else if (answerControllerCode.text == "E") ans = 5;
 
-              Quiz
-                  .update(Quiz(
-                question: questionController.text,
-                lectureNoteId: quiz.lectureNoteId,
-                answer: ans,
-                quizId: quiz.quizId,
-                options: QuizOptions(
-                  quizOptionA: optionAControllerCode.text,
-                  quizOptionB: optionBControllerCode.text,
-                  quizOptionC: optionCControllerCode.text,
-                  quizOptionD: optionDControllerCode.text,
-                  quizOptionE: optionEControllerCode.text,
-                ),
-              ))
-                  .whenComplete(() {
-                quizController.add(1);
-                Navigator.of(context).pop();
-              });
-            },
-          ),
-        ],
+            Quiz.update(Quiz(
+              question: questionController.text,
+              lectureNoteId: quiz.lectureNoteId,
+              answer: ans,
+              quizId: quiz.quizId,
+              options: QuizOptions(
+                quizOptionA: optionAControllerCode.text,
+                quizOptionB: optionBControllerCode.text,
+                quizOptionC: optionCControllerCode.text,
+                quizOptionD: optionDControllerCode.text,
+                quizOptionE: optionEControllerCode.text,
+              ),
+            )).whenComplete(() {
+              quizController.add(1);
+              Navigator.of(context).pop();
+            });
+          },
+        ),
       );
     },
   );

@@ -4,12 +4,13 @@ import 'package:school_management/Models/QuizOption.dart';
 import 'package:school_management/Util/Notify.dart';
 
 import '../../../../../Models/Quiz.dart';
+import '../../../../Util/screen_layout.dart';
+import '../../../../Widgets/CardMaker.dart';
 import '../Stream.dart';
 import 'General.dart';
 
-Future<void> showMyDialogCreate(BuildContext context,int courseId, int lectureNoteId) async {
-  final double width = MediaQuery.of(context).size.width;
-  final double height = MediaQuery.of(context).size.height;
+Future<void> showMyDialogCreate(
+    BuildContext context, int courseId, int lectureNoteId) async {
   TextEditingController questionController = TextEditingController();
   TextEditingController optionAControllerCode = TextEditingController();
   TextEditingController optionBControllerCode = TextEditingController();
@@ -21,37 +22,34 @@ Future<void> showMyDialogCreate(BuildContext context,int courseId, int lectureNo
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Add Course'),
-        content: Scaffold(
-            body: ListView(
-          children: [
-            optionsAdd(questionController,"Question" ),
-            heading("Answer"),
-            DropdownSearch<String>(
-              validator: (v) => v == null ? "required field" : null,
-              //hint: "Please Select Leave type",
-              items: ["A", "B", "C", "D", "E"],
-              onChanged: (value) {
-                answerControllerCode.text = value!;
-              },
-            ),
-            optionsAdd(optionAControllerCode, "Option A"),
-            optionsAdd(optionBControllerCode, "Option B"),
-            optionsAdd(optionCControllerCode,"Option C"),
-            optionsAdd(optionDControllerCode, "Option D"),
-            optionsAdd(optionEControllerCode, "Option E"),
-          ],
-        )),
-        actionsAlignment: MainAxisAlignment.spaceBetween,
-        actions: <Widget>[
-          TextButton(
+      return CardMaker(
+          body: ListView(
+            children: [
+              optionsAdd(questionController, "Question"),
+              heading("Answer"),
+              DropdownSearch<String>(
+                validator: (v) => v == null ? "required field" : null,
+                //hint: "Please Select Leave type",
+                items: ["A", "B", "C", "D", "E"],
+                onChanged: (value) {
+                  answerControllerCode.text = value!;
+                },
+              ),
+              optionsAdd(optionAControllerCode, "Option A"),
+              optionsAdd(optionBControllerCode, "Option B"),
+              optionsAdd(optionCControllerCode, "Option C"),
+              optionsAdd(optionDControllerCode, "Option D"),
+              optionsAdd(optionEControllerCode, "Option E"),
+            ],
+          ),
+          title: "Add Quiz",
+          footerActionLeft: TextButton(
             child: const Text('Cancel'),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
-          TextButton(
+          footerActionRight: TextButton(
             child: const Text('Approve'),
             onPressed: () {
               var check = emptyField(
@@ -62,7 +60,7 @@ Future<void> showMyDialogCreate(BuildContext context,int courseId, int lectureNo
                   optionDControllerCode.text,
                   optionEControllerCode.text,
                   answerControllerCode.text,
-              false);
+                  false);
               if (check.isNotEmpty) {
                 Notify.error(context, check);
                 return;
@@ -78,8 +76,7 @@ Future<void> showMyDialogCreate(BuildContext context,int courseId, int lectureNo
                 ans = 4;
               else if (answerControllerCode.text == "E") ans = 5;
 
-              Quiz
-                  .create(Quiz(
+              Quiz.create(Quiz(
                 courseId: courseId,
                 quizId: DateTime.now().microsecondsSinceEpoch,
                 question: questionController.text,
@@ -92,15 +89,12 @@ Future<void> showMyDialogCreate(BuildContext context,int courseId, int lectureNo
                   quizOptionD: optionDControllerCode.text,
                   quizOptionE: optionEControllerCode.text,
                 ),
-              ))
-                  .whenComplete(() {
+              )).whenComplete(() {
                 quizController.add(1);
                 Navigator.of(context).pop();
               });
             },
-          ),
-        ],
-      );
+          ));
     },
   );
 }

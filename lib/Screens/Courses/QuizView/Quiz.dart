@@ -204,6 +204,7 @@ class _QuizViewState extends State<QuizView> {
     streamController = StreamController.broadcast();
     numberButtonStreamController = StreamController.broadcast();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       drawer: Drawer(
         elevation: 0,

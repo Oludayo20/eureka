@@ -4,8 +4,12 @@ import 'package:school_management/Models/Course.dart';
 import 'package:school_management/Util/Notify.dart';
 
 import '../../../Widgets/AppBar.dart';
+import '../../Util/screen_layout.dart';
+import '../../Widgets/CardMaker.dart';
 import '../../Widgets/TextFieldCard.dart';
 import '../Admin/AdminMainDrawer.dart';
+import 'CourseCRUD/Create.dart';
+import 'CourseCRUD/Edit.dart';
 import 'LactureNote.dart';
 
 class CourseView extends StatefulWidget {
@@ -22,6 +26,7 @@ class _CourseViewState extends State<CourseView> {
     super.initState();
   }
 
+  void refresh() => setState(() {});
   Future<void> _showMyDialogDelete(BuildContext context, int id) async {
     return showDialog<void>(
       context: context,
@@ -62,264 +67,23 @@ class _CourseViewState extends State<CourseView> {
   }
 
   Future<void> _showMyDialogEdit(BuildContext context, Course model) async {
-    final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
-    TextEditingController controller = TextEditingController();
-    TextEditingController controllerCourseCode = TextEditingController();
-    controller.text = model.courseTitle!;
-    controllerCourseCode.text = model.courseCode!;
-    String level = "";
-    if (model.level == 1) {
-      level = "100 Level";
-    } else if (model.level == 2) {
-      level = "200 Level";
-    } else if (model.level == 3) {
-      level = "300 Level";
-    } else if (model.level == 4) {
-      level = "400 Level";
-    } else if (model.level == 5) {
-      level = "500 Level";
-    }
+
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Edit Course'),
-          content: Scaffold(
-              body: ListView(
-            children: [
-              TextFieldCard(
-                width: double.infinity,
-                controller: controllerCourseCode,
-                originalHeight: 30,
-                headerText: "Course Code",
-              ),
-              TextFieldCard(
-                width: double.infinity,
-                controller: controller,
-                originalHeight: 30,
-                headerText: "Course Title",
-              ),
-              Row(
-                children: [
-                  Container(
-                    child: Text("Level"),
-                  ),
-                ],
-              ),
-              DropdownSearch<String>(
-                validator: (v) => v == null ? "required field" : null,
-                //hint: "Please Select Leave type",
-                selectedItem: level,
-                items: [
-                  "100 Level",
-                  "200 Level",
-                  "300 Level",
-                  '400 Level',
-                  '500 Level'
-                ],
-                onChanged: (value) {
-                  if (value == "100 Level") {
-                    model.level = 1;
-                  } else if (value == "200 Level") {
-                    model.level = 2;
-                  } else if (value == "300 Level") {
-                    model.level = 3;
-                  } else if (value == "400 Level") {
-                    model.level = 4;
-                  } else if (value == "500 Level") {
-                    model.level = 5;
-                  }
-                },
-              ),
-              Row(
-                children: [
-                  Container(
-                    child: Text("Semesters"),
-                  ),
-                ],
-              ),
-              DropdownSearch<String>(
-                validator: (v) => v == null ? "required field" : null,
-                //hint: "Please Select Leave type",
-                selectedItem: model.semester == 1 ? "First" : "Second",
-                items: ["First", "Second"],
-                onChanged: (value) {
-                  if (value == "First") {
-                    model.semester = 1;
-                  } else {
-                    model.semester = 2;
-                  }
-                },
-              ),
-            ],
-          )),
-          actionsAlignment: MainAxisAlignment.spaceBetween,
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Approve'),
-              onPressed: () {
-                if (controllerCourseCode.text.isEmpty) {
-                  Notify.error(context, "Course Code cannot be empty");
-                  return;
-                } else if (controller.text.isEmpty) {
-                  Notify.error(context, "Course title cannot be empty");
-                  return;
-                } else if (model.level == 0) {
-                  Notify.error(context, "Level must be selected");
-                  return;
-                } else if (model.semester == 0) {
-                  Notify.error(context, "Semester must be selected");
-                  return;
-                }
-                Notify.loading(context, "");
-                model.courseTitle = controller.text;
-                model.courseCode = controllerCourseCode.text;
-                model.update(model).whenComplete(() async {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  setState(() {});
-                });
-              },
-            ),
-          ],
-        );
+        return EditCoursePopUp(refresh: refresh, model: model);
       },
     );
   }
 
   Future<void> _showMyDialogCreate(BuildContext context) async {
-    final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
-    int level = 0;
-    int semester = 0;
-    TextEditingController controller = TextEditingController();
-    TextEditingController controllerCode = TextEditingController();
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Add Course'),
-          content: Scaffold(
-              body: ListView(
-            children: [
-              TextFieldCard(
-                width: double.infinity,
-                controller: controller,
-                originalHeight: 30,
-                headerText: "Course Code",
-              ),
-              TextFieldCard(
-                width: double.infinity,
-                controller: controllerCode,
-                originalHeight: 30,
-                headerText: "Course Title",
-              ),
-              Row(
-                children: [
-                  Container(
-                    child: Text("Level"),
-                  ),
-                ],
-              ),
-              DropdownSearch<String>(
-                validator: (v) => v == null ? "required field" : null,
-                //hint: "Please Select Leave type",
-
-                items: [
-                  "100 Level",
-                  "200 Level",
-                  "300 Level",
-                  '400 Level',
-                  '500 Level'
-                ],
-                onChanged: (value) {
-                  if (value == "100 Level") {
-                    level = 1;
-                  } else if (value == "200 Level") {
-                    level = 2;
-                  } else if (value == "300 Level") {
-                    level = 3;
-                  } else if (value == "400 Level") {
-                    level = 4;
-                  } else if (value == "500 Level") {
-                    level = 5;
-                  }
-                },
-              ),
-              Row(
-                children: [
-                  Container(
-                    child: Text("Semesters"),
-                  ),
-                ],
-              ),
-              DropdownSearch<String>(
-                validator: (v) => v == null ? "required field" : null,
-                //hint: "Please Select Leave type",
-
-                items: ["First", "Second"],
-                onChanged: (value) {
-                  if (value == "First") {
-                    semester = 1;
-                  } else {
-                    semester = 2;
-                  }
-                },
-              ),
-            ],
-          )),
-          actionsAlignment: MainAxisAlignment.spaceBetween,
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Approve'),
-              onPressed: () {
-                try {
-                  if (controller.text.isEmpty) {
-                    Notify.error(context, "Course Code cannot be empty");
-                    return;
-                  } else if (controllerCode.text.isEmpty) {
-                    Notify.error(context, "Course title cannot be empty");
-                    return;
-                  } else if (level == 0) {
-                    Notify.error(context, "Level must be selected");
-                    return;
-                  } else if (semester == 0) {
-                    Notify.error(context, "Semester must be selected");
-                    return;
-                  }
-                  Notify.loading(context, "");
-                  Course.create(Course(
-                          courseCode: controller.text,
-                          courseTitle: controllerCode.text,
-                          level: level,
-                          semester: semester,
-                          courseId: DateTime.now().microsecondsSinceEpoch))
-                      .whenComplete(() {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                    setState(() {});
-                  });
-                } catch (e) {
-                  print(e);
-                }
-              },
-            ),
-          ],
+        return CreateCoursePopUp(
+          refresh: refresh,
         );
       },
     );
@@ -330,6 +94,7 @@ class _CourseViewState extends State<CourseView> {
     final GlobalKey<ScaffoldState> _scaffoldKey =
         new GlobalKey<ScaffoldState>();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       drawer: Drawer(
         elevation: 0,
@@ -393,6 +158,8 @@ class _CourseViewState extends State<CourseView> {
     );
   }
 }
+
+
 
 class MyStatelessWidget extends StatelessWidget {
   final List<Course> list;

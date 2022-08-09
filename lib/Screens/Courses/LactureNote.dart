@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/LectureNote.dart';
 import 'package:school_management/Widgets/AppBar.dart';
+import 'package:school_management/Widgets/CardMaker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../Util/Notify.dart';
@@ -103,7 +104,6 @@ class _LectureNoteViewState extends State<LectureNoteView> {
 
   Future<void> _showMyDialogEdit(
       BuildContext context, LectureNote model) async {
-    final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     TextEditingController controller = TextEditingController();
     TextEditingController noteController = TextEditingController();
@@ -117,9 +117,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Edit Lecture Note'),
-          content: Scaffold(
+        return CardMaker(
             body: ListView(
               children: [
                 TextFieldCard(
@@ -142,7 +140,9 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                     ),
                   ],
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 3,
+                ),
                 Padding(
                   padding: EdgeInsets.all(5),
                   child: Container(
@@ -180,16 +180,14 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                 )
               ],
             ),
-          ),
-          actionsAlignment: MainAxisAlignment.spaceBetween,
-          actions: <Widget>[
-            TextButton(
+            title: "Edit Lecture Note",
+            footerActionLeft: TextButton(
               child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(
+            footerActionRight: TextButton(
               child: const Text('Approve'),
               onPressed: () async {
                 if (controller.text.isEmpty) {
@@ -214,9 +212,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                   });
                 }
               },
-            ),
-          ],
-        );
+            ));
       },
     );
   }
@@ -238,7 +234,6 @@ class _LectureNoteViewState extends State<LectureNoteView> {
   }
 
   Future<void> _showMyDialogCreate(BuildContext context) async {
-    final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     TextEditingController controller = TextEditingController();
     TextEditingController noteController = TextEditingController();
@@ -248,9 +243,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Add Lecture Note'),
-          content: Scaffold(
+        return CardMaker(
             body: ListView(
               children: [
                 TextFieldCard(
@@ -307,16 +300,14 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                 )
               ],
             ),
-          ),
-          actionsAlignment: MainAxisAlignment.spaceBetween,
-          actions: <Widget>[
-            TextButton(
+            title: "Add Lecture Note",
+            footerActionLeft: TextButton(
               child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(
+            footerActionRight: TextButton(
               child: const Text('Approve'),
               onPressed: () async {
                 if (controller.text.isEmpty) {
@@ -364,9 +355,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                   });
                 }
               },
-            ),
-          ],
-        );
+            ));
       },
     );
   }
@@ -410,6 +399,7 @@ class _LectureNoteViewState extends State<LectureNoteView> {
         new GlobalKey<ScaffoldState>();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       drawer: Drawer(
         elevation: 0,
