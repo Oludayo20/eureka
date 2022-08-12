@@ -83,14 +83,17 @@ class _HomeState extends State<StudentHome>
   EachCourseMethod? eachCourseMethod;
 
   Future<void> showEachCourse(int index) async {
+    Notify.loading(context, "");
     eachCourseMethod = EachCourseMethod();
     selectedCourse = index;
     await LectureNote.read(eachCourseMethod!.list, courseList[index].courseId!)
         .whenComplete(() {
       eachCourseMethod!.passOnlyActiveLectureNote();
       if (eachCourseMethod!.list.isEmpty) {
+        Navigator.pop(context);
         Notify.error(context, "Lecture note not available");
       } else {
+        Navigator.pop(context);
         Navigator.push(
           context,
           MaterialPageRoute(

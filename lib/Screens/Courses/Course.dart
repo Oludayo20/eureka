@@ -1,12 +1,7 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/Course.dart';
 import 'package:school_management/Util/Notify.dart';
-
 import '../../../Widgets/AppBar.dart';
-import '../../Util/screen_layout.dart';
-import '../../Widgets/CardMaker.dart';
-import '../../Widgets/TextFieldCard.dart';
 import '../Admin/AdminMainDrawer.dart';
 import 'CourseCRUD/Create.dart';
 import 'CourseCRUD/Edit.dart';
@@ -22,7 +17,6 @@ class _CourseViewState extends State<CourseView> {
   Course? model;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -67,7 +61,6 @@ class _CourseViewState extends State<CourseView> {
   }
 
   Future<void> _showMyDialogEdit(BuildContext context, Course model) async {
-
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -114,11 +107,14 @@ class _CourseViewState extends State<CourseView> {
         builder: (BuildContext context, AsyncSnapshot<List<Course>> snapshot) {
           Widget children;
           if (snapshot.hasData) {
-            children = MyStatelessWidget(
-              list: snapshot.data!,
-              showCreate: _showMyDialogCreate,
-              showDelete: _showMyDialogDelete,
-              showEdit: _showMyDialogEdit,
+            children = Padding(
+              padding: EdgeInsets.all(5),
+              child: MyStatelessWidget(
+                list: snapshot.data!,
+                showCreate: _showMyDialogCreate,
+                showDelete: _showMyDialogDelete,
+                showEdit: _showMyDialogEdit,
+              ),
             );
           } else if (snapshot.hasError) {
             children = Padding(
@@ -158,8 +154,6 @@ class _CourseViewState extends State<CourseView> {
     );
   }
 }
-
-
 
 class MyStatelessWidget extends StatelessWidget {
   final List<Course> list;

@@ -36,7 +36,6 @@ class _FacultyState extends State<Faculty> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _facultyMethods = FacultyMethods();
     _facultyMethods!.facultyStreamController.stream.listen((event) {

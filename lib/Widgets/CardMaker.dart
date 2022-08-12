@@ -10,8 +10,8 @@ class CardHeader extends StatelessWidget {
     Layout layout = Layout(size: MediaQuery.of(context).size);
     return Container(
       height: layout.height * 0.1,
-      color: Colors.white,
       width: layout.isAndroid ? layout.width * 0.8 : layout.width * 0.5,
+      color: Colors.white,
       child: Card(
         child: Center(
           child: Text(
@@ -67,21 +67,39 @@ class CardMaker extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
+    Layout layout = Layout(size: MediaQuery.of(context).size);
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
-        body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+        body: Container(
+          height: layout.height,
+          width: layout.width,
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CardHeader(
-                cardTitle: title,
-              ),
-              CardBody(body: body),
-              CardFooter(
-                  footerActionLeft: footerActionLeft,
-                  footerActionRight: footerActionRight)
-            ]));
+              Container(
+                height: title.isEmpty? layout.height * 0.8 :layout.height * 0.9,
+                width:
+                    layout.isAndroid ? layout.width * 0.8 : layout.width * 0.5,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      title.isNotEmpty
+                          ? CardHeader(
+                              cardTitle: title,
+                            )
+                          : Container(),
+                      CardBody(body: body),
+                      CardFooter(
+                          footerActionLeft: footerActionLeft,
+                          footerActionRight: footerActionRight)
+                    ]),
+              )
+            ],
+          ),
+        ));
   }
 }
 
@@ -95,6 +113,7 @@ class CardBody extends StatelessWidget {
       height: layout.height * 0.7,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             color: Colors.white,

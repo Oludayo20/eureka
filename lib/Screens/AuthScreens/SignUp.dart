@@ -8,9 +8,8 @@ import 'package:school_management/Models/Programs.dart';
 import 'package:school_management/Util/screen_layout.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 import 'package:school_management/services/AuthExceptionHandler.dart';
-
-import '../Util/Notify.dart';
-import '../services/authentication_helper.dart';
+import '../../Util/Notify.dart';
+import '../../services/authentication_helper.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -56,6 +55,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
       animation: animationController!,
       builder: (BuildContext context, Widget? child) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           body: ListView(
             children: <Widget>[
               //  Register Heading
@@ -124,9 +124,9 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                 // Username
                                 TextFormField(
                                   validator: (value) {
-                                    RegExp nameRegExp = RegExp('[a-zA-Z]');
+                                    RegExp nameRegExp = RegExp('[a-zA-Z1-9]');
                                     if (value!.isEmpty) {
-                                      return 'You Must enter your Username!';
+                                      return 'Enter a Username!';
                                     } else if (nameRegExp.hasMatch(value)) {
                                       return null;
                                     } else {
@@ -183,40 +183,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                     ),
                                   ),
                                 ),
-                                /*SizedBox(height: 20.0),
-
-                                //  Phone Number
-
-                                TextFormField(
-                                  validator: (value) {
-                                    String pattern =
-                                        r'(^(?:[+0]9)?[0-9]{10,12}$)';
-                                    RegExp regExp = new RegExp(pattern);
-                                    if (value!.length == 0) {
-                                      return 'Please enter mobile number';
-                                    } else if (!regExp.hasMatch(value)) {
-                                      return 'Please enter valid mobile number';
-                                    }
-                                    return null;
-                                  },
-                                  onSaved: (val) {
-                                    phno = val!;
-                                  },
-                                  decoration: InputDecoration(
-                                      labelText: 'Phone Number',
-                                      contentPadding: EdgeInsets.all(5),
-                                      labelStyle: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.grey),
-                                      focusedBorder: UnderlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.green))),
-                                ),*/
                                 SizedBox(height: 20.0),
-
-                                // Password 1
                                 TextFormField(
                                   obscuringCharacter: '*',
 
@@ -337,15 +304,6 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                           onPress: () {
                             if (_formkey.currentState!.validate()) {
                               _formkey.currentState!.save();
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (BuildContext context) =>
-                              //           CompleteRegistration(
-                              //             // userApp: UserApp(
-                              //             //     email: email, password: _pass),
-                              //           ),
-                              //     ));
                               Notify.loading(context, "");
                               AuthenticationHelper()
                                   .signUp(
@@ -353,13 +311,16 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                       password: _pass,
                                       displayName: name)
                                   .then((value) {
+                                Navigator.pop(context);
                                 if (value == AuthStatus.successful) {
                                   Navigator.popUntil(
                                       context,
                                       (Route<dynamic> predicate) =>
                                           predicate.isFirst);
-                                  Notify.success(context,  AuthExceptionHandler.generateErrorMessage(
-                                      AuthStatus.emailVerifiedError));
+                                  Notify.success(
+                                      context,
+                                      AuthExceptionHandler.generateErrorMessage(
+                                          AuthStatus.emailVerifiedError));
                                 } else {
                                   Notify.error(
                                       context,

@@ -23,7 +23,7 @@ void main() {
       return false;
     }
   }
-
+  //TODO: Implement the checking of isLogin better
   //runApp(MyApp());
    init().then((val) {
     if (val) {

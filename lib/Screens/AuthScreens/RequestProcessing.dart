@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'LoginPage.dart';
+import 'Login/LoginPage.dart';
 
 class ProcessingRequest extends StatelessWidget {
   @override
@@ -33,7 +33,7 @@ class ProcessingRequest extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (BuildContext context) => MyHomePage(),
+                            builder: (BuildContext context) => LoginPage(),
                           ),
                         );
                       },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/LectureNote.dart';
 import '../../../../Models/QuizResultInfo.dart';
+import '../../../../Util/Notify.dart';
 import '../../../../services/authentication_helper.dart';
 import '../Exams/Exam_Rseult.dart';
 import 'NoteView.dart';
@@ -25,9 +26,10 @@ class NoteCard extends StatelessWidget {
     }
 
     void onSelfQuizClick(BuildContext context) {
+      Notify.loading(context, "");
       var uid = AuthenticationHelper().getUser()!.uid!;
-      print(uid);
       QuizResultInfo().read(lectureNote!.lectureNoteId!, uid).then((value) {
+        Navigator.pop(context);
         Navigator.pushNamed(
           context,
           ExamResult.routeName,

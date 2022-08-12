@@ -37,7 +37,6 @@ class _DepartmentViewState extends State<DepartmentView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _departmentMethods = DepartmentMethods(facultyId: widget.facultyId);
     _departmentMethods!.streamController.stream.listen((event) {

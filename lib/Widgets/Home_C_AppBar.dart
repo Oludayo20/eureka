@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:school_management/Screens/Home_C/WebMenu.dart';
-import 'package:school_management/Screens/LoginPage.dart';
-import 'package:school_management/Screens/SignUp.dart';
+import 'package:school_management/Screens/AuthScreens/Login/LoginPage.dart';
+import 'package:school_management/Screens/AuthScreens/SignUp.dart';
+import '../Screens/AuthScreens/Widgets.dart';
 
 AppBar homePageAppBar(BuildContext context, bool isAndroid) {
   return AppBar(
@@ -25,13 +26,7 @@ AppBar homePageAppBar(BuildContext context, bool isAndroid) {
 
       Center(
         child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => SignUp(),
-                  ));
-            },
+            onPressed: () => showAuthDialog(context,SignUp()),
             style: TextButton.styleFrom(
               padding: EdgeInsets.symmetric(
                 horizontal: 20 * 1.2,
@@ -46,13 +41,7 @@ AppBar homePageAppBar(BuildContext context, bool isAndroid) {
       ),
       Center(
         child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => MyHomePage(),
-                  ));
-            },
+            onPressed: () => showAuthDialog(context,LoginPage()),
             style: TextButton.styleFrom(
               padding: EdgeInsets.symmetric(
                 horizontal: 20 * 1.2,

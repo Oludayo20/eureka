@@ -38,7 +38,7 @@ class SubmitView extends StatelessWidget {
           children: [
             NumberButtons(
               selectedOption: selectedOption,
-              textButtonWidth: layout.width * 0.09,
+              textButtonWidth: 100,
               textButtonHeight: layout.height * 0.04,
               textButtonFontSize: 20,
               number: key,
@@ -63,7 +63,7 @@ class SubmitView extends StatelessWidget {
       ),
       appBar: CommonAppBar(
         menuenabled: true,
-        notificationenabled: true,
+        notificationenabled: false,
         ontap: () {
           _scaffoldKey.currentState!.openDrawer();
         },

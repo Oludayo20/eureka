@@ -3,6 +3,7 @@ import 'package:fzregex/utils/fzregex.dart';
 import 'package:fzregex/utils/pattern.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 
+
 class ForgetPassword extends StatefulWidget {
   @override
   _ForgetPasswordState createState() => _ForgetPasswordState();
@@ -211,3 +212,4 @@ class _ForgetPasswordState extends State<ForgetPassword>
     );
   }
 }
+
