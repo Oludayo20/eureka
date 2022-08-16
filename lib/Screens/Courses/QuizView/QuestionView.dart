@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-
 import '../../../../Models/Quiz.dart';
 import '../../../services/authentication_helper.dart';
 import '../QuizView/CRUD/Edit.dart';
@@ -39,6 +37,7 @@ class _QuestionViewState extends State<QuestionView> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
+            //TODO: Add width
             height: width < 600 ? height * 0.03 : width * 0.03,
             margin: EdgeInsets.only(bottom: 5),
             child: Row(
@@ -106,7 +105,12 @@ class _QuestionViewState extends State<QuestionView> {
               options(widget.quiz.options!.quizOptionC!, 3),
               options(widget.quiz.options!.quizOptionD!, 4),
               options(widget.quiz.options!.quizOptionE!, 5),
-              clearOption()
+              clearOption(),
+              widget.questionNumber % 2 == 0
+                  ? SizedBox(
+                      height: 20,
+                    )
+                  : Container()
             ],
           )
         ],

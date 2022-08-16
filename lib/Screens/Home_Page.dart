@@ -1,7 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../Util/ImagePath.dart';
+import '../Util/Notify.dart';
 import 'Template/HomeTop.dart';
 import 'Template/OtherMenu.dart';
+
+import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 StreamController<int> streamControllerHome = StreamController();
 
@@ -38,6 +43,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> _launchInBrowser(Uri url, BuildContext context) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      Notify.error(context, 'Could not launch $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -50,10 +64,27 @@ class _HomePageState extends State<HomePage> {
       )
     ];
     return Scaffold(
-      body: Container(
-        width: width,
-        height: width > 600 ? height * 1.3 : height * 1.5,
-        child: currWidget[selected],
+      body: Stack(
+        children: [
+          Container(
+            width: width,
+            height: width > 600 ? height * 1.3 : height * 1.5,
+            child: currWidget[selected],
+          ),
+          Positioned(
+              left: width < 400 ? width * 0.8 : width * 0.9,
+              top: height * 0.9,
+              child: InkWell(
+                onTap: () async {
+                  await _launchInBrowser(
+                      Uri.parse('https://wa.me/+2349034579816'), context);
+                },
+                child: Image(
+                  image: NetworkImage(ImagePath.whatsAppImage),
+                  width: 35,
+                ),
+              ))
+        ],
       ),
     );
   }

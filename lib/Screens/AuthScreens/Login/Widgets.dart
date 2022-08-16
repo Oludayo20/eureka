@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fzregex/utils/fzregex.dart';
+import 'package:fzregex/utils/pattern.dart';
 import '../../../Models/User.dart';
 import '../../../Widgets/BouncingButton.dart';
 import '../ForgetPasseord.dart';
@@ -62,14 +64,18 @@ Widget goToRegisterButton(BuildContext context,Animation delayedAnimation, doubl
 Widget emailTextFromField(UserApp userApp){
   return TextFormField(
     validator: (value) {
-      if (value!.isEmpty) {
-        return "Enter Valid Email address";
+      var ema = value!.toLowerCase().trim();
+      if ((Fzregex.hasMatch(
+          ema, FzPattern.email) ==
+          false)) {
+        return "Enter a valid email address";
       } else {
         return null;
       }
     },
     onSaved: (value) {
-      userApp.email = value;
+      var ema = value!.toLowerCase().trim();
+      userApp.email = ema;
     },
     keyboardType: TextInputType.emailAddress,
     decoration: InputDecoration(

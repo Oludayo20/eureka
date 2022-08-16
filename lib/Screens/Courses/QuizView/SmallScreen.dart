@@ -45,7 +45,7 @@ class SmallScreen extends StatelessWidget {
       );
     }
 
-    var butC = buttonCol();
+    var _questionNumberRow = buttonCol();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -99,7 +99,8 @@ class SmallScreen extends StatelessWidget {
             controller: controller,
             child: ListView(
               controller: controller,
-              children: [butC],
+              children: [_questionNumberRow,
+              SizedBox(height: 20,)],
             ),
           ),
         ),

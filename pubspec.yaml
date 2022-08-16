@@ -40,8 +40,10 @@ dependencies:
   flutter_svg: ^1.0.3
   get: ^4.6.1
   flare_flutter: ^3.0.2
+  universal_html: ^2.0.8
   flrx_validator: ^0.6.0
   firebase_database: ^9.0.18
+  url_launcher: ^6.1.5
   file_picker: ^4.6.1
 dev_dependencies:
   flutter_test:

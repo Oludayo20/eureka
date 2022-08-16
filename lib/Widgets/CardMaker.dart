@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/foundation.dart';
 import '../Util/screen_layout.dart';
 
 class CardHeader extends StatelessWidget {
@@ -68,6 +68,7 @@ class CardMaker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Layout layout = Layout(size: MediaQuery.of(context).size);
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
@@ -128,3 +129,15 @@ class CardBody extends StatelessWidget {
     );
   }
 }
+
+class ExtraSpace extends StatelessWidget {
+  const ExtraSpace({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 300.0,
+    );
+  }
+}
+

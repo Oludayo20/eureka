@@ -23,4 +23,5 @@ class ImagePath {
   static String dipoProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/Dipo_dvozjl.jpg";
   static String davidProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/David_v1b5jj.jpg";
   static String karoProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529121/Eureka/Profile%20Pic/karo_dqicoq.jpg";
+  static String whatsAppImage = "https://res.cloudinary.com/richkazz/image/upload/v1660675990/Eureka/Profile%20Pic/android-icon-36x36_vkjcnr.png";
 }

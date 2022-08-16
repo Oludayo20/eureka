@@ -5,6 +5,7 @@ import 'package:school_management/services/AuthExceptionHandler.dart';
 import '../../../Models/User.dart';
 import '../../../Util/Notify.dart';
 import '../../../Util/screen_layout.dart';
+import '../../../Widgets/CardMaker.dart';
 import '../../../services/authentication_helper.dart';
 import '../../Admin/HomePage/HomePage.dart';
 import 'Widgets.dart';
@@ -211,9 +212,7 @@ class _MyHomePageState extends State<LoginPage>
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10.0,
-              ),
+              ExtraSpace()
             ],
           ),
         );

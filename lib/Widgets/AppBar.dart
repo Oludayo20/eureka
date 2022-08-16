@@ -96,10 +96,19 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
             : SizedBox(
                 width: 1,
               ),
-        InkWell(
-          onTap: () => _showMyDialogProfileAction(context),
-          child: Icon(Icons.settings, size: 30, color: Colors.grey,),
-        ),
+        Padding(
+          padding: EdgeInsets.only(
+            right: 5,
+          ),
+          child: InkWell(
+            onTap: () => _showMyDialogProfileAction(context),
+            child: Icon(
+              Icons.settings,
+              size: 30,
+              color: Colors.grey,
+            ),
+          ),
+        )
       ],
       centerTitle: true,
       backgroundColor: Colors.transparent,

@@ -62,6 +62,7 @@ Future<void> showMyDialogCEdit(BuildContext context, Quiz quiz) async {
             optionsAdd(optionCControllerCode, "Option C"),
             optionsAdd(optionDControllerCode, "Option D"),
             optionsAdd(optionEControllerCode, "Option E"),
+            ExtraSpace()
           ],
         ),
         title: 'Add Course',

@@ -9,6 +9,7 @@ import 'package:school_management/Util/screen_layout.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
 import 'package:school_management/services/AuthExceptionHandler.dart';
 import '../../Util/Notify.dart';
+import '../../Widgets/CardMaker.dart';
 import '../../services/authentication_helper.dart';
 
 class SignUp extends StatefulWidget {
@@ -157,16 +158,18 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                                 // Email Address
                                 TextFormField(
                                   validator: (value) {
+                                    var ema = value!.toLowerCase().trim();
                                     if ((Fzregex.hasMatch(
-                                            value!, FzPattern.email) ==
+                                        ema, FzPattern.email) ==
                                         false)) {
-                                      return "Enter Vaild Email address";
+                                      return "Enter a valid email address";
                                     } else {
                                       return null;
                                     }
                                   },
                                   onSaved: (value) {
-                                    email = value!;
+                                    var ema = value!.toLowerCase().trim();
+                                    email = ema;
                                   },
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
@@ -348,9 +351,7 @@ class _SignUpState extends State<SignUp> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10.0,
-              ),
+              ExtraSpace()
             ],
           ),
         );

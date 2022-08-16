@@ -30,28 +30,6 @@ class SubmitView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Layout layout = Layout(size: MediaQuery.of(context).size);
-    List<Widget> numberList() {
-      List<Widget> item = [];
-      selectedOption.forEach((key, value) {
-        item.add(Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            NumberButtons(
-              selectedOption: selectedOption,
-              textButtonWidth: 100,
-              textButtonHeight: layout.height * 0.04,
-              textButtonFontSize: 20,
-              number: key,
-              numberButtonStreamController: StreamController(),
-            )
-          ],
-        ));
-        item.add(SizedBox(
-          height: 5,
-        ));
-      });
-      return item;
-    }
 
     final GlobalKey<ScaffoldState> _scaffoldKey =
         new GlobalKey<ScaffoldState>();
@@ -73,9 +51,11 @@ class SubmitView extends StatelessWidget {
         children: [
           Container(
               width: layout.width * 0.4,
-              child: ListView(
-                children: numberList(),
-              )),
+              margin: EdgeInsets.only(bottom: 30),
+              child: AnimatedListView(
+                selectedOption: selectedOption,
+              )
+              ),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
@@ -184,5 +164,97 @@ class SubmitView extends StatelessWidget {
             selectedOption: selectedOption),
         quizList[0].lectureNoteId!,
         uid);
+  }
+}
+
+class AnimatedListView extends StatelessWidget {
+  const AnimatedListView({Key? key, required this.selectedOption})
+      : super(key: key);
+  final Map<int, int> selectedOption;
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      cacheExtent: 0,
+      padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 20),
+      itemCount: selectedOption.length,
+      itemBuilder: (context, index) => AnimatedScrollViewItem(
+          child: ListItem(
+        title: '${index + 1}',
+        isSelected: selectedOption[index + 1] == 0 ? true : false,
+      )),
+    );
+  }
+}
+
+class AnimatedScrollViewItem extends StatefulWidget {
+  const AnimatedScrollViewItem({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+  @override
+  State<AnimatedScrollViewItem> createState() => _AnimatedScrollViewItemState();
+}
+
+class _AnimatedScrollViewItemState extends State<AnimatedScrollViewItem>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _animationController;
+  late final Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    )..forward();
+
+    _scaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      child: widget.child,
+    );
+  }
+}
+
+class ListItem extends StatelessWidget {
+  const ListItem({
+    Key? key,
+    this.title = '',
+    required this.isSelected,
+  }) : super(key: key);
+
+  final bool isSelected;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: isSelected? Colors.white:Colors.black12,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Center(
+        child: Text(title),
+      ),
+    );
   }
 }

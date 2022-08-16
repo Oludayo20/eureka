@@ -14,6 +14,7 @@ class SubjectCard extends StatelessWidget {
   final String? startTime;
   final String? grade;
   final String? mark;
+  final String? total;
   final LectureNote lectureNote;
   SubjectCard(
       {Key? key,
@@ -23,7 +24,7 @@ class SubjectCard extends StatelessWidget {
       this.grade,
       this.mark,
       required this.lectureNote,
-      this.startTime})
+      this.startTime, this.total})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -127,7 +128,7 @@ class SubjectCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    "$timeTaken",
+                    "Time T: $timeTaken",
                     style: TextStyle(
                       fontSize: 12,
                     ),
@@ -137,7 +138,7 @@ class SubjectCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Marks:$mark",
+                      "Marks:$mark/$total",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,

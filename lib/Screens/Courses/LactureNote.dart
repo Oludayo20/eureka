@@ -177,7 +177,8 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                 ),
                 EditLectureNoteCheckBox(
                   model: model,
-                )
+                ),
+                ExtraSpace()
               ],
             ),
             title: "Edit Lecture Note",
@@ -297,7 +298,8 @@ class _LectureNoteViewState extends State<LectureNoteView> {
                       ),
                     ),
                   ),
-                )
+                ),
+                ExtraSpace()
               ],
             ),
             title: "Add Lecture Note",
