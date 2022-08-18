@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
             child: currWidget[selected],
           ),
           Positioned(
-              left: width < 400 ? width * 0.8 : width * 0.9,
+              left: width < 400 ? width * 0.85 : width * 0.9,
               top: height * 0.9,
               child: InkWell(
                 onTap: () async {

@@ -74,7 +74,7 @@ Future<void> showMyDialogCEdit(BuildContext context, Quiz quiz) async {
         ),
         footerActionRight: TextButton(
           child: const Text('Approve'),
-          onPressed: () {
+          onPressed: () async {
             var check = emptyField(
                 questionController.text,
                 optionAControllerCode.text,
@@ -97,9 +97,12 @@ Future<void> showMyDialogCEdit(BuildContext context, Quiz quiz) async {
               ans = 3;
             else if (answerControllerCode.text == "D")
               ans = 4;
-            else if (answerControllerCode.text == "E") ans = 5;
+            else if (answerControllerCode.text == "E")
+              ans = 5;
+            else if (answerControllerCode.text.isEmpty) ans = quiz.answer!;
 
-            Quiz.update(Quiz(
+            await Quiz.update(Quiz(
+              courseId: quiz.courseId,
               question: questionController.text,
               lectureNoteId: quiz.lectureNoteId,
               answer: ans,

@@ -105,7 +105,7 @@ class _QuestionViewState extends State<QuestionView> {
               options(widget.quiz.options!.quizOptionC!, 3),
               options(widget.quiz.options!.quizOptionD!, 4),
               options(widget.quiz.options!.quizOptionE!, 5),
-              clearOption(),
+              widget.isReviewing ? Container() : clearOption(),
               widget.questionNumber % 2 == 0
                   ? SizedBox(
                       height: 20,

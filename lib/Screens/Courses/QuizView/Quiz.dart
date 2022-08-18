@@ -139,6 +139,7 @@ class _QuizViewState extends State<QuizView> {
       required double textButtonHeight}) {
     List<Widget> buttons = [];
     for (var i = number; i < number + length; i++) {
+      list[i - 1].courseId = quizViewArgument!.lectureNote.courseId;
       questionMap[i] = QuestionView(
         isReviewing: quizViewArgument!.isReviewing,
         numberButtonStreamController: numberButtonStreamController,
@@ -154,6 +155,8 @@ class _QuizViewState extends State<QuizView> {
       buttons.add(Bouncing(
           onPress: () => changeQuestion(i),
           child: NumberButtons(
+            isReviewing: widget.quizViewArgument.isReviewing,
+            answer: list[i - 1].answer!,
             selectedOption: quizViewArgument!.selectedOption,
             numberButtonStreamController: numberButtonStreamController,
             number: i,

@@ -23,6 +23,7 @@ class Quiz {
     lectureNoteId = json['lectureNoteId'];
     question = json['question'];
     answer = json['answer'];
+    courseId = json['courseId'];
     try {
       var values = json['options'] as Map<String, dynamic>;
       options = QuizOptions.fromJson(values);
@@ -36,6 +37,7 @@ class Quiz {
         'lectureNoteId': lectureNoteId,
         'question': question,
         'answer': answer,
+        'courseId': courseId,
         'options': options!.toJson(),
       };
   static DatabaseReference ref =

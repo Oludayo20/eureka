@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 class NumberButtons extends StatefulWidget {
   const NumberButtons(
       {Key? key,
+      required this.answer,
       required this.numberButtonStreamController,
       required this.textButtonWidth,
       required this.textButtonHeight,
       required this.textButtonFontSize,
       required this.number,
-      required this.selectedOption})
+      required this.selectedOption, required this.isReviewing})
       : super(key: key);
   final StreamController<int> numberButtonStreamController;
   final double textButtonWidth;
@@ -17,7 +18,8 @@ class NumberButtons extends StatefulWidget {
   final double textButtonFontSize;
   final Map<int, int> selectedOption;
   final int number;
-
+  final int answer;
+  final bool isReviewing;
   @override
   State<NumberButtons> createState() => _NumberButtonsState();
 }
@@ -37,7 +39,11 @@ class _NumberButtonsState extends State<NumberButtons> {
     });
     widget.selectedOption[widget.number] == 0
         ? buttonColor = Colors.white
-        : buttonColor = Colors.black12;
+        : widget.answer != 0 && widget.isReviewing
+            ? widget.answer == widget.selectedOption[widget.number]
+                ? buttonColor = Colors.green
+                : buttonColor = Colors.red
+            : buttonColor = Colors.black12;
   }
 
   @override
