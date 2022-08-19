@@ -1,38 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:school_management/Models/LectureNote.dart';
-import '../../../../Models/QuizResultInfo.dart';
+import '../../../../Models/models.dart';
 import '../../../../Util/Notify.dart';
-import '../../../../services/authentication_helper.dart';
+import '../../../../Authentication/authentication_helper.dart';
+import '../../../../constants/constants.dart';
+import '../../../../routes/routes.dart';
 import '../Exams/Exam_Rseult.dart';
-import 'NoteView.dart';
 
 class NoteCard extends StatelessWidget {
   NoteCard({
     Key? key,
-    this.lectureNote, required this.num,
+    this.lectureNote,
+    required this.num,
   }) : super(key: key);
   final LectureNote? lectureNote;
   final int num;
   @override
   Widget build(BuildContext context) {
     void onDisplayNoteClick(BuildContext context) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) =>
-              NoteView(lectureNote: lectureNote!),
-        ),
-      );
+      Navigator.pushNamed(
+          context,
+          GenerateRootNames.generateRouteName(
+              PageName.viewNoteUnderLectureNote),
+          arguments: lectureNote);
     }
 
     void onSelfQuizClick(BuildContext context) {
       Notify.loading(context, "");
-      var uid = AuthenticationHelper().getUser()!.uid!;
+      var uid = AuthenticationHelper.getUser()!.uid!;
       QuizResultInfo().read(lectureNote!.lectureNoteId!, uid).then((value) {
         Navigator.pop(context);
         Navigator.pushNamed(
           context,
-          ExamResult.routeName,
+          GenerateRootNames.generateRouteName(PageName.viewPastQuizAndTakeQuiz),
           arguments: ExamResultArguments(
               lectureNote: lectureNote!, quizResultInfo: value),
         );

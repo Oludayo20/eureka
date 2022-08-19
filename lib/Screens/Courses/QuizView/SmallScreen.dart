@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/LectureNote.dart';
-import '../../../services/authentication_helper.dart';
-import 'CRUD/Create.dart';
+import '../../../Authentication/Authentication.dart';
+import 'CRUD/crud.dart';
 import 'Methods.dart';
 import 'QuestionView.dart';
 import 'ViewQuestions.dart';
@@ -68,7 +68,7 @@ class SmallScreen extends StatelessWidget {
               TextButton(
                   onPressed: () => quizMethods.previousQuestion(),
                   child: Text("Previous")),
-              AuthenticationHelper().isAdmin()
+              AuthenticationHelper.isAdmin()
                   ? TextButton(
                   onPressed: () {
                     showMyDialogCreate(context,lectureNote.courseId!, lectureNote.lectureNoteId!);

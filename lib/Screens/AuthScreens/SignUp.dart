@@ -7,10 +7,10 @@ import 'package:school_management/Models/Faculty.dart';
 import 'package:school_management/Models/Programs.dart';
 import 'package:school_management/Util/screen_layout.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
-import 'package:school_management/services/AuthExceptionHandler.dart';
+import 'package:school_management/Authentication/AuthExceptionHandler.dart';
 import '../../Util/Notify.dart';
 import '../../Widgets/CardMaker.dart';
-import '../../services/authentication_helper.dart';
+import '../../Authentication/authentication_helper.dart';
 
 class SignUp extends StatefulWidget {
   @override

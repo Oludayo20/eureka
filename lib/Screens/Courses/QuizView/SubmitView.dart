@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:school_management/Models/OpenNote.dart';
-import 'package:school_management/services/authentication_helper.dart';
+import 'package:school_management/Authentication/Authentication.dart';
 
 import '../../../Models/LectureNote.dart';
 import '../../../Models/Quiz.dart';
@@ -12,8 +12,9 @@ import '../../../Util/Notify.dart';
 import '../../../Util/screen_layout.dart';
 import '../../../Widgets/AppBar.dart';
 import '../../../Widgets/MainDrawer.dart';
+import '../../../constants/const.enum.pagesName.dart';
+import '../../../routes/routes_to_name.dart';
 import '../../Students/EachCourse/Exams/Exam_Rseult.dart';
-import 'Buttons.dart';
 
 class SubmitView extends StatelessWidget {
   const SubmitView(
@@ -54,8 +55,7 @@ class SubmitView extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 30),
               child: AnimatedListView(
                 selectedOption: selectedOption,
-              )
-              ),
+              )),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       ),
@@ -111,16 +111,18 @@ class SubmitView extends StatelessWidget {
               onPressed: () async {
                 Notify.loading(context, "");
                 await submitClick();
-                var uid = AuthenticationHelper().getUser()!.uid!;
+                var uid = AuthenticationHelper.getUser()!.uid!;
                 QuizResultInfo()
                     .read(quizList[0].lectureNoteId!, uid)
                     .then((value) {
                   Navigator.popUntil(
-                      context, ModalRoute.withName(ExamResult.routeName));
-                  Navigator.pop(context);
+                      context,
+                      ModalRoute.withName(GenerateRootNames.generateRouteName(
+                          PageName.studentDashBord)));
                   Navigator.pushNamed(
                     context,
-                    ExamResult.routeName,
+                    GenerateRootNames.generateRouteName(
+                        PageName.viewPastQuizAndTakeQuiz),
                     arguments: ExamResultArguments(
                         lectureNote: lectureNote, quizResultInfo: value),
                   );
@@ -149,7 +151,7 @@ class SubmitView extends StatelessWidget {
   }
 
   Future submitClick() async {
-    var uid = AuthenticationHelper().getUser()!.uid!;
+    var uid = AuthenticationHelper.getUser()!.uid!;
     int score = computeScore();
     if (score == quizList.length) {
       //await unlockNextNote(uid);
@@ -249,7 +251,7 @@ class ListItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isSelected? Colors.white:Colors.black12,
+        color: isSelected ? Colors.white : Colors.black12,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Center(

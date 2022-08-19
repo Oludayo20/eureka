@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../../Models/LectureNote.dart';
-import '../../../services/authentication_helper.dart';
-import 'CRUD/Create.dart';
+import '../../../Models/models.dart';
+import '../../../Authentication/Authentication.dart';
+import 'CRUD/crud.dart';
 import 'Methods.dart';
 import 'QuestionView.dart';
 import 'ViewQuestions.dart';
@@ -85,7 +85,7 @@ class BigScreen extends StatelessWidget {
                   TextButton(
                       onPressed: () => quizMethods.previousQuestion(),
                       child: Text("Previous")),
-                  AuthenticationHelper().isAdmin()
+                  AuthenticationHelper.isAdmin()
                       ? TextButton(
                       onPressed: () {
                         showMyDialogCreate(context, lectureNote.courseId!,lectureNote.lectureNoteId!);

@@ -19,9 +19,17 @@ class ImagePath {
       "https://res.cloudinary.com/richkazz/image/upload/v1657756482/TeamHome_la37a2.webp";
   static String teamAssets = "TeamHome.webp";
   static String team = teamNetwork;
-  static String dayoProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/Dayo_tepm5z.jpg";
-  static String dipoProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/Dipo_dvozjl.jpg";
-  static String davidProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/David_v1b5jj.jpg";
-  static String karoProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529121/Eureka/Profile%20Pic/karo_dqicoq.jpg";
+  static String generalPerson = "https://res.cloudinary.com/richkazz/image/upload/v1660946626/Eureka/Profile%20Pic/avatar-man-face_f3uchf.webp";
+  static String dayoProfilePic = generalPerson;
+  //static String dayoProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/Dayo_tepm5z.jpg";
+  static String dipoProfilePic = generalPerson;
+      //"https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/Dipo_dvozjl.jpg";
+  //static String dipoProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/Dipo_dvozjl.jpg";
+  static String davidProfilePic = generalPerson;
+      //"https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/David_v1b5jj.jpg";
+  //static String davidProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529120/Eureka/Profile%20Pic/David_v1b5jj.jpg";
+  static String karoProfilePic = generalPerson;
+      //"https://res.cloudinary.com/richkazz/image/upload/v1659529121/Eureka/Profile%20Pic/karo_dqicoq.jpg";
+  //static String karoProfilePic = "https://res.cloudinary.com/richkazz/image/upload/v1659529121/Eureka/Profile%20Pic/karo_dqicoq.jpg";
   static String whatsAppImage = "https://res.cloudinary.com/richkazz/image/upload/v1660675990/Eureka/Profile%20Pic/android-icon-36x36_vkjcnr.png";
 }

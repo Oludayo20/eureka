@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../../../Models/Quiz.dart';
-import '../../../services/authentication_helper.dart';
-import '../QuizView/CRUD/Edit.dart';
-import '../QuizView/CRUD/Delete.dart';
+import '../../../../Models/models.dart';
+import '../../../Authentication/Authentication.dart';
+import 'CRUD/crud.dart';
 
 class QuestionView extends StatefulWidget {
   final int questionNumber;
@@ -31,7 +30,7 @@ class _QuestionViewState extends State<QuestionView> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    bool isAdmin = AuthenticationHelper().isAdmin();
+    bool isAdmin = AuthenticationHelper.isAdmin();
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -186,7 +185,7 @@ class _QuestionViewState extends State<QuestionView> {
             ],
           ),
         ),
-        onTap: () => widget.isReviewing || AuthenticationHelper().isAdmin()
+        onTap: () => widget.isReviewing || AuthenticationHelper.isAdmin()
             ? () {}
             : onClickOption(opt));
   }

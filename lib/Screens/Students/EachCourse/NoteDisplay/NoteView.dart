@@ -4,7 +4,9 @@ import '../../../../Models/QuizResultInfo.dart';
 import '../../../../Util/screen_layout.dart';
 import '../../../../Widgets/AppBar.dart';
 import '../../../../Widgets/MainDrawer.dart';
-import '../../../../services/authentication_helper.dart';
+import '../../../../Authentication/authentication_helper.dart';
+import '../../../../constants/const.enum.pagesName.dart';
+import '../../../../routes/routes_to_name.dart';
 import '../DisplayNote.dart';
 import '../Exams/Exam_Rseult.dart';
 
@@ -14,12 +16,11 @@ class NoteView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onSelfQuizClick() {
-      var uid = AuthenticationHelper().getUser()!.uid!;
+      var uid = AuthenticationHelper.getUser()!.uid!;
       QuizResultInfo().read(lectureNote.lectureNoteId!, uid).then((value) {
-        print(uid);
         Navigator.pushNamed(
           context,
-          ExamResult.routeName,
+          GenerateRootNames.generateRouteName(PageName.viewPastQuizAndTakeQuiz),
           arguments: ExamResultArguments(
               lectureNote:lectureNote, quizResultInfo: value),
         );

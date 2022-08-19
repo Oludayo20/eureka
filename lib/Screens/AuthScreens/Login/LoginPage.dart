@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:school_management/Screens/Students/Home/home.dart';
 import 'package:school_management/Widgets/BouncingButton.dart';
-import 'package:school_management/services/AuthExceptionHandler.dart';
+import 'package:school_management/Authentication/AuthExceptionHandler.dart';
 import '../../../Models/User.dart';
 import '../../../Util/Notify.dart';
 import '../../../Util/screen_layout.dart';
 import '../../../Widgets/CardMaker.dart';
-import '../../../services/authentication_helper.dart';
+import '../../../Authentication/authentication_helper.dart';
+import '../../../constants/constants.dart';
 import '../../Admin/HomePage/HomePage.dart';
 import 'Widgets.dart';
+import '../../../routes/routes.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key, this.title}) : super(key: key);
@@ -51,6 +53,7 @@ class _MyHomePageState extends State<LoginPage>
     animationController!.dispose();
     super.dispose();
   }
+
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   bool passshow = false;
   UserApp _userApp = UserApp();
@@ -142,17 +145,19 @@ class _MyHomePageState extends State<LoginPage>
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          goToRegisterButton(context,delayedAnimation!,width),
+                          goToRegisterButton(context, delayedAnimation!, width),
                           // Forgot Password
-                          forgotPasswordButton(context,delayedAnimation!,width)
+                          forgotPasswordButton(
+                              context, delayedAnimation!, width)
                         ],
                       )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          goToRegisterButton(context,delayedAnimation!,width),
+                          goToRegisterButton(context, delayedAnimation!, width),
                           // Forgot Password
-                          forgotPasswordButton(context,delayedAnimation!,width)
+                          forgotPasswordButton(
+                              context, delayedAnimation!, width)
                         ],
                       ),
               ),
@@ -173,19 +178,19 @@ class _MyHomePageState extends State<LoginPage>
                               _formkey.currentState!.save();
                               Notify.loading(context, "");
                               AuthenticationHelper()
-                                  .signIn(email: _userApp.email!, password: _userApp.password!)
+                                  .signIn(
+                                      email: _userApp.email!,
+                                      password: _userApp.password!)
                                   .then((value) {
                                 Navigator.pop(context);
                                 if (value.name == AuthStatus.successful.name) {
-                                  Navigator.push(
+                                  Navigator.pushNamed(
                                       context,
-                                      MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            _userApp.email! == "admin@gmail.com"
-                                                ? AdminHome()
-                                                : StudentHome(),
-                                        // : Home(),
-                                      ));
+                                      AuthenticationHelper.isAdmin()
+                                          ? GenerateRootNames.generateRouteName(
+                                              PageName.adminHomePage)
+                                          : GenerateRootNames.generateRouteName(
+                                              PageName.studentDashBord));
                                 } else {
                                   Notify.error(
                                       context,

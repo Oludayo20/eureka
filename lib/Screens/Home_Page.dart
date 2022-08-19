@@ -4,8 +4,6 @@ import '../Util/ImagePath.dart';
 import '../Util/Notify.dart';
 import 'Template/HomeTop.dart';
 import 'Template/OtherMenu.dart';
-
-import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 StreamController<int> streamControllerHome = StreamController();

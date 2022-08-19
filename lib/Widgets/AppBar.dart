@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../Screens/Home_Page.dart';
-import '../services/authentication_helper.dart';
+import '../Authentication/Authentication.dart';
+import '../constants/constants.dart';
+import '../routes/routes.dart';
 
 class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
@@ -38,11 +38,9 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
                         Navigator.popUntil(context,
                             (Route<dynamic> predicate) => predicate.isFirst);
                         Navigator.pop(context);
-                        Navigator.push(
+                        Navigator.pushNamed(
                           context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => HomePage(),
-                          ),
+                          GenerateRootNames.generateRouteName(PageName.homePage),
                         );
                       });
                     },

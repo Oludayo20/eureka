@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:school_management/Models/LectureNote.dart';
 import 'package:school_management/Screens/Courses/QuizView/SubmitView.dart';
-import '../../../../Models/Quiz.dart';
-import '../../../../Widgets/AppBar.dart';
-import '../../../../Widgets/BouncingButton.dart';
-import '../../../../services/authentication_helper.dart';
-import '../../../Widgets/MainDrawer.dart';
+import '../../../../Models/models.dart';
+import '../../../../Widgets/widgets.dart';
+import '../../../Authentication/Authentication.dart';
 import '../../Admin/AdminMainDrawer.dart';
 import 'BigScreen.dart';
 import 'Buttons.dart';
@@ -59,7 +56,7 @@ class _QuizViewState extends State<QuizView> {
       getQuestion();
     });
     model = Quiz();
-    isAdmin = AuthenticationHelper().isAdmin();
+    isAdmin = AuthenticationHelper.isAdmin();
     if (isAdmin)
       getQuestion();
     else
@@ -212,7 +209,7 @@ class _QuizViewState extends State<QuizView> {
       drawer: Drawer(
         elevation: 0,
         child:
-            AuthenticationHelper().isAdmin() ? AdminMainDrawer() : MainDrawer(),
+            AuthenticationHelper.isAdmin() ? AdminMainDrawer() : MainDrawer(),
       ),
       appBar: CommonAppBar(
         menuenabled: true,

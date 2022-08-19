@@ -3,8 +3,13 @@ enum PageName {
   work,
   about,
   contact,
-
+  homePage,
+  adminHomePage,
   //* work-pages
   studentDashBord,
-  lectureNotes
+  lectureNotes,
+  viewPastQuizAndTakeQuiz,
+  takeQuiz,
+  viewNoteUnderLectureNote,
+  unknown
 }

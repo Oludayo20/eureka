@@ -4,7 +4,6 @@ import 'package:school_management/Models/QuizOption.dart';
 import 'package:school_management/Util/Notify.dart';
 
 import '../../../../../Models/Quiz.dart';
-import '../../../../Util/screen_layout.dart';
 import '../../../../Widgets/CardMaker.dart';
 import '../Stream.dart';
 import 'General.dart';

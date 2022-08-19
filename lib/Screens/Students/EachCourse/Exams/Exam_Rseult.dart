@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:school_management/Models/LectureNote.dart';
-import 'package:school_management/Models/QuizResultInfo.dart';
+import 'package:school_management/Models/models.dart';
 import 'package:school_management/Util/Notify.dart';
-import 'package:school_management/Widgets/AppBar.dart';
-import 'package:school_management/Widgets/BouncingButton.dart';
-import 'package:school_management/Widgets/MainDrawer.dart';
-import '../../../../Models/Quiz.dart';
+import 'package:school_management/Widgets/widgets.dart';
+import '../../../../constants/const.enum.pagesName.dart';
+import '../../../../routes/routes_to_name.dart';
 import '../../../Courses/QuizView/Quiz.dart';
 import 'SubjectCard.dart';
 
@@ -17,8 +15,8 @@ class ExamResultArguments {
 }
 
 class ExamResult extends StatefulWidget {
-  const ExamResult({Key? key}) : super(key: key);
-  static const routeName = '/selfQuizResultPage';
+  const ExamResult({Key? key, required this.examResultArguments}) : super(key: key);
+  final ExamResultArguments examResultArguments;
   @override
   _ExamResultState createState() => _ExamResultState();
 }
@@ -158,144 +156,124 @@ class _ExamResultState extends State<ExamResult>
       Notify.error(context, "Quiz not yet available");
       return;
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => QuizView(
-            quizViewArgument: QuizViewArgument(
+    Navigator.of(context).pushNamed(
+        GenerateRootNames.generateRouteName(PageName.takeQuiz),
+        arguments: QuizViewArgument(
           isReviewing: false,
           selectedOption: {},
           lectureNote: arguments.lectureNote,
           title: "",
           quizList: quizList,
-        )),
-      ),
-    );
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
-    ExamResultArguments? args;
-    try {
-      args = ModalRoute.of(context)!.settings.arguments as ExamResultArguments;
-      final double width = MediaQuery.of(context).size.width;
-      animationController!.forward();
-      return AnimatedBuilder(
-          animation: animationController!,
-          builder: (BuildContext context, Widget? child) {
-            final GlobalKey<ScaffoldState> _scaffoldKey =
-                new GlobalKey<ScaffoldState>();
-            return Scaffold(
-              key: _scaffoldKey,
-              appBar: CommonAppBar(
-                menuenabled: true,
-                notificationenabled: false,
-                title: "Self Quiz",
-                ontap: () {
-                  _scaffoldKey.currentState!.openDrawer();
-                },
-              ),
-              drawer: Drawer(
-                elevation: 0,
-                child: MainDrawer(),
-              ),
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 15,
-                  ),
-                  child: Column(
-                    children: pastSelfQuizBuild(args!),
-                  ),
-                ),
-              ),
-              bottomSheet: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 18, 0, 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          muchDelayedAnimation!.value * width, 0, 0),
-                      child: Bouncing(
-                        onPress: () => Navigator.pop(context),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(3),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                ),
-                              ]),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Back",
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          delayedAnimation!.value * width, 0, 0),
-                      child: Bouncing(
-                        onPress: () async {
-                          await takeQuiz(args!);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(3),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                ),
-                              ]),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Take Quiz",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          });
-    } catch (e) {
-      return Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "An error occurred",
-              style: TextStyle(fontSize: 30),
+    double width = MediaQuery.of(context).size.width;
+    animationController!.forward();
+    return AnimatedBuilder(
+        animation: animationController!,
+        builder: (BuildContext context, Widget? child) {
+          final GlobalKey<ScaffoldState> _scaffoldKey =
+          new GlobalKey<ScaffoldState>();
+          return Scaffold(
+            key: _scaffoldKey,
+            appBar: CommonAppBar(
+              menuenabled: true,
+              notificationenabled: false,
+              title: "Self Quiz",
+              ontap: () {
+                _scaffoldKey.currentState!.openDrawer();
+              },
             ),
-            TextButton(
-                onPressed: () {
-                  Navigator.popUntil(context, ModalRoute.withName("/"));
-                },
-                child: Text("Home"))
-          ],
-        ),
-      );
-    }
+            drawer: Drawer(
+              elevation: 0,
+              child: MainDrawer(),
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 15,
+                ),
+                child: Column(
+                  children: pastSelfQuizBuild(widget.examResultArguments),
+                ),
+              ),
+            ),
+            bottomSheet: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 18, 0, 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Transform(
+                    transform: Matrix4.translationValues(
+                        muchDelayedAnimation!.value * width, 0, 0),
+                    child: Bouncing(
+                      onPress: (){
+                        Navigator.pop(context);
+                        Navigator.pushNamed(
+                          context,
+                          GenerateRootNames.generateRouteName(PageName.studentDashBord),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(3),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                              ),
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Back",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Transform(
+                    transform: Matrix4.translationValues(
+                        delayedAnimation!.value * width, 0, 0),
+                    child: Bouncing(
+                      onPress: () async {
+                        await takeQuiz(widget.examResultArguments);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(3),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                              ),
+                            ]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Take Quiz",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

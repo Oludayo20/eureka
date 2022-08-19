@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:school_management/Screens/Students/Home/home.dart';
 import 'package:school_management/Widgets/DrawerListTile.dart';
 
+import '../constants/const.enum.pagesName.dart';
+import '../routes/routes_to_name.dart';
+
 class MainDrawer extends StatefulWidget {
   @override
   _MainDrawerState createState() => _MainDrawerState();
@@ -16,11 +19,11 @@ class _MainDrawerState extends State<MainDrawer> {
             imgpath: "home.png",
             name: "Home",
             ontap: () {
-              Navigator.push(
+              Navigator.pop(context);
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => StudentHome(),
-                ),
+                GenerateRootNames.generateRouteName(
+                    PageName.studentDashBord),
               );
             }),
       ],

@@ -3,16 +3,17 @@ import '../Models/User.dart';
 import 'AuthExceptionHandler.dart';
 
 class AuthenticationHelper {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
   AuthStatus _status = AuthStatus.successful;
-  bool isSignedIn() {
+  static bool isSignedIn() {
     final FirebaseAuth auth = FirebaseAuth.instance;
     var uer = auth.currentUser;
-    if (uer == null || !uer.emailVerified && !isAdmin()) return false;
+    if (uer == null) return false;
+    if (!uer.emailVerified && !isAdmin()) return false;
     return true;
   }
 
-  CurrentUser? getUser() {
+  static CurrentUser? getUser() {
     var uer = _auth.currentUser;
     if (uer == null) return null;
     return CurrentUser(
@@ -49,7 +50,7 @@ class AuthenticationHelper {
     return await signOut();
   }
 
-  bool isAdmin() {
+  static bool isAdmin() {
     try {
       var curr = getUser();
 
@@ -68,14 +69,17 @@ class AuthenticationHelper {
     required String password,
   }) async {
     try {
-      _auth.setPersistence(Persistence.SESSION);
-      var x = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      if (!x.user!.emailVerified && !isAdmin()) {
-        await sendVerificationMail(x);
-        return AuthStatus.emailVerifiedError;
-      }
-      _status = AuthStatus.successful;
+      await _auth.setPersistence(Persistence.LOCAL).whenComplete(() async {
+        var x = await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        if (!x.user!.emailVerified && !isAdmin()) {
+          await sendVerificationMail(x);
+          _status = AuthStatus.emailVerifiedError;
+        }else{
+          _status = AuthStatus.successful;
+        }
+      });
+
     } on FirebaseAuthException catch (e) {
       _status = AuthExceptionHandler.handleAuthException(e);
     }

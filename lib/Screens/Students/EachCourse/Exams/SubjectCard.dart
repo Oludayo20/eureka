@@ -4,7 +4,7 @@ import 'package:school_management/Models/LectureNote.dart';
 import '../../../../Models/Quiz.dart';
 import '../../../../Models/QuizResult.dart';
 import '../../../../Util/Notify.dart';
-import '../../../../services/authentication_helper.dart';
+import '../../../../Authentication/Authentication.dart';
 import '../../../Courses/QuizView/Quiz.dart';
 
 class SubjectCard extends StatelessWidget {
@@ -30,7 +30,7 @@ class SubjectCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<void> reviewQuiz() async {
       Notify.loading(context, "");
-      var uid = AuthenticationHelper().getUser()!.uid!;
+      var uid = AuthenticationHelper.getUser()!.uid!;
       await QuizResult()
           .read(lectureNote.lectureNoteId!, uid, startTime!)
           .then((value) async {

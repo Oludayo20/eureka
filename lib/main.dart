@@ -2,15 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:school_management/Screens/Admin/HomePage/HomePage.dart';
 import 'package:school_management/Widgets/TextFieldCard.dart';
 import 'package:school_management/firebase_options.dart';
-import 'package:school_management/services/authentication_helper.dart';
-import 'Screens/Home_Page.dart';
-import 'Screens/Students/EachCourse/Exams/Exam_Rseult.dart';
-import 'Screens/Students/Home/home.dart';
-
+import 'package:school_management/routes/routes.dart';
 void main() {
   Future<bool> init() async {
     try {
@@ -24,15 +18,11 @@ void main() {
     }
   }
   //TODO: Implement the checking of isLogin better
-  //runApp(MyApp());
    init().then((val) {
     if (val) {
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        if (user != null) {
-          runApp(MyApp());
-        }
+       runApp(MyApp());
       });
-      runApp(MyApp());
     } else {
       runApp(ErrorMain());
     }
@@ -47,28 +37,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthenticationHelper authenticationHelper = AuthenticationHelper();
-    return GetMaterialApp(
+    return MaterialApp(
       title: 'Eureka',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: initialRoute(),
       //initialRoute: 'test',
-      routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) {
-          return !authenticationHelper.isSignedIn()
-              ? HomePage()
-              : authenticationHelper.isAdmin()
-                  ? AdminHome()
-                  : StudentHome();
-        },
-        'test': (context) => Test(),
-        ExamResult.routeName: (context) => const ExamResult(),
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        //'/second': (context) => const SecondScreen(),
-      },
+      onGenerateRoute: RouteGenerator.generateRoute,
+      onUnknownRoute: RouteGenerator.generateRoute,
     );
   }
 }

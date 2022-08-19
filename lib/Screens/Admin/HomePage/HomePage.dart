@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_management/Models/User.dart';
-import 'package:school_management/Widgets/AppBar.dart';
-import 'package:school_management/Widgets/BouncingButton.dart';
-import 'package:school_management/Widgets/DashboardCards.dart';
+import 'package:school_management/Models/models.dart';
+import 'package:school_management/Widgets/widgets.dart';
 import 'package:school_management/Widgets/UserDetailCard.dart';
 import '../../../Util/ImagePath.dart';
 import '../../Courses/Course.dart';

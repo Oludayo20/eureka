@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import '../../../Models/Course.dart';
 import '../../../Util/screen_layout.dart';
-import '../../../Widgets/AppBar.dart';
-import '../../../Widgets/MainDrawer.dart';
+import '../../../Widgets/widgets.dart';
 import 'Method.dart';
 import 'NoteDisplay/NoteCard.dart';
-
-class EachCourse extends StatelessWidget {
-  const EachCourse(
-      {Key? key, required this.course, required this.eachCourseMethod})
-      : super(key: key);
+class EachCourseArguments{
   final Course course;
   final EachCourseMethod eachCourseMethod;
+  EachCourseArguments({required this.eachCourseMethod, required this.course});
+}
+class EachCourse extends StatelessWidget {
+  const EachCourse(
+      {Key? key, required this.eachCourseArguments})
+      : super(key: key);
+  final EachCourseArguments eachCourseArguments;
   List<Widget> lectureNotes(Layout layout, BuildContext context) {
     List<Widget> item = [];
-    for (var i = 1; i < eachCourseMethod.list.length + 1; i++) {
+    for (var i = 1; i < eachCourseArguments.eachCourseMethod.list.length + 1; i++) {
       item.add(Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
         child: NoteCard(
-          lectureNote: eachCourseMethod.list[i - 1],
+          lectureNote: eachCourseArguments.eachCourseMethod.list[i - 1],
           num: i,
         ),
       ));
